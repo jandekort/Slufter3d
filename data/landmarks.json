@@ -1,0 +1,34 @@
+{
+ "note": "Landmarks and points placed by hand, in RD New (EPSG:28992), metres; azimuths in degrees clockwise from north. Read by tools/pack_world.py. Points taken from the first application were moved by the park-wide fit of data/houses.json and are good to a few metres.",
+ "start": {
+  "rd": [
+   118701.4,
+   574883.8
+  ],
+  "heading": 257.5,
+  "source": "v1: the start of the walk, beside the lookout tower"
+ },
+ "lookout_tower": {
+  "rd": [
+   118690.6,
+   574881.3
+  ],
+  "source": "v1: Uitkijktoren, Q on the park map, read off an aerial photo"
+ },
+ "reception_entrance": {
+  "rd": [
+   118662.0,
+   574720.0
+  ],
+  "azimuth": 168.8,
+  "source": "v1: the entrance of the central building; tools/pack_world.py moves it onto the nearest wall of a wing"
+ },
+ "lighthouse": {
+  "rd": [
+   119439.0,
+   577405.0
+  ],
+  "height": 34.7,
+  "source": "Vuurtoren Texel (Eierland): the highest surface of raw/ahn/tip_dsm_2m.tif, 55.2 m NAP, on a dune of about 22 m. Height of the tower as given by the owner."
+ }
+}

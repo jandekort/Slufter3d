@@ -32,8 +32,6 @@ namespace
     const double safariRidge = 3.70;        // [m]
     const double safariFoundation = 1.2;    // the boards under the deck reach this far into the dune [m]
 
-    const Shape shapeSafari = { safariEave, safariDeck, std::atan((safariRidge - safariEave) / safariEaveHalf),
-        0.0, 0.3, 0.0, 0.0, 1.0 };
     const Paint paintSafari = {
         Color(0.72f, 0.58f, 0.43f),   // tan canvas
         Color(0.40f, 0.29f, 0.22f),   // brown band at the foot of the canvas

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Slufter3D</title>
+<link rel="icon" href="data:,">
+<style>
+    html, body { margin: 0; height: 100%; background: #9ec7f2; color: #ffffff; overflow: hidden;
+                 font-family: "Helvetica Neue", Arial, sans-serif; }
+    canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; cursor: grab; }
+    .hud { position: absolute; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75); pointer-events: none; font-size: 15px; line-height: 1.45; }
+    #where { left: 16px; top: 14px; }
+    #where b { font-size: 24px; }
+    #house { right: 16px; top: 14px; text-align: right; }
+    #house b { font-size: 24px; }
+    #error { left: 0; right: 0; top: 45%; text-align: center; font-size: 18px; color: #7a1010; text-shadow: none; }
+    #help { left: 0; right: 0; bottom: 26px; text-align: center; font-size: 13px; opacity: 0.9; }
+    #credit { left: 0; right: 0; bottom: 6px; font-size: 11px; opacity: 0.8; text-align: center; }
+    #credit a { color: inherit; pointer-events: auto; }
+    #panel { position: absolute; left: 16px; top: 112px; display: flex; flex-direction: column; gap: 8px; font-size: 14px; }
+    #panel .row { display: flex; gap: 0; }
+    #panel button, #panel input { font: inherit; color: #ffffff; background: rgba(20, 40, 60, 0.45);
+                 border: 1px solid rgba(255, 255, 255, 0.7); padding: 6px 10px; outline: none; }
+    #panel button { cursor: pointer; }
+    #panel button.on { background: rgba(255, 255, 255, 0.92); color: #173a5c; }
+    #panel button:first-child, #panel input:first-child { border-radius: 6px 0 0 6px; }
+    #panel button + button { border-left: none; }
+    #panel button:last-child { border-radius: 0 6px 6px 0; border-left: none; }
+    #panel input { width: 92px; }
+    #panel input::placeholder { color: rgba(255, 255, 255, 0.8); }
+    .pad { position: absolute; bottom: 5%; display: none; gap: 2vmin; }
+    .pad button { width: 15vmin; height: 15vmin; border-radius: 50%; border: 0.5vmin solid #ffffff;
+                  background: rgba(20, 40, 60, 0.35); color: #ffffff; font-size: 5vmin;
+                  touch-action: none; user-select: none; -webkit-user-select: none; }
+    #padLeft { left: 4%; }
+    #padRight { right: 4%; }
+    @media (pointer: coarse) { .pad { display: flex; } #help { display: none; } #credit { bottom: 6px; } }
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<div id="where" class="hud"></div>
+<div id="house" class="hud"></div>
+<div id="error" class="hud"></div>
+<div id="panel">
+    <div class="row">
+        <button data-pace="0">5 km/h</button><button data-pace="1" class="on">20 km/h</button><button data-pace="2">50 km/h</button>
+    </div>
+    <div class="row">
+        <input id="number" type="text" inputmode="numeric" placeholder="house no."><button id="go">go</button>
+    </div>
+    <div class="row">
+        <button id="up">&#9650; higher</button><button id="down">&#9660; lower</button><button id="land">land</button>
+    </div>
+</div>
+<div id="help" class="hud">W / S or arrows: walk &nbsp; A / D or arrows: turn &nbsp; Q / E: step sideways &nbsp; drag: look around &nbsp; wheel or Space / C: fly higher, lower &nbsp; L: land &nbsp; 1 / 2 / 3: 5, 20 or 50 km/h &nbsp; R: back to the lookout tower</div>
+<div id="credit" class="hud">Heights: AHN, Rijkswaterstaat (CC0) &middot; Roads: BGT, Kadaster (CC BY 4.0)</div>
+<div id="padLeft" class="pad">
+    <button data-key="left">&#9664;</button>
+    <button data-key="right">&#9654;</button>
+</div>
+<div id="padRight" class="pad">
+    <button data-key="back">&#9660;</button>
+    <button data-key="ahead">&#9650;</button>
+</div>
+<script src="slufter.js"></script>
+</body>
+</html>

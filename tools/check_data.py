@@ -50,6 +50,8 @@ def main():
     check(all(bounds[0] < h["x"] < bounds[2] and bounds[1] < h["y"] < bounds[3] for h in houses),
           "every house lies within the park rasters")
     check(data["central_building"] is not None, "the central building was found")
+    review = [h for h in houses if h["review"]]
+    check(not review, "no house waits for a review (build/review/houses_review.md): %d" % len(review))
 
     print("All checks passed" if not failures else "Checks failed: %d" % len(failures))
     return 1 if failures else 0

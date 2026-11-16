@@ -483,6 +483,11 @@ def main():
                                "area_m2": round(float(field.m_areas[v - 1]), 0),
                                "nearest_house": label(named[houseTree.query(centre)[1]])})
 
+    stale = sorted(accepted - {label(r) for r in records})
+    if stale:
+        raise RuntimeError("data/house_corrections.json accepts houses that are not there (any more): %s" % ", ".join(stale))
+    if corrections.get("ignore_buildings_without_a_house"):
+        unassigned = []
     for r in records:
         if label(r) in accepted:
             r["accepted"] = r["review"]
