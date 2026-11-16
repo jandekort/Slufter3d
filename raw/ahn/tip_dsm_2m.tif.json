@@ -1,0 +1,63 @@
+{
+  "name": "tip_dsm_2m",
+  "file": "tip_dsm_2m.tif",
+  "source": {
+    "dataset": "Actueel Hoogtebestand Nederland (AHN), 0.5 m rasters, as served by the PDOK WCS",
+    "owner": "Rijkswaterstaat",
+    "licence": "CC0 1.0",
+    "licence_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "landing_page": "https://www.ahn.nl",
+    "catalogue": "https://data.overheid.nl/dataset/36461-actueel-hoogtebestand-nederland-dsm--ahn4-"
+  },
+  "coverage": "dsm_05m",
+  "area": "tip",
+  "area_why": "From the park west to the North Sea and north past the lighthouse: what is seen close by and flown over. The coast at the park's latitude lies near x = 115 km; the west edge leaves room for beach and surf.",
+  "bounds_rd": [
+    114500,
+    574400,
+    119900,
+    578000
+  ],
+  "cell_m": 2.0,
+  "native_cell_m": 0.5,
+  "resampled_by_service": true,
+  "interpolation_requested": "bilinear",
+  "interpolations_refused": [],
+  "interpolations_offered": [
+    "nearest neighbor",
+    "bilinear"
+  ],
+  "null_values_described": [],
+  "grid": [
+    2700,
+    1800
+  ],
+  "format": "GEOTIFF",
+  "request": "https://service.pdok.nl/rws/ahn/wcs/v1_0?SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=dsm_05m&CRS=EPSG%3A28992&RESPONSE_CRS=EPSG%3A28992&BBOX=114500%2C574400%2C119900%2C578000&WIDTH=2700&HEIGHT=1800&FORMAT=GEOTIFF&INTERPOLATION=bilinear",
+  "downloaded_utc": "2026-11-16T18:33:02Z",
+  "seconds": 2.1,
+  "bytes": 6004104,
+  "sha256": "961c84aaa2d5a62514908fb6c389b495d976bd33119f975f95f44c327c04e142",
+  "raster": {
+    "width": 2700,
+    "height": 1800,
+    "bounds": [
+      114500.0,
+      574400.0,
+      119900.0,
+      578000.0
+    ],
+    "cell": [
+      2.0,
+      2.0
+    ],
+    "epsg": 28992,
+    "dtype": "float32",
+    "nodata": 3.4028234663852886e+38,
+    "nodata_fraction": 0.5955,
+    "min": -0.726,
+    "max": 55.154,
+    "mean": 4.224
+  },
+  "note": "The body of the WCS response, stored byte for byte. Never edit this file or the raster; derived data goes elsewhere."
+}

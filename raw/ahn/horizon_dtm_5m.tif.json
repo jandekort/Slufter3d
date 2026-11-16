@@ -1,0 +1,63 @@
+{
+  "name": "horizon_dtm_5m",
+  "file": "horizon_dtm_5m.tif",
+  "source": {
+    "dataset": "Actueel Hoogtebestand Nederland (AHN), 0.5 m rasters, as served by the PDOK WCS",
+    "owner": "Rijkswaterstaat",
+    "licence": "CC0 1.0",
+    "licence_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "landing_page": "https://www.ahn.nl",
+    "catalogue": "https://data.overheid.nl/dataset/47567-actueel-hoogtebestand-nederland--ahn--dtm"
+  },
+  "coverage": "dtm_05m",
+  "area": "horizon",
+  "area_why": "The northern part of Texel with the North Sea and the Wadden Sea around it: the land on the horizon.",
+  "bounds_rd": [
+    113000,
+    570500,
+    123000,
+    580000
+  ],
+  "cell_m": 5.0,
+  "native_cell_m": 0.5,
+  "resampled_by_service": true,
+  "interpolation_requested": "bilinear",
+  "interpolations_refused": [],
+  "interpolations_offered": [
+    "nearest neighbor",
+    "bilinear"
+  ],
+  "null_values_described": [],
+  "grid": [
+    2000,
+    1900
+  ],
+  "format": "GEOTIFF",
+  "request": "https://service.pdok.nl/rws/ahn/wcs/v1_0?SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=dtm_05m&CRS=EPSG%3A28992&RESPONSE_CRS=EPSG%3A28992&BBOX=113000%2C570500%2C123000%2C580000&WIDTH=2000&HEIGHT=1900&FORMAT=GEOTIFF&INTERPOLATION=bilinear",
+  "downloaded_utc": "2026-11-16T18:33:04Z",
+  "seconds": 2.1,
+  "bytes": 4959344,
+  "sha256": "3079754158426168383ee840cbd48dffc30bed0bdab9688e6dc7563bd24fb2b2",
+  "raster": {
+    "width": 2000,
+    "height": 1900,
+    "bounds": [
+      113000.0,
+      570500.0,
+      123000.0,
+      580000.0
+    ],
+    "cell": [
+      5.0,
+      5.0
+    ],
+    "epsg": 28992,
+    "dtype": "float32",
+    "nodata": 3.4028234663852886e+38,
+    "nodata_fraction": 0.5961,
+    "min": -0.917,
+    "max": 21.533,
+    "mean": 1.923
+  },
+  "note": "The body of the WCS response, stored byte for byte. Never edit this file or the raster; derived data goes elsewhere."
+}

@@ -1,0 +1,63 @@
+{
+  "name": "tip_dtm_2m",
+  "file": "tip_dtm_2m.tif",
+  "source": {
+    "dataset": "Actueel Hoogtebestand Nederland (AHN), 0.5 m rasters, as served by the PDOK WCS",
+    "owner": "Rijkswaterstaat",
+    "licence": "CC0 1.0",
+    "licence_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "landing_page": "https://www.ahn.nl",
+    "catalogue": "https://data.overheid.nl/dataset/47567-actueel-hoogtebestand-nederland--ahn--dtm"
+  },
+  "coverage": "dtm_05m",
+  "area": "tip",
+  "area_why": "From the park west to the North Sea and north past the lighthouse: what is seen close by and flown over. The coast at the park's latitude lies near x = 115 km; the west edge leaves room for beach and surf.",
+  "bounds_rd": [
+    114500,
+    574400,
+    119900,
+    578000
+  ],
+  "cell_m": 2.0,
+  "native_cell_m": 0.5,
+  "resampled_by_service": true,
+  "interpolation_requested": "bilinear",
+  "interpolations_refused": [],
+  "interpolations_offered": [
+    "nearest neighbor",
+    "bilinear"
+  ],
+  "null_values_described": [],
+  "grid": [
+    2700,
+    1800
+  ],
+  "format": "GEOTIFF",
+  "request": "https://service.pdok.nl/rws/ahn/wcs/v1_0?SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=dtm_05m&CRS=EPSG%3A28992&RESPONSE_CRS=EPSG%3A28992&BBOX=114500%2C574400%2C119900%2C578000&WIDTH=2700&HEIGHT=1800&FORMAT=GEOTIFF&INTERPOLATION=bilinear",
+  "downloaded_utc": "2026-11-16T18:32:59Z",
+  "seconds": 2.4,
+  "bytes": 5937984,
+  "sha256": "96dbfd33a53e17b3f4db40a96dc0e30640d655e90f0b463daf35f9cba02f5299",
+  "raster": {
+    "width": 2700,
+    "height": 1800,
+    "bounds": [
+      114500.0,
+      574400.0,
+      119900.0,
+      578000.0
+    ],
+    "cell": [
+      2.0,
+      2.0
+    ],
+    "epsg": 28992,
+    "dtype": "float32",
+    "nodata": 3.4028234663852886e+38,
+    "nodata_fraction": 0.5973,
+    "min": -0.726,
+    "max": 22.072,
+    "mean": 3.937
+  },
+  "note": "The body of the WCS response, stored byte for byte. Never edit this file or the raster; derived data goes elsewhere."
+}

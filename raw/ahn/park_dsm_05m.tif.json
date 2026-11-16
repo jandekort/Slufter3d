@@ -1,0 +1,63 @@
+{
+  "name": "park_dsm_05m",
+  "file": "park_dsm_05m.tif",
+  "source": {
+    "dataset": "Actueel Hoogtebestand Nederland (AHN), 0.5 m rasters, as served by the PDOK WCS",
+    "owner": "Rijkswaterstaat",
+    "licence": "CC0 1.0",
+    "licence_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "landing_page": "https://www.ahn.nl",
+    "catalogue": "https://data.overheid.nl/dataset/36461-actueel-hoogtebestand-nederland-dsm--ahn4-"
+  },
+  "coverage": "dsm_05m",
+  "area": "park",
+  "area_why": "Landal Sluftervallei with a margin: the ground that is walked on, and the surface (houses, trees) to place the survey and the vegetation on.",
+  "bounds_rd": [
+    118200,
+    574500,
+    119600,
+    575500
+  ],
+  "cell_m": 0.5,
+  "native_cell_m": 0.5,
+  "resampled_by_service": false,
+  "interpolation_requested": "none: native cells",
+  "interpolations_refused": [],
+  "interpolations_offered": [
+    "nearest neighbor",
+    "bilinear"
+  ],
+  "null_values_described": [],
+  "grid": [
+    2800,
+    2000
+  ],
+  "format": "GEOTIFF",
+  "request": "https://service.pdok.nl/rws/ahn/wcs/v1_0?SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=dsm_05m&CRS=EPSG%3A28992&RESPONSE_CRS=EPSG%3A28992&BBOX=118200%2C574500%2C119600%2C575500&WIDTH=2800&HEIGHT=2000&FORMAT=GEOTIFF",
+  "downloaded_utc": "2026-11-16T18:32:57Z",
+  "seconds": 3.3,
+  "bytes": 16227079,
+  "sha256": "f3e9a1d1f4c0bae5eab9191faae9b8ea839a89647774fae1936eede0a9c10e96",
+  "raster": {
+    "width": 2800,
+    "height": 2000,
+    "bounds": [
+      118200.0,
+      574500.0,
+      119600.0,
+      575500.0
+    ],
+    "cell": [
+      0.5,
+      0.5
+    ],
+    "epsg": 28992,
+    "dtype": "float32",
+    "nodata": 3.4028234663852886e+38,
+    "nodata_fraction": 0.0106,
+    "min": -0.645,
+    "max": 18.369,
+    "mean": 3.91
+  },
+  "note": "The body of the WCS response, stored byte for byte. Never edit this file or the raster; derived data goes elsewhere."
+}
