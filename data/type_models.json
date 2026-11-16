@@ -1,0 +1,134 @@
+{
+ "note": "Which vector model is drawn for each type of the park map. model: a name known to Models::byName, drawn by models/<model>.cpp. semi_model: the model for half of a semi-detached block (a house with semi_with in data/houses.json). size: 'model' -> the model decides its size from the outline of the house (Model::footprint); 'outline' -> the outline is used as it is. To show a type with another model, change it here.",
+ "types": {
+  "4C": {
+   "model": "Comfort6C",
+   "semi_model": "ComfortSemi4C",
+   "size": "model",
+   "why": "Comfort bungalow, photographed as 6C (house 17); half of a semi-detached block as 4C (houses 14 and 15)."
+  },
+  "4CT": {
+   "model": "Comfort6C",
+   "semi_model": "ComfortSemi4C",
+   "size": "model",
+   "why": "Comfort bungalow, photographed as 6C (house 17); half of a semi-detached block as 4C (houses 14 and 15)."
+  },
+  "6C": {
+   "model": "Comfort6C",
+   "semi_model": "ComfortSemi4C",
+   "size": "model",
+   "why": "Comfort bungalow, photographed as 6C (house 17); half of a semi-detached block as 4C (houses 14 and 15)."
+  },
+  "8C": {
+   "model": "Comfort8C",
+   "size": "model",
+   "why": "Photographed (house 3)."
+  },
+  "6CK": {
+   "model": "Comfort8C",
+   "size": "model",
+   "why": "Not photographed; houses 26 and 29 look like house 3."
+  },
+  "6L": {
+   "model": "Luxe6L",
+   "size": "model",
+   "why": "Photographed."
+  },
+  "8L": {
+   "model": "Luxe8L",
+   "size": "model",
+   "why": "Photographed (house 449)."
+  },
+  "12L": {
+   "model": "Luxe8L",
+   "size": "model",
+   "why": "Not photographed; the largest villas take the 8L."
+  },
+  "24L": {
+   "model": "Luxe8L",
+   "size": "model",
+   "why": "Not photographed; the largest villas take the 8L."
+  },
+  "10L": {
+   "model": "Luxe10L",
+   "size": "model",
+   "why": "Photographed."
+  },
+  "10LT": {
+   "model": "Luxe10LT",
+   "size": "model",
+   "why": "Photographed (house 405)."
+  },
+  "4EL": {
+   "model": "Luxe4EL",
+   "size": "model",
+   "why": "Photographed (house 453); has its own plan."
+  },
+  "6EL": {
+   "model": "LuxeEL",
+   "size": "model",
+   "why": "Not photographed; the 4EL on the rectangle of the house, with only the front cut-out."
+  },
+  "8EL": {
+   "model": "LuxeEL",
+   "size": "model",
+   "why": "Not photographed; the 4EL on the rectangle of the house, with only the front cut-out."
+  },
+  "Visdiefje": {
+   "model": "Visdiefje",
+   "size": "model",
+   "why": "The 1950s bungalow, not on the park map; photographed."
+  },
+  "C2": {
+   "model": "Tent",
+   "size": "model",
+   "why": "Photographed."
+  },
+  "C1": {
+   "model": "Tent",
+   "size": "model",
+   "why": "Every camping pitch has the tent of C2 on it."
+  },
+  "C3": {
+   "model": "Tent",
+   "size": "model",
+   "why": "Every camping pitch has the tent of C2 on it."
+  },
+  "C4": {
+   "model": "Tent",
+   "size": "model",
+   "why": "Every camping pitch has the tent of C2 on it."
+  },
+  "C5": {
+   "model": "Tent",
+   "size": "model",
+   "why": "Every camping pitch has the tent of C2 on it."
+  },
+  "Trekker": {
+   "model": "Tent",
+   "size": "model",
+   "why": "Every camping pitch has the tent of C2 on it."
+  },
+  "6ST": {
+   "model": "SafariTent",
+   "size": "model",
+   "why": "Photographed."
+  },
+  "4MH": {
+   "model": "SafariTent",
+   "size": "model",
+   "why": "Mobile homes take the safari tent for now."
+  },
+  "OTHER": {
+   "model": "Comfort6C",
+   "semi_model": "ComfortSemi4C",
+   "size": "outline",
+   "why": "Sheds and buildings without a type; drawn as a comfort bungalow on their own outline."
+  },
+  "central_facilities": {
+   "model": "ReceptionWing",
+   "size": "outline",
+   "why": "The central building is drawn as a number of wings, each a ReceptionWing."
+  }
+ }
+}
