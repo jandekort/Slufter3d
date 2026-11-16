@@ -47,6 +47,8 @@ world.slufter_init();
 const count = world.slufter_vertex_count();
 const sky = world.slufter_sky_vertex_count();
 const flat = world.slufter_flat_vertex_count();
+const trees = world.slufter_tree_vertex_count();
+check(trees > 0 && sky + trees + flat < count, "trees just before the roads and the water (" + trees + ")");
 check(count > 500000, "mesh holds the world: " + count + " vertices");
 check(sky > 0 && flat > 0 && sky + flat < count, "sky first (" + sky + "), roads and water last (" + flat + ")");
 const vertices = new Float32Array(world.memory.buffer, world.slufter_vertices(), count * 6);

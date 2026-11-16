@@ -11,7 +11,7 @@
 namespace
 {
     const std::uint32_t magic = 0x33464c53;     // "SLF3"
-    const std::uint32_t version = 1;
+    const std::uint32_t version = 2;
     const std::int16_t noWater = -32768;
     const double centimetre = 0.01;
 
@@ -153,6 +153,20 @@ WorldData WorldData::parse(const unsigned char* bytes, size_t size)
             const unsigned char kind = in.take<std::uint8_t>();
             require(kind < roadKinds(), "World file: kind of road");
             data.m_roadKinds.push_back(kind);
+        }
+    }
+    { // Trees
+        const size_t count = in.take<std::uint32_t>();
+        data.m_trees.reserve(count);
+        for (size_t k = 0; k < count; ++k)
+        {
+            TreeRecord tree;
+            tree.m_east = in.take<float>();
+            tree.m_north = in.take<float>();
+            tree.m_height = in.take<float>();
+            tree.m_crownRadius = in.take<float>();
+            require(tree.m_height > 0.0 && tree.m_crownRadius > 0.0, "World file: size of a tree");
+            data.m_trees.push_back(tree);
         }
     }
     require(in.atEnd(), "World file is longer than expected");

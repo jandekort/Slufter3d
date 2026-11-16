@@ -3,6 +3,8 @@
 // Created: 2026-11-16
 #include "Scene.h"
 
+#include "ScotsPine.h"
+
 #include "Check.h"
 #include "Lighthouse.h"
 #include "Model.h"
@@ -23,6 +25,7 @@ Scene::Scene()
     m_mesh()
     , m_skyVertexCount(0)
     , m_flatVertexCount(0)
+    , m_treeVertexCount(0)
     , m_fieldOfView(68.0 * pi / 180.0)
     , m_near(0.15)
     , m_nearPerHeight(0.03)
@@ -73,6 +76,10 @@ void Scene::build(const World& world)
     }
     Lighthouse().build(m_mesh, Vec3(data.m_lighthouseEast, terrain.height(data.m_lighthouseEast, data.m_lighthouseNorth),
         -data.m_lighthouseNorth));
+
+    const size_t beforeTrees = m_mesh.vertexCount();
+    addTrees(world);
+    m_treeVertexCount = m_mesh.vertexCount() - beforeTrees;
 
     const size_t before = m_mesh.vertexCount();
     addWater(terrain);
@@ -328,5 +335,18 @@ void Scene::addRoads(const World& world)
                 return Vec3(east, terrain.height(east, north) + m_roadLift, -north);
             };
         m_mesh.addFlatTriangle(place(t[0], t[1]), place(t[2], t[3]), place(t[4], t[5]), color, color, color);
+    }
+}
+
+void Scene::addTrees(const World& world)
+{
+    const Terrain& terrain = world.getTerrain();
+    const ScotsPine pine;
+    for (const WorldData::TreeRecord& tree : world.getData().m_trees)
+    {
+        // Which way a tree leans follows from where it stands: the same on every run
+        const double turn = std::fmod(std::abs(tree.m_east * 12.9898 + tree.m_north * 78.233), 6.283185307179586);
+        pine.build(m_mesh, Vec3(tree.m_east, terrain.height(tree.m_east, tree.m_north), -tree.m_north),
+            tree.m_height, tree.m_crownRadius, turn);
     }
 }

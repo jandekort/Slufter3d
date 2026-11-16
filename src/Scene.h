@@ -16,7 +16,7 @@ class World;
 
 // Class Scene
 // The world does not change, so its mesh is built once. The buffer holds the sky, then the land with
-// everything that stands on it, then what lies flat on the land: roads and water. The sky is drawn
+// everything that stands on it, then the trees (so that the page can leave them out), then what lies flat on the land: roads and water. The sky is drawn
 // around the eye; the flat things are drawn last, nudged towards the eye, so that they never flicker
 // against the ground they lie on.
 class Scene
@@ -31,6 +31,7 @@ public:
     const Mesh& getMesh() const { return m_mesh; }
     size_t skyVertexCount() const { return m_skyVertexCount; }
     size_t flatVertexCount() const { return m_flatVertexCount; }   // the last ones of the buffer
+    size_t treeVertexCount() const { return m_treeVertexCount; }   // just before the flat ones
     Mat4 viewProjection(const Walker& walker, double aspect) const;
     Color groundColor(double height, double slope, bool beach, bool odd) const;
     const Color& getHorizon() const { return m_horizon; }
@@ -43,12 +44,14 @@ private:
     void addSeaAround(const TerrainLevel& coarsest);
     void addWater(const Terrain& terrain);
     void addRoads(const World& world);
+    void addTrees(const World& world);
     // Tiles of a grid that the sea can reach over low ground: beach and salt marsh
     std::vector<bool> beachTiles(const TerrainLevel& level) const;
 
     Mesh m_mesh;
     size_t m_skyVertexCount;
     size_t m_flatVertexCount;
+    size_t m_treeVertexCount;
     double m_fieldOfView;
     double m_near;          // nearest distance drawn, on the ground [m]
     double m_nearPerHeight; // and what it grows by per metre of altitude

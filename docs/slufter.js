@@ -77,6 +77,8 @@
             resetRequested = true;
         } else if (event.code === "KeyL") {
             landRequested = true;
+        } else if (event.code === "KeyT") {
+            toggleTrees();
         } else if (/^Digit[1-2]$/.test(event.code)) {
             setPace(Number(event.code.slice(5)));   // 1->slow, 2->fast
         }
@@ -97,6 +99,13 @@
     }, { passive: false });
     document.getElementById("up").addEventListener("click", function () { riseNotches += 1.0; });
     document.getElementById("down").addEventListener("click", function () { riseNotches -= 1.0; });
+    const treesButton = document.getElementById("trees");
+    let showTrees = true;   // true->the trees are drawn
+    function toggleTrees() {
+        showTrees = !showTrees;
+        treesButton.classList.toggle("on", showTrees);
+    }
+    treesButton.addEventListener("click", toggleTrees);
     document.getElementById("land").addEventListener("click", function () { landRequested = true; });
 
     document.querySelectorAll(".pad button").forEach(function (button) {
@@ -237,6 +246,7 @@
         const count = world.slufter_vertex_count();
         const skyCount = world.slufter_sky_vertex_count();
         const flatCount = world.slufter_flat_vertex_count();
+        const treeCount = world.slufter_tree_vertex_count();   // just before the flat ones
         const fog = 1.0 / world.slufter_fog_range();
         gl.bufferData(gl.ARRAY_BUFFER,
             new Float32Array(world.memory.buffer, world.slufter_vertices(), count * FLOATS_PER_VERTEX), gl.STATIC_DRAW);
@@ -303,7 +313,7 @@
             gl.depthMask(true);
             gl.uniform3f(uOffset, 0.0, 0.0, 0.0);
             gl.uniform1f(uFog, fog);
-            gl.drawArrays(gl.TRIANGLES, skyCount, count - skyCount - flatCount);
+            gl.drawArrays(gl.TRIANGLES, skyCount, count - skyCount - flatCount - (showTrees ? 0 : treeCount));
             // Roads and water lie flat on the land: nudged towards the eye, so that they never flicker against it
             gl.enable(gl.POLYGON_OFFSET_FILL);
             gl.polygonOffset(-2.0, -4.0);

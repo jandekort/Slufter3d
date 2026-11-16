@@ -239,6 +239,12 @@ int main(int argc, char** argv)
         check(scene.skyVertexCount() > 0 && scene.flatVertexCount() > 0
             && scene.skyVertexCount() + scene.flatVertexCount() < mesh.vertexCount(), "sky first, roads and water last");
         check(std::all_of(v, v + mesh.floatCount(), [](float x) { return std::isfinite(x); }), "all vertices are finite");
+        const size_t trees = world.getData().m_trees.size();
+        check(trees > 1000, "the trees of the AHN are in the world: " + std::to_string(trees));
+        check(scene.treeVertexCount() >= 54 * trees && scene.treeVertexCount() % 3 == 0
+            && scene.skyVertexCount() + scene.treeVertexCount() + scene.flatVertexCount() < mesh.vertexCount(),
+            "the trees are drawn, just before the roads and the water: " + std::to_string(scene.treeVertexCount())
+            + " vertices");
         // The lighthouse stands on its dune, its top near 54 m NAP
         double top = 0.0;
         for (size_t k = scene.skyVertexCount(); k < mesh.vertexCount(); ++k)

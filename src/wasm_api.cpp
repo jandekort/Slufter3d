@@ -129,6 +129,12 @@ SLUFTER_EXPORT(slufter_flat_vertex_count) int slufter_flat_vertex_count()
     return (int) game().getScene().flatVertexCount();
 }
 
+// The trees come just before the flat vertices, so that the page can leave them out
+SLUFTER_EXPORT(slufter_tree_vertex_count) int slufter_tree_vertex_count()
+{
+    return (int) game().getScene().treeVertexCount();
+}
+
 // Six floats per vertex: x, y, z, r, g, b
 SLUFTER_EXPORT(slufter_vertices) const float* slufter_vertices()
 {

@@ -32,7 +32,8 @@ TERRAIN = os.path.join(ROOT, "build", "terrain")
 OUT = os.path.join(ROOT, "docs", "data", "world.bin")
 PREVIEW = os.path.join(ROOT, "build", "preview", "world")
 
-VERSION = 1
+VERSION = 2
+TREES = os.path.join(ROOT, "data", "trees.json")   # made by tools/make_trees.py; without it: no trees
 ORIGIN = (118700.0, 574700.0)   # RD New of the origin of the application's coordinates: east and north in metres
 
 # The grids, finest first: source of tools/make_terrain.py, cell [m], and west, south, east, north in metres
@@ -365,6 +366,10 @@ def main():
     out += struct.pack("<I", len(kinds))
     out += triangles.astype("<f4").tobytes()
     out += kinds.tobytes()
+    trees = json.load(open(TREES))["trees"] if os.path.exists(TREES) else []
+    out += struct.pack("<I", len(trees))
+    for tree in trees:
+        out += struct.pack("<4f", *local((tree["x"], tree["y"])), tree["height"], tree["crown_radius"])
 
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "wb") as handle:

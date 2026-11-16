@@ -54,6 +54,15 @@ struct WorldData
         double m_axis = 0.0;
     };
 
+    // Struct TreeRecord: a tree found in the AHN (tools/make_trees.py)
+    struct TreeRecord
+    {
+        double m_east = 0.0;
+        double m_north = 0.0;
+        double m_height = 0.0;          // ground to top [m]
+        double m_crownRadius = 0.0;     // [m]
+    };
+
     static float dry() { return -1.0e9f; }  // value of Level::m_water on a tile without water
     static int roadKinds() { return 4; }    // 0->asphalt, 1->bricks, 2->shells, 3->sand
 
@@ -78,4 +87,5 @@ struct WorldData
     double m_lighthouseHeight = 0.0;    // foot to top [m]
     std::vector<float> m_roadCorners;   // six per triangle: east, north of its three corners
     std::vector<unsigned char> m_roadKinds; // one per triangle, below roadKinds()
+    std::vector<TreeRecord> m_trees;
 };
