@@ -36,7 +36,7 @@
     };
     let resetRequested = false;
     let gotoRequested = 0;
-    let pace = 1;            // 0->5 km/h, 1->20 km/h, 2->50 km/h
+    let pace = 1;            // 1->slow (20 km/h), 2->fast (50 km/h)
     let paceChanged = true;
     let lookTurn = 0.0;
     let lookLift = 0.0;
@@ -77,8 +77,8 @@
             resetRequested = true;
         } else if (event.code === "KeyL") {
             landRequested = true;
-        } else if (/^Digit[1-3]$/.test(event.code)) {
-            setPace(Number(event.code.slice(5)) - 1);
+        } else if (/^Digit[1-2]$/.test(event.code)) {
+            setPace(Number(event.code.slice(5)));   // 1->slow, 2->fast
         }
     });
     window.addEventListener("keyup", function (event) {
