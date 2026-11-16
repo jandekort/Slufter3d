@@ -1,0 +1,30 @@
+{
+  "collection": "onbegroeidterreindeel",
+  "why": "ground without vegetation: yards, sand, paved terrain",
+  "source": {
+    "dataset": "Basisregistratie Grootschalige Topografie (BGT), as served by the PDOK OGC API Features",
+    "owner": "Kadaster and the BGT source holders",
+    "licence": "CC BY 4.0",
+    "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+    "catalogue": "https://data.overheid.nl/dataset/43122-basisregistratie--grootschalige-topografie--bgt---donl-"
+  },
+  "bounds_rd": [
+    118200,
+    574500,
+    119600,
+    575500
+  ],
+  "crs": "http://www.opengis.net/def/crs/EPSG/0/28992",
+  "downloaded_utc": "2026-11-16T19:48:44Z",
+  "features": 398,
+  "pages": [
+    {
+      "file": "onbegroeidterreindeel_001.json",
+      "request": "https://api.pdok.nl/lv/bgt/ogc/v1/collections/onbegroeidterreindeel/items?f=json&limit=1000&bbox=118200%2C574500%2C119600%2C575500&bbox-crs=http%3A%2F%2Fwww.opengis.net%2Fdef%2Fcrs%2FEPSG%2F0%2F28992&crs=http%3A%2F%2Fwww.opengis.net%2Fdef%2Fcrs%2FEPSG%2F0%2F28992",
+      "features": 398,
+      "bytes": 4540564,
+      "sha256": "881cd4bc0ead1199fee957f81d8485806bb29f6d39cc432ff0b9734287638c0d"
+    }
+  ],
+  "note": "The bodies of the responses of the service, stored byte for byte. Objects that cross the edge of the rectangle are given whole. Never edit these files; derived data goes elsewhere."
+}

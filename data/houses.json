@@ -1082,10 +1082,11 @@
     "covers": 0.95,
     "moved_m": 1.0
    },
-   "review": [
+   "review": [],
+   "semi_with": 46,
+   "accepted": [
     "fitted as half of one AHN building with 46; not a block in the v1 table"
-   ],
-   "semi_with": 46
+   ]
   },
   {
    "nr": 46,
@@ -1108,10 +1109,11 @@
     "covers": 0.95,
     "moved_m": 3.9
    },
-   "review": [
+   "review": [],
+   "semi_with": 45,
+   "accepted": [
     "fitted as half of one AHN building with 45; not a block in the v1 table"
-   ],
-   "semi_with": 45
+   ]
   },
   {
    "nr": 47,
@@ -3951,10 +3953,11 @@
     "covers": 0.76,
     "moved_m": 2.3
    },
-   "review": [
+   "review": [],
+   "semi_with": 177,
+   "accepted": [
     "only 73% of the rectangle is building"
-   ],
-   "semi_with": 177
+   ]
   },
   {
    "nr": 177,
@@ -3977,10 +3980,11 @@
     "covers": 0.76,
     "moved_m": 1.5
    },
-   "review": [
+   "review": [],
+   "semi_with": 176,
+   "accepted": [
     "only 73% of the rectangle is building"
-   ],
-   "semi_with": 176
+   ]
   },
   {
    "nr": 178,
@@ -4074,10 +4078,11 @@
     "covers": 0.97,
     "moved_m": 4.9
    },
-   "review": [
+   "review": [],
+   "semi_with": 182,
+   "accepted": [
     "long axis a quarter turn from the v1 table; check the front"
-   ],
-   "semi_with": 182
+   ]
   },
   {
    "nr": 182,
@@ -4100,10 +4105,11 @@
     "covers": 0.97,
     "moved_m": 7.1
    },
-   "review": [
+   "review": [],
+   "semi_with": 181,
+   "accepted": [
     "long axis a quarter turn from the v1 table; check the front"
-   ],
-   "semi_with": 181
+   ]
   },
   {
    "nr": 183,
@@ -4126,7 +4132,8 @@
     "covers": 0.98,
     "moved_m": 1.6
    },
-   "review": [
+   "review": [],
+   "accepted": [
     "long axis a quarter turn from the v1 table; check the front"
    ]
   },
@@ -4151,7 +4158,8 @@
     "covers": 0.94,
     "moved_m": 1.4
    },
-   "review": [
+   "review": [],
+   "accepted": [
     "long axis a quarter turn from the v1 table; check the front"
    ]
   },
@@ -4272,7 +4280,8 @@
     "covers": 0.96,
     "moved_m": 0.3
    },
-   "review": [
+   "review": [],
+   "accepted": [
     "long axis a quarter turn from the v1 table; check the front"
    ]
   },
@@ -4297,10 +4306,11 @@
     "covers": 0.95,
     "moved_m": 5.7
    },
-   "review": [
+   "review": [],
+   "semi_with": 191,
+   "accepted": [
     "long axis a quarter turn from the v1 table; check the front"
-   ],
-   "semi_with": 191
+   ]
   },
   {
    "nr": 191,
@@ -4323,10 +4333,11 @@
     "covers": 0.95,
     "moved_m": 8.2
    },
-   "review": [
+   "review": [],
+   "semi_with": 190,
+   "accepted": [
     "long axis a quarter turn from the v1 table; check the front"
-   ],
-   "semi_with": 190
+   ]
   },
   {
    "nr": 192,
@@ -4349,10 +4360,11 @@
     "covers": 0.95,
     "moved_m": 3.5
    },
-   "review": [
+   "review": [],
+   "semi_with": 193,
+   "accepted": [
     "long axis a quarter turn from the v1 table; check the front"
-   ],
-   "semi_with": 193
+   ]
   },
   {
    "nr": 193,
@@ -4375,10 +4387,11 @@
     "covers": 0.95,
     "moved_m": 7.2
    },
-   "review": [
+   "review": [],
+   "semi_with": 192,
+   "accepted": [
     "long axis a quarter turn from the v1 table; check the front"
-   ],
-   "semi_with": 192
+   ]
   },
   {
    "nr": 194,
@@ -4401,7 +4414,8 @@
     "covers": 0.97,
     "moved_m": 0.4
    },
-   "review": [
+   "review": [],
+   "accepted": [
     "long axis a quarter turn from the v1 table; check the front"
    ]
   },
@@ -5798,7 +5812,8 @@
     "covers": 0.98,
     "moved_m": 2.0
    },
-   "review": [
+   "review": [],
+   "accepted": [
     "long axis a quarter turn from the v1 table; check the front"
    ]
   },
@@ -5823,7 +5838,8 @@
     "covers": 0.87,
     "moved_m": 0.7
    },
-   "review": [
+   "review": [],
+   "accepted": [
     "long axis a quarter turn from the v1 table; check the front"
    ]
   },
@@ -5871,7 +5887,8 @@
     "covers": 0.97,
     "moved_m": 2.5
    },
-   "review": [
+   "review": [],
+   "accepted": [
     "long axis a quarter turn from the v1 table; check the front"
    ]
   },
@@ -6036,7 +6053,8 @@
     "covers": 0.79,
     "moved_m": 4.9
    },
-   "review": [
+   "review": [],
+   "accepted": [
     "moved 4.9 m from where the park-wide fit put it",
     "width at the limit of the search (5.8 m, 4.0 m in the v1 table)"
    ]
@@ -6108,7 +6126,8 @@
     "covers": 0.89,
     "moved_m": 4.2
    },
-   "review": [
+   "review": [],
+   "accepted": [
     "moved 4.2 m from where the park-wide fit put it"
    ]
   },
@@ -6133,7 +6152,8 @@
     "covers": 0.84,
     "moved_m": 5.9
    },
-   "review": [
+   "review": [],
+   "accepted": [
     "moved 5.9 m from where the park-wide fit put it",
     "width at the limit of the search (5.8 m, 4.0 m in the v1 table)"
    ]
@@ -6159,7 +6179,8 @@
     "covers": 0.9,
     "moved_m": 8.1
    },
-   "review": [
+   "review": [],
+   "accepted": [
     "only 80% of the rectangle is building",
     "moved 8.1 m from where the park-wide fit put it",
     "long axis a quarter turn from the v1 table; check the front",
@@ -6210,7 +6231,8 @@
     "covers": 0.88,
     "moved_m": 5.4
    },
-   "review": [
+   "review": [],
+   "accepted": [
     "moved 5.4 m from where the park-wide fit put it"
    ]
   },
@@ -6258,7 +6280,8 @@
     "covers": 0.84,
     "moved_m": 0.8
    },
-   "review": [
+   "review": [],
+   "accepted": [
     "width at the limit of the search (5.8 m, 4.0 m in the v1 table)"
    ]
   },
@@ -6306,7 +6329,8 @@
     "covers": 0.83,
     "moved_m": 4.9
    },
-   "review": [
+   "review": [],
+   "accepted": [
     "moved 4.9 m from where the park-wide fit put it",
     "width at the limit of the search (5.8 m, 4.0 m in the v1 table)"
    ]
@@ -6332,7 +6356,8 @@
     "covers": 0.81,
     "moved_m": 1.0
    },
-   "review": [
+   "review": [],
+   "accepted": [
     "outline 69 m2, 124 m2 in the v1 table: perhaps another building",
     "long axis a quarter turn from the v1 table; check the front"
    ]
@@ -7853,7 +7878,8 @@
     "covers": 0.89,
     "moved_m": 2.4
    },
-   "review": [
+   "review": [],
+   "accepted": [
     "outline 142 m2, 70 m2 in the v1 table: perhaps another building",
     "long axis a quarter turn from the v1 table; check the front"
    ]
@@ -7879,7 +7905,8 @@
     "covers": 0.69,
     "moved_m": 0.3
    },
-   "review": [
+   "review": [],
+   "accepted": [
     "covers only 69% of its AHN building (205 m2): larger or joined to another",
     "outline 144 m2, 70 m2 in the v1 table: perhaps another building",
     "length at the limit of the search (14.5 m, 10.0 m in the v1 table)"
@@ -7906,7 +7933,8 @@
     "covers": 0.96,
     "moved_m": 0.2
    },
-   "review": [
+   "review": [],
+   "accepted": [
     "outline 40 m2, 70 m2 in the v1 table: perhaps another building"
    ]
   },
@@ -7931,7 +7959,8 @@
     "covers": 0.83,
     "moved_m": 0.3
    },
-   "review": [
+   "review": [],
+   "accepted": [
     "outline 31 m2, 70 m2 in the v1 table: perhaps another building"
    ]
   },
@@ -7956,7 +7985,8 @@
     "covers": 0.85,
     "moved_m": 1.8
    },
-   "review": [
+   "review": [],
+   "accepted": [
     "outline 25 m2, 49 m2 in the v1 table: perhaps another building"
    ]
   },
@@ -7981,7 +8011,8 @@
     "covers": 0.83,
     "moved_m": 7.6
    },
-   "review": [
+   "review": [],
+   "accepted": [
     "moved 7.6 m from where the park-wide fit put it",
     "width at the limit of the search (8.8 m, 6.1 m in the v1 table)"
    ]
@@ -8007,7 +8038,8 @@
     "covers": 0.65,
     "moved_m": 9.0
    },
-   "review": [
+   "review": [],
+   "accepted": [
     "covers only 65% of its AHN building (71 m2): larger or joined to another",
     "moved 9.0 m from where the park-wide fit put it"
    ]
@@ -9440,84 +9472,5 @@
    "outline": "AHN building (roof outline)"
   }
  },
- "ahn_buildings_without_a_house": [
-  {
-   "x": 119037.9,
-   "y": 575342.3,
-   "area_m2": 23.0,
-   "nearest_house": "182 (4C)"
-  },
-  {
-   "x": 118758.7,
-   "y": 575283.9,
-   "area_m2": 39.0,
-   "nearest_house": "301 (4MH)"
-  },
-  {
-   "x": 118681.4,
-   "y": 575245.8,
-   "area_m2": 24.0,
-   "nearest_house": "448 (10L)"
-  },
-  {
-   "x": 118844.1,
-   "y": 575189.2,
-   "area_m2": 34.0,
-   "nearest_house": "215 (4C)"
-  },
-  {
-   "x": 118646.3,
-   "y": 575133.2,
-   "area_m2": 26.0,
-   "nearest_house": "453 (4EL)"
-  },
-  {
-   "x": 118928.5,
-   "y": 575124.5,
-   "area_m2": 26.0,
-   "nearest_house": "233 (4C)"
-  },
-  {
-   "x": 118905.4,
-   "y": 575107.9,
-   "area_m2": 69.0,
-   "nearest_house": "228 (8C)"
-  },
-  {
-   "x": 118910.9,
-   "y": 575079.9,
-   "area_m2": 122.0,
-   "nearest_house": "225 (8C)"
-  },
-  {
-   "x": 118601.3,
-   "y": 575011.6,
-   "area_m2": 24.0,
-   "nearest_house": "412 (10L)"
-  },
-  {
-   "x": 118656.0,
-   "y": 574890.7,
-   "area_m2": 20.0,
-   "nearest_house": "124 (8C)"
-  },
-  {
-   "x": 118700.5,
-   "y": 574718.7,
-   "area_m2": 52.0,
-   "nearest_house": "OTHER at 118698, 574704"
-  },
-  {
-   "x": 118710.7,
-   "y": 574705.1,
-   "area_m2": 36.0,
-   "nearest_house": "OTHER at 118698, 574704"
-  },
-  {
-   "x": 118677.8,
-   "y": 574698.2,
-   "area_m2": 52.0,
-   "nearest_house": "OTHER at 118698, 574704"
-  }
- ]
+ "ahn_buildings_without_a_house": []
 }
