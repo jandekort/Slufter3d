@@ -100,7 +100,7 @@
     document.getElementById("up").addEventListener("click", function () { riseNotches += 1.0; });
     document.getElementById("down").addEventListener("click", function () { riseNotches -= 1.0; });
     const treesButton = document.getElementById("trees");
-    let showTrees = true;   // true->the trees are drawn
+    let showTrees = false;   // true->the trees are drawn; off at the start, they are heavy to draw
     function toggleTrees() {
         showTrees = !showTrees;
         treesButton.classList.toggle("on", showTrees);
