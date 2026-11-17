@@ -150,6 +150,11 @@ int main(int argc, char** argv)
         check(h452 != nullptr && h452->m_type == "6EL" && std::string(h452->m_model->name()) == "Luxe6EL", "452 is a 6EL, drawn as Luxe6EL");
         const House* h427 = world.findHouse(427);
         check(h427 != nullptr && h427->m_type == "8EL" && std::string(h427->m_model->name()) == "Luxe6EL", "427 is an 8EL, drawn as Luxe6EL");
+        const House* h405 = world.findHouse(405);
+        const House* h412 = world.findHouse(412);
+        check(h405 != nullptr && h412 != nullptr && h405->m_type == "10LT" && h412->m_type == "10L"
+            && std::string(h405->m_model->name()) == "Luxe10L" && h405->m_model == h412->m_model,
+            "405, a 10LT, and 412, a 10L, are drawn by the same model, Luxe10L");
         const House* h411 = world.findHouse(411);
         check(h411 != nullptr && h411->m_type == "12L" && std::string(h411->m_model->name()) == "Luxe12L"
             && std::fabs(h411->m_site.m_width - 12.05) < 0.01, "411 is a 12L, drawn as Luxe12L on the plan of the BGT");
@@ -230,17 +235,17 @@ int main(int argc, char** argv)
             "just above its railings: " + std::to_string(above) + " m, the railings " + std::to_string(top) + " m");
         check(walker.getPace() == Walker::Pace::Cycle, "at 20 km/h");
         run(game, 3.0);
-        check(walker.getAltitude() == above, "it stays there");
+        check(walker.getAltitude() == above, "landed, he stands there");
         game.land();
         run(game, 8.0);
-        check(walker.getAltitude() == above, "landing on the tower ends just above its railings");
+        check(walker.getAltitude() == above, "landing again changes nothing");
         game.setControls(ahead());
         run(game, 4.0);
-        check(walker.getEast() - data.m_towerEast > 5.0 && !world.inTower(walker.getEast(), walker.getNorth()),
-            "the tower does not hold the visitor: he flies off it to the east");
+        check(walker.getEast() - data.m_towerEast > 5.0 && !world.inTower(walker.getEast(), walker.getNorth())
+            && walker.getAltitude() < above, "the tower does not hold the visitor: he walks off it to the east, coming down");
         game.setControls(Controls());
         run(game, 10.0);
-        check(!walker.isFlying(), "and lands beside it");
+        check(!walker.isFlying(), "and stands beside it, without being told to land");
         game.reset();
         game.rise(5.0);
         run(game, 4.0);

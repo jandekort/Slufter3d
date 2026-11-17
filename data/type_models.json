@@ -52,12 +52,12 @@
   "10L": {
    "model": "Luxe10L",
    "size": "model",
-   "why": "Photographed."
+   "why": "Photographed (houses 405, 420 and others, from all sides but the back); from outside the same house as the 10LT."
   },
   "10LT": {
-   "model": "Luxe10LT",
+   "model": "Luxe10L",
    "size": "model",
-   "why": "Photographed (house 405)."
+   "why": "Photographed (house 405); from outside the same house as the 10L, so drawn by the same model."
   },
   "4EL": {
    "model": "Luxe4EL",

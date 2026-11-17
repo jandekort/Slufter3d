@@ -12,7 +12,6 @@ const std::vector<const Model*>& Models::all()
         &luxe8L(),
         &luxe12L(),
         &luxe6EL(),
-        &luxe10LT(),
         &luxe10L(),
         &luxe6L(),
         &luxe4EL(),

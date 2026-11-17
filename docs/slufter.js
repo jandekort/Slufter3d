@@ -17,7 +17,9 @@
     const WEATHERS = {
         fog:      { fog: 90.0,   horizon: [0.80, 0.81, 0.82], zenith: [0.80, 0.81, 0.82], tint: [0.98, 0.99, 1.00], grey: 0.30 },
         overcast: { fog: 2500.0, horizon: [0.72, 0.74, 0.77], zenith: [0.80, 0.82, 0.85], tint: [0.85, 0.87, 0.90], grey: 0.35 },
-        evening:  { fog: 4000.0, horizon: [0.98, 0.66, 0.44], zenith: [0.20, 0.24, 0.50], tint: [0.95, 0.79, 0.64], grey: 0.10 }
+        // The blue hour after sunset: a soft blue sky, the land dark, almost grey, with a blue cast, a third as
+        // bright as the sky, fading into blue haze; matched to a photograph of the Wadden coast
+        bluehour: { fog: 1800.0, horizon: [0.42, 0.50, 0.82], zenith: [0.27, 0.40, 0.82], tint: [0.44, 0.44, 0.62], grey: 0.70 }
     };
 
     const canvas = document.getElementById("canvas");
