@@ -53,6 +53,14 @@ bool Game::goTo(int houseNumber)
     return true;
 }
 
+void Game::rise(double notches)
+{
+    const double east = m_walker.getEast();
+    const double north = m_walker.getNorth();
+    const double roof = m_world.obstacle(east, north) ? m_world.clearanceAt(east, north) : 0.0;
+    m_walker.rise(notches, roof);
+}
+
 void Game::place(double east, double north, double headingDegrees)
 {
     m_walker.place(m_world, east, north, headingDegrees * pi / 180.0);

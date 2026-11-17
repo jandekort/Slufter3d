@@ -39,7 +39,8 @@ public:
     void setControls(const Controls& controls) { m_controls = controls; }
     void setPace(Pace pace) { m_pace = pace; }
     void look(double turn, double lift);  // adds to heading and pitch [rad]
-    void rise(double notches);            // +1->one step higher, -1->one lower; steps grow with the altitude
+    void rise(double notches, double roof = 0.0); // +1->one step higher, -1->one lower; steps grow with the altitude;
+                                                  // roof: top of what stands under him, 0 on the ground
     void land() { m_targetAltitude = 0.0; }
     void step(const World& world, double dt);
 

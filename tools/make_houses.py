@@ -219,6 +219,10 @@ def parkFit(field, houses):
 
 # ---------------------------------------------------------------- houses
 
+# Types whose entrance faces the side nearest north when the old table gives no front (the terraces face south)
+NORTH_FRONT = ("4C", "4CT")
+
+
 def nearestTurn(angle, target, period):
     """angle + k*period nearest to target [deg]"""
     return angle + period * round((target - angle) / period)
@@ -323,7 +327,10 @@ def place(field, houses, group, moved, whole=None):
             centre = np.array([x, y])
             size = (length, width)
         axisNew = nearestTurn(azimuth, axisJ, 180.0)
-        frontNew = min((axisNew + 90.0, axisNew - 90.0), key=lambda a: abs((a - frontJ + 180.0) % 360.0 - 180.0))
+        # A front the old table gives is kept, and so is the side of it that the other types take. The 4C halves
+        # without a front of the old table face their entrance to the side nearest north (azimuth 0)
+        frontTarget = 0.0 if (not hj["front_known"] and hj["type"] in NORTH_FRONT) else frontJ
+        frontNew = min((axisNew + 90.0, axisNew - 90.0), key=lambda a: abs((a - frontTarget + 180.0) % 360.0 - 180.0))
         reasons = []
         move = float(np.hypot(*(centre - pj)))
         if not found:
@@ -350,7 +357,7 @@ def place(field, houses, group, moved, whole=None):
                   "axis_azimuth": round(axisNew % 360.0, 1), "front_azimuth": round(frontNew % 360.0, 1),
                   "source": {"position": "AHN building" if found else "v1 table, moved by the park-wide fit",
                              "size": "AHN building (roof outline)" if found else "v1 table",
-                             "front": "v1 table" if hj["front_known"] else "v1 rule: the side nearest south"},
+                             "front": "v1 table" if hj["front_known"] else "v1 rule: the side nearest %s" % ("north" if hj["type"] in NORTH_FRONT else "south")},
                   "fit": {"building_part": round(filled, 2), "covers": round(cover, 2), "moved_m": round(move, 1)},
                   "review": reasons}
         if len(group) == 2:
@@ -529,6 +536,7 @@ def corrected(records, corrections):
     retyped = corrections.get("retyped", {})
     resized = corrections.get("resized", {})
     turned = corrections.get("turned", {})
+    oldFronts = {h["nr"]: h["front_azimuth"] for h in json.load(open(OLD))["houses"]}
     stale = sorted((set(removed) | set(retyped) | set(resized) | set(turned)) - {label(r) for r in records})
     if stale:
         raise RuntimeError("data/house_corrections.json removes, retypes, resizes or turns houses that are not there (any more): %s"
@@ -546,8 +554,13 @@ def corrected(records, corrections):
             r["width"] = resized[key]["width"]
             r["source"]["size"] = "data/house_corrections.json"
         if key in turned:
-            r["front_azimuth"] = round((r["front_azimuth"] + 180.0) % 360.0, 1)
-            r["axis_azimuth"] = round((r["axis_azimuth"] + 180.0) % 360.0, 1)
+            # These fronts were approved as the front the old table gives, turned by half a turn. Keep that outcome
+            # now that the fallback takes the side nearest north
+            axis = r["axis_azimuth"]
+            tableFront = oldFronts[r["nr"]]
+            front = min((axis + 90.0, axis - 90.0), key=lambda a: abs((a - tableFront + 180.0) % 360.0 - 180.0))
+            r["front_azimuth"] = round((front + 180.0) % 360.0, 1)
+            r["axis_azimuth"] = round((axis + 180.0) % 360.0, 1)
             r["source"]["front"] = "data/house_corrections.json"
         kept.append(r)
     return kept

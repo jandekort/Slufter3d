@@ -118,7 +118,7 @@ the one file of real logic (mostly: load the two files, translate keyboard/mouse
 `slufter_set_controls`/`slufter_set_pace`/... calls, draw the returned triangle buffer). On the land of the
 park it draws the 3 m tiles of its grid a little lighter and darker in turn, averaged over every pixel, so that
 far away they blend into an even colour instead of shimmering; without WebGL's derivatives it fades them out
-within 50 m instead. The weather is the page's too: fog, overcast and the blue hour fade the land over a shorter
+within 50 m instead. The weather is the page's too: fog, overcast and the evening fade the land over a shorter
 distance, take some of its colour away, tint it and colour the sky anew. The light on the land stays as the world
 was built, with the sun in the south-west; *Day* is the world as built.
 
@@ -154,7 +154,7 @@ returns there. Both land you there, as *Land* does: you stay on the tower until 
 down beside it. Landing over the tower ends there too, and lower than its railings the tower stops you like a
 wall. A number box and *Go* jump to a given house. On the panel, a tap on *Up* or *Down* is one step and holding
 it keeps climbing or descending; *Land* comes down to the ground; *Trees* (`T`) and *Tiles* (`G`), both on at the start, show or hide the trees and
-the tiles on the ground; the drop-down beside them sets the weather (*Day*, *Fog*, *Overcast*, *Blue hour*), and
+the tiles on the ground; the drop-down beside them sets the weather (*Day*, *Fog*, *Overcast*, *Evening*), and
 `F` steps through it. On a
 phone, round buttons walk and turn, and nothing on the page can be selected
 but the house number, so that every press reaches its button.

@@ -20,7 +20,7 @@ public:
     void setControls(const Controls& controls) { m_walker.setControls(controls); }
     void setPace(Walker::Pace pace) { m_walker.setPace(pace); }
     void look(double turn, double lift) { m_walker.look(turn, lift); }
-    void rise(double notches) { m_walker.rise(notches); }
+    void rise(double notches);
     void land() { m_walker.land(); }
     bool goTo(int houseNumber);         // false->no such house
     void place(double east, double north, double headingDegrees); // metres from the origin, on the ground

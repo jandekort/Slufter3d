@@ -108,6 +108,15 @@ world.slufter_reset();
 world.slufter_set_controls(0.0, 0.0, 0.0, 0.0);
 run(3.0);
 check(hud()[5] === "118691" && hud()[6] === "574881" && hud()[10] === "8", "reset puts the visitor back on the tower, and he stays");
+// From the tower the climb shows at once, not after the first metres under the tower top are spent
+world.slufter_set_controls(0.0, 0.0, 0.0, 1.0);
+run(1.0);
+world.slufter_set_controls(0.0, 0.0, 0.0, 0.0);
+check(Number(hud()[10]) > 9.0, "the climb from the tower shows within a second: " + hud()[10] + " m");
+world.slufter_reset();
+world.slufter_rise(1.0);
+run(1.0);
+check(Number(hud()[10]) > 9.0, "the first notch from the tower goes above its top: " + hud()[10] + " m");
 
 console.log(failures === 0 ? "Smoke test passed" : "Smoke test failed: " + failures);
 process.exit(failures === 0 ? 0 : 1);

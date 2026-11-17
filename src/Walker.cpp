@@ -59,13 +59,15 @@ void Walker::look(double turn, double lift)
     m_pitch = clamp(m_pitch + lift, -m_pitchLimit, m_pitchLimit);
 }
 
-void Walker::rise(double notches)
+void Walker::rise(double notches, double roof)
 {
     if (notches > 0.0)
     {
-        // From the ground the first notch goes to the first height; every further one multiplies
-        const bool fromGround = m_targetAltitude < m_firstRise;
-        const double base = fromGround ? m_firstRise : m_targetAltitude;
+        // From the ground the first notch goes to the first height; every further one multiplies. On a roof or the
+        // lookout tower the climb starts from its top, so that the first notches are not spent under it
+        const double start = std::max(m_targetAltitude, roof);
+        const bool fromGround = start < m_firstRise;
+        const double base = fromGround ? m_firstRise : start;
         m_targetAltitude = base * std::pow(m_riseFactor, fromGround ? notches - 1.0 : notches);
         m_targetAltitude = std::max(m_targetAltitude, std::min(m_firstRise, base));
     }
@@ -151,6 +153,11 @@ void Walker::step(const World& world, double dt)
     const double climb = clamp(m_controls.m_climb, -1.0, 1.0);
     if (climb != 0.0)
     {
+        // Climbing starts from the top of what stands under him, not from the ground below it
+        if (climb > 0.0 && world.obstacle(m_east, m_north))
+        {
+            m_targetAltitude = std::max(m_targetAltitude, world.clearanceAt(m_east, m_north));
+        }
         m_targetAltitude += climb * m_climbRate * std::max(m_firstRise, m_targetAltitude) * dt;
         m_targetAltitude = clamp(m_targetAltitude, 0.0, m_maxAltitude);
     }
