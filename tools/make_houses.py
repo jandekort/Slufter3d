@@ -536,8 +536,9 @@ def corrected(records, corrections):
     retyped = corrections.get("retyped", {})
     resized = corrections.get("resized", {})
     turned = corrections.get("turned", {})
+    placed = corrections.get("placed", {})
     oldFronts = {h["nr"]: h["front_azimuth"] for h in json.load(open(OLD))["houses"]}
-    stale = sorted((set(removed) | set(retyped) | set(resized) | set(turned)) - {label(r) for r in records})
+    stale = sorted((set(removed) | set(retyped) | set(resized) | set(turned) | set(placed)) - {label(r) for r in records})
     if stale:
         raise RuntimeError("data/house_corrections.json removes, retypes, resizes or turns houses that are not there (any more): %s"
                            % ", ".join(stale))
@@ -562,6 +563,16 @@ def corrected(records, corrections):
             r["front_azimuth"] = round((front + 180.0) % 360.0, 1)
             r["axis_azimuth"] = round((axis + 180.0) % 360.0, 1)
             r["source"]["front"] = "data/house_corrections.json"
+        if key in placed:
+            # Measured otherwise: the middle, the size and the way the front faces; the long axis a quarter turn
+            # anticlockwise of the front
+            m = placed[key]
+            r["x"], r["y"] = m["x"], m["y"]
+            r["length"], r["width"] = m["length"], m["width"]
+            r["front_azimuth"] = round(m["front_azimuth"] % 360.0, 1)
+            r["axis_azimuth"] = round((m["front_azimuth"] - 90.0) % 360.0, 1)
+            r["source"].update({"position": "data/house_corrections.json", "size": "data/house_corrections.json",
+                                "front": "data/house_corrections.json"})
         kept.append(r)
     return kept
 

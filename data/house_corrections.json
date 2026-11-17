@@ -1,5 +1,5 @@
 {
- "note": "Decisions taken after looking at build/review/houses_review.png; read by tools/make_houses.py. accepted: houses whose fit was checked by eye and is right as it is; their review reasons move to 'accepted' in data/houses.json. removed: buildings left out of the world, by their label, with the reason. retyped: buildings of another type than the old table gives, by their label as found, with the new type; in accepted they go by their new label. resized: buildings whose outline (that of the roof) was measured otherwise than on the AHN, by their label, with length, width and the reason. turned: houses whose front, and with it their long axis, must turn half a turn, by their label, with the reason. ignore_buildings_without_a_house: true -> AHN buildings that no house stands on (sheds, transformer houses) are not reported.",
+ "note": "Decisions taken after looking at build/review/houses_review.png; read by tools/make_houses.py. accepted: houses whose fit was checked by eye and is right as it is; their review reasons move to 'accepted' in data/houses.json. removed: buildings left out of the world, by their label, with the reason. retyped: buildings of another type than the old table gives, by their label as found, with the new type; in accepted they go by their new label. resized: buildings whose outline (that of the roof) was measured otherwise than on the AHN, by their label, with length, width and the reason. turned: houses whose front, and with it their long axis, must turn half a turn, by their label, with the reason. placed: houses measured otherwise, by their label: their middle, length, width (across the front) and the way the front faces, with the reason. ignore_buildings_without_a_house: true -> AHN buildings that no house stands on (sheds, transformer houses) are not reported.",
  "reviewed": "2026-11-16, by Jan de Kort: all red houses are fine, the Visdiefje too; the orange buildings can be ignored.",
  "accepted": [
   "45 (4C)",
@@ -38,6 +38,10 @@
   "OTHER at 118742, 574718": "Taken for a second bungalow of the Visdiefje type on 2026-11-17, but it is not one; left out of the world (2026-11-17, by Jan de Kort)."
  },
  "retyped": {
+  "502 (24L)": {
+   "type": "Krimweg73",
+   "why": "Krimweg 73, the only house of its type; it stands at RD 118546, 574790, inside this AHN building (2026-11-18, by Jan de Kort)."
+  },
   "OTHER at 118774, 574711": {
    "type": "Visdiefje",
    "why": "The second bungalow of the Visdiefje type (2026-11-17, by Jan de Kort)."
@@ -54,6 +58,16 @@
   "404 (12L)": "The model Luxe12L has its low, wide wing at the left end, seen from the garden; the outline of this house in the BGT has it at the other end (2026-11-17).",
   "406 (12L)": "The model Luxe12L has its low, wide wing at the left end, seen from the garden; the outline of this house in the BGT has it at the other end (2026-11-17).",
   "407 (12L)": "The model Luxe12L has its low, wide wing at the left end, seen from the garden; the outline of this house in the BGT has it at the other end (2026-11-17)."
+ },
+ "placed": {
+  "502 (24L)": {
+   "x": 118540.42,
+   "y": 574789.80,
+   "length": 12.43,
+   "width": 11.05,
+   "front_azimuth": 286.1,
+   "why": "Krimweg 73, measured on its BGT outline: walls of 11.05 m by 8.43 m with a lean-to of 6.55 m by 4.00 m against a long side, 12.43 m across both. The entrance is the end that has the lean-to on its left (photo Krimweg_73_RD_118546574790_d), facing west-north-west (2026-11-18)."
+  }
  },
  "ignore_buildings_without_a_house": true
 }
