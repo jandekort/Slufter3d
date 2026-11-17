@@ -6440,12 +6440,12 @@
    "y": 575004.54,
    "length": 15.1,
    "width": 9.7,
-   "axis_azimuth": 9.2,
-   "front_azimuth": 99.2,
+   "axis_azimuth": 189.2,
+   "front_azimuth": 279.2,
    "source": {
     "position": "AHN building",
     "size": "AHN building (roof outline)",
-    "front": "v1 rule: the side nearest south"
+    "front": "data/house_corrections.json"
    },
    "fit": {
     "building_part": 0.93,
@@ -6486,12 +6486,12 @@
    "y": 575034.66,
    "length": 14.4,
    "width": 8.7,
-   "axis_azimuth": 16.8,
-   "front_azimuth": 106.8,
+   "axis_azimuth": 196.8,
+   "front_azimuth": 286.8,
    "source": {
     "position": "AHN building",
     "size": "AHN building (roof outline)",
-    "front": "v1 rule: the side nearest south"
+    "front": "data/house_corrections.json"
    },
    "fit": {
     "building_part": 0.93,
@@ -6509,12 +6509,12 @@
    "y": 574999.47,
    "length": 15.1,
    "width": 9.9,
-   "axis_azimuth": 352.7,
-   "front_azimuth": 82.7,
+   "axis_azimuth": 172.7,
+   "front_azimuth": 262.7,
    "source": {
     "position": "AHN building",
     "size": "AHN building (roof outline)",
-    "front": "v1 rule: the side nearest south"
+    "front": "data/house_corrections.json"
    },
    "fit": {
     "building_part": 0.93,

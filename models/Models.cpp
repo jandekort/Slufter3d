@@ -10,6 +10,7 @@ const std::vector<const Model*>& Models::all()
         &comfortSemi4C(),
         &comfort8C(),
         &luxe8L(),
+        &luxe12L(),
         &luxe6EL(),
         &luxe10LT(),
         &luxe10L(),

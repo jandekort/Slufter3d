@@ -98,9 +98,9 @@ namespace ModelKit
         void window(Side side, double a0, double a1, double y0, double y1, int columns, int rows,
             const Color& frame, const Color& glass, double out = 0.0);
 
-        // A door in a frame; glazed->a pane in its upper half
+        // A door in a frame; glazed->a pane in its upper half; out->it stands this far further out
         void door(Side side, double a0, double a1, double y0, double y1, const Color& frame, const Color& leaf,
-            bool glazed, const Color& pane);
+            bool glazed, const Color& pane, double out = 0.0);
 
         // A window in the roof between u0 and u1, from v0 up to v1 on the slope of the given sign
         void skylight(double u0, double u1, double v0, double v1, double sign, const Color& frame, const Color& glass);
@@ -136,8 +136,9 @@ namespace ModelKit
         // Height of the ground under a point, above the floor; without a ground the floor is the ground
         double groundUnder(const Vec3& p) const;
 
-        // A terrace in front of a side: paving laid on the ground, at the foot of the wall
-        void terrace(Side side, double a0, double a1, double depth, const Color& color);
+        // A terrace in front of a side: paving laid on the ground, at the foot of the wall; out->of a wall this far
+        // further out, back in when negative
+        void terrace(Side side, double a0, double a1, double depth, const Color& color, double out = 0.0);
 
         // A downpipe from the gutter at position a of a side; drum->into a drum standing on the ground, else into the ground
         void downpipe(Side side, double a, const Color& color, bool drum = true);

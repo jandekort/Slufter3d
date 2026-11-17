@@ -15,6 +15,7 @@ namespace Models
     const Model& comfortSemi4C();
     const Model& comfort8C();
     const Model& luxe8L();
+    const Model& luxe12L();
     const Model& luxe6EL();
     const Model& luxe10LT();
     const Model& luxe10L();

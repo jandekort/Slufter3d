@@ -30,6 +30,13 @@
     #panel button:first-child, #panel input:first-child { border-radius: 6px 0 0 6px; }
     #panel button + button { border-left: none; }
     #panel button:last-child { border-radius: 0 6px 6px 0; border-left: none; }
+    /* The weather: a drop-down at the end of a row of buttons, alike in look */
+    #panel select { font: inherit; color: #ffffff; background: rgba(20, 40, 60, 0.45); outline: none; cursor: pointer;
+                    border: 1px solid rgba(255, 255, 255, 0.7); border-left: none; border-radius: 0 6px 6px 0;
+                    padding: 6px 24px 6px 10px; -webkit-appearance: none; appearance: none;
+                    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0h10L5 6z' fill='white'/%3E%3C/svg%3E");
+                    background-repeat: no-repeat; background-position: right 9px center; }
+    #panel select option { color: #173a5c; background: #ffffff; }
     #panel input { width: 92px; -webkit-user-select: text; user-select: text; -webkit-touch-callout: default; }
     #panel input::placeholder { color: rgba(255, 255, 255, 0.8); }
     .pad { position: absolute; bottom: 5%; display: none; gap: 2vmin; }
@@ -42,7 +49,8 @@
                                /* buttons about 40 px high for a finger; 16 px text keeps iOS from zooming
                                   into the house number field */
                                #panel { font-size: 16px; }
-                               #panel button, #panel input { padding: 10px 14px; } }
+                               #panel button, #panel input { padding: 10px 14px; }
+                               #panel select { padding: 10px 28px 10px 14px; } }
 </style>
 </head>
 <body>
@@ -61,10 +69,9 @@
         <button id="up">&#9650; higher</button><button id="down">&#9660; lower</button><button id="land">land</button>
     </div>
     <div class="row">
-        <button id="trees" class="on">Trees</button><button id="tiles" class="on">Tiles</button>
-    </div>
-    <div class="row">
-        <button data-weather="day" class="on">Day</button><button data-weather="fog">Fog</button><button data-weather="overcast">Overcast</button><button data-weather="evening">Evening</button>
+        <button id="trees" class="on">Trees</button><button id="tiles" class="on">Tiles</button><select id="weather"
+            aria-label="weather"><option value="day">Day</option><option value="fog">Fog</option><option
+            value="overcast">Overcast</option><option value="evening">Evening</option></select>
     </div>
 </div>
 <div id="help" class="hud">W / S / A / D or arrows: walk, turn &nbsp; Q / E: step sideways &nbsp; drag: look around &nbsp; wheel or Space / C: higher, lower &nbsp; L: land &nbsp; T / G: trees, tiles on, off &nbsp; F: weather &nbsp; 1 / 2: slow, fast &nbsp; R: back to the tower</div>

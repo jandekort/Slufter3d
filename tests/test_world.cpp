@@ -150,6 +150,12 @@ int main(int argc, char** argv)
         check(h452 != nullptr && h452->m_type == "6EL" && std::string(h452->m_model->name()) == "Luxe6EL", "452 is a 6EL, drawn as Luxe6EL");
         const House* h427 = world.findHouse(427);
         check(h427 != nullptr && h427->m_type == "8EL" && std::string(h427->m_model->name()) == "Luxe6EL", "427 is an 8EL, drawn as Luxe6EL");
+        const House* h411 = world.findHouse(411);
+        check(h411 != nullptr && h411->m_type == "12L" && std::string(h411->m_model->name()) == "Luxe12L"
+            && std::fabs(h411->m_site.m_width - 12.05) < 0.01, "411 is a 12L, drawn as Luxe12L on the plan of the BGT");
+        const House* h404 = world.findHouse(404);
+        check(h404 != nullptr && std::fabs(std::remainder(std::atan2(h404->m_site.m_axisWidth.x, -h404->m_site.m_axisWidth.z)
+            * 180.0 / pi - 279.2, 360.0)) < 0.1, "404 is turned, with its wing at the end where the BGT has it");
         const House* h26 = world.findHouse(26);
         check(h26 != nullptr && h26->m_type == "6CK" && std::string(h26->m_model->name()) == "Comfort8C", "26 is a 6CK, drawn as Comfort8C");
         const House* h14 = world.findHouse(14);

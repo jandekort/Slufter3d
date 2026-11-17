@@ -1,5 +1,5 @@
 {
- "note": "Decisions taken after looking at build/review/houses_review.png; read by tools/make_houses.py. accepted: houses whose fit was checked by eye and is right as it is; their review reasons move to 'accepted' in data/houses.json. removed: buildings left out of the world, by their label, with the reason. retyped: buildings of another type than the old table gives, by their label as found, with the new type; in accepted they go by their new label. resized: buildings whose outline (that of the roof) was measured otherwise than on the AHN, by their label, with length, width and the reason. ignore_buildings_without_a_house: true -> AHN buildings that no house stands on (sheds, transformer houses) are not reported.",
+ "note": "Decisions taken after looking at build/review/houses_review.png; read by tools/make_houses.py. accepted: houses whose fit was checked by eye and is right as it is; their review reasons move to 'accepted' in data/houses.json. removed: buildings left out of the world, by their label, with the reason. retyped: buildings of another type than the old table gives, by their label as found, with the new type; in accepted they go by their new label. resized: buildings whose outline (that of the roof) was measured otherwise than on the AHN, by their label, with length, width and the reason. turned: houses whose front, and with it their long axis, must turn half a turn, by their label, with the reason. ignore_buildings_without_a_house: true -> AHN buildings that no house stands on (sheds, transformer houses) are not reported.",
  "reviewed": "2026-11-16, by Jan de Kort: all red houses are fine, the Visdiefje too; the orange buildings can be ignored.",
  "accepted": [
   "45 (4C)",
@@ -49,6 +49,11 @@
    "width": 6.0,
    "why": "Outline of the thatch, 0.4 m beyond walls of 5.8 m by 5.2 m (2026-11-17). The front wall measures 5.6 m to 6.0 m: about 27.5 bricks with a door of 3.9 bricks in photo IMG_1812, and the old table gives 7 m, 6.0 m at the scale of the park-wide fit. The AHN outline, 5.2 m by 4.7 m, is too small under the low thatch; the depth keeps its proportion."
   }
+ },
+ "turned": {
+  "404 (12L)": "The model Luxe12L has its low, wide wing at the left end, seen from the garden; the outline of this house in the BGT has it at the other end (2026-11-17).",
+  "406 (12L)": "The model Luxe12L has its low, wide wing at the left end, seen from the garden; the outline of this house in the BGT has it at the other end (2026-11-17).",
+  "407 (12L)": "The model Luxe12L has its low, wide wing at the left end, seen from the garden; the outline of this house in the BGT has it at the other end (2026-11-17)."
  },
  "ignore_buildings_without_a_house": true
 }

@@ -1,8 +1,10 @@
 // Slufter3D - model Luxe10L: as 10LT with timber boarding, dark grey tiles, a pergola at the gable
 // Author: Jan de Kort
 // Created: 2026-11-16
-// Luxe10L (photo Type_10L)
-// The same house as 10LT with timber boarding on the long walls, a dark grey roof and a pergola at the gable
+// Luxe10L (photos Type_10L and 10L)
+// The same house as 10LT with timber boarding on the long walls, a dark grey roof and a pergola at the gable.
+// The entrance stands in the middle of the long side, as photo 10L shows when its perspective is taken out: a
+// frosted side light from 0.41 to 0.49 of the wall from the end with the pergola, the dark door from 0.49 to 0.58.
 #include "ModelKit.h"
 #include "Models.h"
 
@@ -25,7 +27,7 @@ namespace
         Color(0.52f, 0.27f, 0.21f),   // red-brown brick gables
         Color(0.95f, 0.94f, 0.90f),   // white verge boards and frames
         Color(0.33f, 0.40f, 0.45f),
-        Color(0.90f, 0.90f, 0.87f),   // white door
+        Color(0.20f, 0.22f, 0.25f),   // dark grey door
         Color(0.22f, 0.23f, 0.25f),   // dark grey shutters
         Color(0.13f, 0.13f, 0.14f) };
 
@@ -53,10 +55,11 @@ namespace
         b.terrace(Side::Right, -1.2*hw, 0.75*hw, 4.2, terraceGrey);
         b.pergola(Side::Right, -1.1*hw, 0.65*hw, 3.8, 2.55, wood);
         b.window(Side::Left, -0.30*hw, 0.30*hw, 1.15, 2.30, 2, 1, paint.m_trim, paint.m_glass);
-        // Long side: tall window, boarded bays, the door at the far end, a dormer above
+        // Long side: tall window near the pergola, the entrance in the middle, a dormer above
+        const Color frosted(0.80f, 0.82f, 0.82f);
         b.window(Side::Front, 0.55*hl, 0.75*hl, 0.62, 2.55, 1, 1, paint.m_trim, paint.m_glass);
-        b.door(Side::Front, -0.55*hl, -0.38*hl, 0.62, 2.60, paint.m_trim, paint.m_door, true, paint.m_glass);
-        b.window(Side::Front, -0.20*hl, 0.20*hl, 1.20, 2.40, 2, 1, paint.m_trim, paint.m_glass);
+        b.window(Side::Front, 0.02*hl, 0.18*hl, 0.05, 2.20, 1, 1, paint.m_trim, frosted);
+        b.door(Side::Front, -0.16*hl, 0.02*hl, 0.05, 2.20, paint.m_trim, paint.m_door, false, paint.m_glass);
         b.dormer(-0.10*hl, 0.18*hl, floor2 + 0.55, floor2 + 1.50, 2, paint.m_roof.scaled(0.9f), paint.m_roof);
         b.window(Side::Back, -0.55*hl, 0.55*hl, 0.62, 2.50, 4, 1, paint.m_trim, paint.m_glass);
         b.pipe( 0.35*hl, 0.50*hw, 0.6, 0.09);

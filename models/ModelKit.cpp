@@ -124,15 +124,15 @@ namespace ModelKit
     }
 
     void Builder::door(Side side, double a0, double a1, double y0, double y1, const Color& frame, const Color& leaf,
-        bool glazed, const Color& pane)
+        bool glazed, const Color& pane, double out /* = 0.0 */)
     {
         const double bar = 0.08;
-        panel(side, a0, a1, y0, y1, frame, m_skin);
-        panel(side, a0 + bar, a1 - bar, y0, y1 - bar, leaf, 2.0 * m_skin);
+        panel(side, a0, a1, y0, y1, frame, out + m_skin);
+        panel(side, a0 + bar, a1 - bar, y0, y1 - bar, leaf, out + 2.0 * m_skin);
         if (glazed)
         {
             const double mid = 0.5 * (y0 + y1);
-            panel(side, a0 + 2.5*bar, a1 - 2.5*bar, mid, y1 - 3.0*bar, pane, 3.0 * m_skin);
+            panel(side, a0 + 2.5*bar, a1 - 2.5*bar, mid, y1 - 3.0*bar, pane, out + 3.0 * m_skin);
         }
     }
 
@@ -317,7 +317,7 @@ namespace ModelKit
         return groundLevel(m_site, p) - m_site.m_floor.y;
     }
 
-    void Builder::terrace(Side side, double a0, double a1, double depth, const Color& color)
+    void Builder::terrace(Side side, double a0, double a1, double depth, const Color& color, double out /* = 0.0 */)
     {
         const double tile = 0.6;     // the paving follows the ground in steps of this size [m]
         const double lift = 0.10;    // above the ground, below the roads [m]
@@ -325,7 +325,7 @@ namespace ModelKit
         const int nd = std::max(1, (int) std::ceil(depth / tile));
         const auto place = [&](int i, int j)
             {
-                const Vec3 p = onWall(side, mix(a0, a1, (double) i / (double) na), 0.0, depth * (double) j / (double) nd);
+                const Vec3 p = onWall(side, mix(a0, a1, (double) i / (double) na), 0.0, out + depth * (double) j / (double) nd);
                 return Vec3(p.x, groundLevel(m_site, p) + lift, p.z);
             };
         for (int i = 0; i < na; ++i)

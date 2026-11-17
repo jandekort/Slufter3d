@@ -521,15 +521,17 @@ def main():
 
 def corrected(records, corrections):
     """The records with the decisions of data/house_corrections.json on what stands there: buildings that are left
-    out of the world (removed), buildings of another type than the old table gives (retyped), and buildings whose
-    outline was measured otherwise than on the AHN (resized). A building that is left out still counts as found, so
+    out of the world (removed), buildings of another type than the old table gives (retyped), buildings whose
+    outline was measured otherwise than on the AHN (resized), and houses that stand the other way round (turned:
+    their front, and with it their long axis, half a turn). A building that is left out still counts as found, so
     its AHN building is not listed as a building without a house."""
     removed = corrections.get("removed", {})
     retyped = corrections.get("retyped", {})
     resized = corrections.get("resized", {})
-    stale = sorted((set(removed) | set(retyped) | set(resized)) - {label(r) for r in records})
+    turned = corrections.get("turned", {})
+    stale = sorted((set(removed) | set(retyped) | set(resized) | set(turned)) - {label(r) for r in records})
     if stale:
-        raise RuntimeError("data/house_corrections.json removes, retypes or resizes houses that are not there (any more): %s"
+        raise RuntimeError("data/house_corrections.json removes, retypes, resizes or turns houses that are not there (any more): %s"
                            % ", ".join(stale))
     kept = []
     for r in records:
@@ -543,6 +545,10 @@ def corrected(records, corrections):
             r["length"] = resized[key]["length"]
             r["width"] = resized[key]["width"]
             r["source"]["size"] = "data/house_corrections.json"
+        if key in turned:
+            r["front_azimuth"] = round((r["front_azimuth"] + 180.0) % 360.0, 1)
+            r["axis_azimuth"] = round((r["axis_azimuth"] + 180.0) % 360.0, 1)
+            r["source"]["front"] = "data/house_corrections.json"
         kept.append(r)
     return kept
 

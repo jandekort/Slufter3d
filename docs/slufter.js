@@ -27,7 +27,7 @@
         error: document.getElementById("error")
     };
     const paceButtons = document.querySelectorAll("#panel button[data-pace]");
-    const weatherButtons = document.querySelectorAll("#panel button[data-weather]");
+    const weatherSelect = document.getElementById("weather");
     const numberInput = document.getElementById("number");
     const keys = { ahead: false, back: false, left: false, right: false, stepLeft: false, stepRight: false,
         up: false, down: false };
@@ -152,16 +152,17 @@
     let weather = "day";     // a name of WEATHERS, or "day": as the world was built
     function setWeather(name) {
         weather = name;
-        weatherButtons.forEach(function (button) {
-            button.classList.toggle("on", button.dataset.weather === weather);
-        });
+        weatherSelect.value = name;
     }
     function nextWeather() {
-        const names = Array.from(weatherButtons).map(function (button) { return button.dataset.weather; });
+        const names = Array.from(weatherSelect.options).map(function (option) { return option.value; });
         setWeather(names[(names.indexOf(weather) + 1) % names.length]);
     }
-    weatherButtons.forEach(function (button) {
-        button.addEventListener("click", function () { setWeather(button.dataset.weather); });
+    setWeather(weather);
+    // Once chosen, the drop-down lets go of the keys, which walk again
+    weatherSelect.addEventListener("change", function () {
+        setWeather(weatherSelect.value);
+        weatherSelect.blur();
     });
     document.getElementById("land").addEventListener("click", function () { landRequested = true; });
 
