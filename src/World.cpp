@@ -46,7 +46,7 @@ World::World(const WorldData& data)
     , m_roadOrder()
     , m_wallMargin(0.35)
     , m_edgeMargin(30.0)
-    , m_semiStagger(1.0)
+    , m_semiStagger(1.22)
     , m_clearance(12.0)
     , m_towerHeadroom(0.5)
     , m_viewDistance(14.0)
@@ -111,13 +111,20 @@ void World::joinSemiDetached(const WorldData& data)
         House& moved = joined[k];
         moved.m_east = middleEast + (house.m_east - middleEast) * away;
         moved.m_north = middleNorth + (house.m_north - middleNorth) * away;
-        if (house.m_model == &Models::comfortSemi4C())
+        if (house.m_model == &Models::comfort4C())
         {
-            // The two halves of a 4C block are staggered: one stands forward of the other
+            // The two halves of a 4C block are staggered: the half along the axis stands forward of the other, as
+            // in 55 of the 58 blocks of the BGT. The model is the forward half, its outer gable along the axis; the
+            // other half is its mirror image.
             const Vec3 fromMiddle(house.m_east - middleEast, 0.0, -(house.m_north - middleNorth));
             const double side = dot(fromMiddle, house.m_site.m_axisLength) > 0.0 ? 0.5 : -0.5;
             moved.m_east += side * m_semiStagger * house.m_site.m_axisWidth.x;
             moved.m_north -= side * m_semiStagger * house.m_site.m_axisWidth.z;
+            if (side < 0.0)
+            {
+                moved.m_site.m_axisLength = -house.m_site.m_axisLength;
+                moved.m_site.m_mirrored = true;
+            }
         }
         moved.m_site.m_floor = Vec3(moved.m_east, house.m_site.m_floor.y, -moved.m_north);
     }

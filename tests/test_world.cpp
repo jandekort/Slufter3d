@@ -168,6 +168,23 @@ int main(int argc, char** argv)
         check(h14 != nullptr && h15 != nullptr && h14->m_semi && h15->m_semi
             && std::fabs(std::hypot(h14->m_east - h15->m_east, h14->m_north - h15->m_north) - h14->m_site.m_length) < 1.2,
             "14 and 15 are the two halves of one block, side by side");
+        if (h14 != nullptr && h15 != nullptr)
+        {
+            const House& back = h14->m_site.m_mirrored ? *h14 : *h15;
+            const House& front = h14->m_site.m_mirrored ? *h15 : *h14;
+            const Vec3 offset(front.m_east - back.m_east, 0.0, -(front.m_north - back.m_north));
+            check(std::string(h14->m_model->name()) == "Comfort4C" && h14->m_model == h15->m_model
+                && h14->m_site.m_mirrored != h15->m_site.m_mirrored, "both halves are drawn by Comfort4C, one as its mirror image");
+            check(std::fabs(dot(offset, front.m_site.m_axisWidth) - 1.22) < 0.05,
+                "the mirrored half stands 1.22 m back from the other, as in the BGT: " + std::to_string(dot(offset, front.m_site.m_axisWidth)));
+            Mesh frontMesh;
+            Mesh backMesh;
+            front.m_model->build(frontMesh, front.m_site);
+            back.m_model->build(backMesh, back.m_site);
+            check(backMesh.vertexCount() == frontMesh.vertexCount() + 3 * 14,
+                "the half that stands back has the brick fence between the terraces, 14 triangles more: "
+                + std::to_string(((long) backMesh.vertexCount() - (long) frontMesh.vertexCount()) / 3));
+        }
         check(std::any_of(houses.begin(), houses.end(), [](const House& h)
             {
                 return h.m_name == "Visdiefje" && std::fabs(h.m_site.m_length - 5.8) < 0.01 && std::fabs(h.m_site.m_width - 5.2) < 0.01;

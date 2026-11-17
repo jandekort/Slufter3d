@@ -18,4 +18,5 @@ struct Site
     double m_length = 10.0;
     double m_width = 7.0;
     const Ground* m_ground = nullptr; // terraces, pegs and the like are laid on it; none->level with the floor
+    bool m_mirrored = false;    // true->m_axisLength turned round, so that the model is drawn as its mirror image
 };

@@ -82,6 +82,7 @@ namespace ModelKit
         double hipBackOf() const { return m_shape.m_hip >= 1.0 ? m_halfWidth + m_shape.m_verge : m_shape.m_hip * m_rise * 0.8; }
 
         Vec3 point(double u, double v, double y) const;
+        bool mirrored() const { return m_site.m_mirrored; }    // true->drawn as the mirror image of the model
 
         // The mesh drawn into, for the parts of a model that the builder has no method for
         Mesh& mesh() { return m_mesh; }

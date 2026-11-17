@@ -3,19 +3,19 @@
  "types": {
   "4C": {
    "model": "Comfort6C",
-   "semi_model": "ComfortSemi4C",
+   "semi_model": "Comfort4C",
    "size": "model",
-   "why": "Comfort bungalow, photographed as 6C (house 17); half of a semi-detached block as 4C (houses 14 and 15)."
+   "why": "Every 4C is half of a semi-detached block, drawn by Comfort4C (photos Type_4C_b, _c, _d, _half and brick-fence); a detached one would be a comfort bungalow, photographed as 6C (house 17)."
   },
   "4CT": {
    "model": "Comfort6C",
-   "semi_model": "ComfortSemi4C",
+   "semi_model": "Comfort4C",
    "size": "model",
    "why": "Comfort bungalow, photographed as 6C (house 17); half of a semi-detached block as 4C (houses 14 and 15)."
   },
   "6C": {
    "model": "Comfort6C",
-   "semi_model": "ComfortSemi4C",
+   "semi_model": "Comfort4C",
    "size": "model",
    "why": "Comfort bungalow, photographed as 6C (house 17); half of a semi-detached block as 4C (houses 14 and 15)."
   },
@@ -121,7 +121,7 @@
   },
   "OTHER": {
    "model": "Comfort6C",
-   "semi_model": "ComfortSemi4C",
+   "semi_model": "Comfort4C",
    "size": "outline",
    "why": "Sheds and buildings without a type; drawn as a comfort bungalow on their own outline."
   },

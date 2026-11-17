@@ -84,7 +84,7 @@ private:
     std::vector<size_t> m_roadOrder;    // road triangles, tile by tile
     double m_wallMargin;    // a pedestrian keeps this far from walls [m]
     double m_edgeMargin;    // and this far from the edge of the world [m]
-    double m_semiStagger;   // one half of a 4C block stands this far forward of the other [m]
+    double m_semiStagger;   // one half of a 4C block stands this far forward of the other, as in the BGT [m]
     double m_clearance;     // higher than any roof [m]
     double m_towerHeadroom; // over the lookout tower the feet stay this far above its railings [m]
     double m_viewDistance;  // viewpoint in front of a house [m]

@@ -7,7 +7,7 @@ const std::vector<const Model*>& Models::all()
 {
     static const std::vector<const Model*> models = {
         &comfort6C(),
-        &comfortSemi4C(),
+        &comfort4C(),
         &comfort8C(),
         &luxe8L(),
         &luxe12L(),

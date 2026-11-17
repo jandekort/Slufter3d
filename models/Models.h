@@ -12,7 +12,7 @@
 namespace Models
 {
     const Model& comfort6C();
-    const Model& comfortSemi4C();
+    const Model& comfort4C();
     const Model& comfort8C();
     const Model& luxe8L();
     const Model& luxe12L();
