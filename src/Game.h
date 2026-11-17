@@ -16,7 +16,7 @@ public:
     explicit Game(const WorldData& data);
 
     // Mutator
-    void reset();                       // back to the start: just above the lookout tower, looking east
+    void reset();                       // back to the start: on the lookout tower, looking east, landed
     void setControls(const Controls& controls) { m_walker.setControls(controls); }
     void setPace(Walker::Pace pace) { m_walker.setPace(pace); }
     void look(double turn, double lift) { m_walker.look(turn, lift); }

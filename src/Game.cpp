@@ -28,12 +28,13 @@ Game::Game(const WorldData& data)
 void Game::reset()
 {
     // Where the start lies on something, the visitor starts just above it, at the height where landing there
-    // ends, so that he is never inside it
+    // ends, so that he is never inside it; and landed, so that he stands on it and comes down once he walks off it
     const WorldData& data = m_world.getData();
     const double east = data.m_startEast;
     const double north = data.m_startNorth;
     const double altitude = m_world.obstacle(east, north) ? m_world.clearanceAt(east, north) : 0.0;
     m_walker.place(m_world, east, north, data.m_startHeading * pi / 180.0, altitude);
+    m_walker.land();
     m_walker.look(0.0, m_startPitch);
 }
 

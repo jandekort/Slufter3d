@@ -1,12 +1,11 @@
 # Slufter3D
 
-A walkable first-person 3D model of Landal Sluftervallei, the holiday park in the dunes of Texel. Built from
-measured height data (AHN) and the national topographic map (BGT), not from guesswork. Runs in a browser as
+A walkable first-person 3D model of Landal Sluftervallei, the holiday park in the dunes of Texel. Built from 
+height data (AHN) and the national topographic map (BGT). Runs in a browser as
 WebAssembly, served as static files from `docs/`.
 
 This is a rebuild of an earlier C++/WebAssembly version. The guiding rule of the rebuild: raw data stays raw,
-every interpretation of it is a separate, regenerable file, and nothing is added to the repository without
-discussing it with Jan first.
+every interpretation of it is a separate, regenerable file.
 
 ## Layout
 
