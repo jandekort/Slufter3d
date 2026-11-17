@@ -208,11 +208,62 @@ int main(int argc, char** argv)
         check(world.surfaceAt(pondEast, pondNorth) == World::Surface::Water, "its surface is water");
     }
 
-    { // Walking
+    // On the ground beside the lookout tower, where the visit started before it started above the tower
+    const double besideEast = data.m_towerEast + 10.8;
+    const double besideNorth = data.m_towerNorth + 2.5;
+
+    { // The start: just above the lookout tower, never inside it
         game.reset();
         const Walker& walker = game.getWalker();
-        check(!world.blocked(walker.getEast(), walker.getNorth()), "the start is free ground");
-        check(walker.getPace() == Walker::Pace::Cycle && !walker.isFlying(), "the visit starts on foot at 20 km/h");
+        const double top = world.getTower().getHeight();
+        const double above = world.clearanceAt(data.m_towerEast, data.m_towerNorth);
+        check(std::hypot(walker.getEast() - data.m_towerEast, walker.getNorth() - data.m_towerNorth) < 0.01
+            && std::fabs(walker.getHeading() - 0.5 * pi) < 1.0e-9 && walker.getPitch() < 0.0,
+            "the visit starts over the lookout tower, looking east and a little down");
+        check(walker.isFlying() && walker.getAltitude() == above && above > top && above < top + 1.0,
+            "just above its railings: " + std::to_string(above) + " m, the railings " + std::to_string(top) + " m");
+        check(walker.getPace() == Walker::Pace::Cycle, "at 20 km/h");
+        run(game, 3.0);
+        check(walker.getAltitude() == above, "it stays there");
+        game.land();
+        run(game, 8.0);
+        check(walker.getAltitude() == above, "landing on the tower ends just above its railings");
+        game.setControls(ahead());
+        run(game, 4.0);
+        check(walker.getEast() - data.m_towerEast > 5.0 && !world.inTower(walker.getEast(), walker.getNorth()),
+            "the tower does not hold the visitor: he flies off it to the east");
+        game.setControls(Controls());
+        run(game, 10.0);
+        check(!walker.isFlying(), "and lands beside it");
+        game.reset();
+        game.rise(5.0);
+        run(game, 4.0);
+        game.land();
+        run(game, 10.0);
+        check(walker.getAltitude() > top && std::fabs(walker.getAltitude() - above) < 0.2,
+            "coming down from higher up, he stops above the tower too");
+        // Lower than its railings the tower stops him like any wall
+        game.place(besideEast, besideNorth, 257.5);
+        game.rise(1.0);
+        run(game, 3.0);
+        game.setControls(ahead());
+        bool entered = false;
+        double nearest = 1.0e9;
+        for (int k = 0; k < 600; ++k)
+        {
+            game.step(1.0 / 60.0);
+            entered = entered || world.inTower(walker.getEast(), walker.getNorth());
+            nearest = std::min(nearest, std::hypot(walker.getEast() - data.m_towerEast, walker.getNorth() - data.m_towerNorth));
+        }
+        check(walker.isFlying() && !entered && nearest < 2.5,
+            "flying lower than the railings, the visitor slides along the walls of the tower, never into it");
+        game.setControls(Controls());
+    }
+
+    { // Walking
+        game.place(besideEast, besideNorth, 257.5);
+        const Walker& walker = game.getWalker();
+        check(!world.blocked(walker.getEast(), walker.getNorth()) && !walker.isFlying(), "beside the tower is free ground");
         game.setPace(Walker::Pace::Walk);
         const House* h17 = world.findHouse(17);
         check(game.goTo(17), "goes to house 17");
@@ -229,7 +280,7 @@ int main(int argc, char** argv)
     }
 
     { // Flying
-        game.reset();
+        game.place(besideEast, besideNorth, 257.5);
         const Walker& walker = game.getWalker();
         game.rise(1.0);
         run(game, 4.0);
@@ -268,7 +319,7 @@ int main(int argc, char** argv)
         game.land();
         run(game, 8.0);
         check(walker.isFlying() && walker.getAltitude() < 3.0, "landing on the pond ends just above the water");
-        game.reset();
+        game.place(besideEast, besideNorth, 257.5);
         game.rise(6.0);
         run(game, 3.0);
         game.land();

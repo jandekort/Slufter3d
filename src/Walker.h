@@ -19,7 +19,8 @@ struct Controls
 // Class Walker
 // On the ground the visitor walks and walls stop him. He can also rise above the ground: the altitude is
 // the height of his feet above it. Flying goes forward the way he faces, not the way he looks, and the
-// higher he is, the faster. Coming down over a roof or over water he stays hanging above it.
+// higher he is, the faster. Coming down over a roof or over water he stays hanging above it, over the lookout
+// tower just above its railings.
 class Walker
 {
 public:
@@ -33,7 +34,8 @@ public:
     Walker();
 
     // Mutator
-    void place(const World& world, double east, double north, double heading); // on the ground
+    // altitude->of the feet above the ground, where he is held until told otherwise; 0->on the ground
+    void place(const World& world, double east, double north, double heading, double altitude = 0.0);
     void setControls(const Controls& controls) { m_controls = controls; }
     void setPace(Pace pace) { m_pace = pace; }
     void look(double turn, double lift);  // adds to heading and pitch [rad]

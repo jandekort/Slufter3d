@@ -61,7 +61,11 @@ public:
     bool obstacle(double east, double north) const;            // true->a wall, or the edge of the world
     bool standable(double east, double north) const;           // true->dry ground to stand on
     bool blocked(double east, double north) const { return obstacle(east, north) || !standable(east, north); }
+    bool inTower(double east, double north) const;             // true->within the walls' margin of the lookout tower
     double getClearance() const { return m_clearance; }        // above this, nothing is in the way [m above the ground]
+    // Above this, nothing at this point is in the way [m above the ground]: over the lookout tower just above its
+    // railings, elsewhere higher than any roof
+    double clearanceAt(double east, double north) const;
     Surface surfaceAt(double east, double north) const;
     static const char* surfaceName(Surface surface);
     // A free spot on the front side of a house, and the heading [rad] that faces the house from there
@@ -82,6 +86,7 @@ private:
     double m_edgeMargin;    // and this far from the edge of the world [m]
     double m_semiStagger;   // one half of a 4C block stands this far forward of the other [m]
     double m_clearance;     // higher than any roof [m]
+    double m_towerHeadroom; // over the lookout tower the feet stay this far above its railings [m]
     double m_viewDistance;  // viewpoint in front of a house [m]
     double m_viewRange;     // a house counts as looked at up to this far [m]
     double m_viewAngle;     // and this far off the line of sight [rad]

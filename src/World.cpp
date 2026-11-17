@@ -48,6 +48,7 @@ World::World(const WorldData& data)
     , m_edgeMargin(30.0)
     , m_semiStagger(1.0)
     , m_clearance(12.0)
+    , m_towerHeadroom(0.5)
     , m_viewDistance(14.0)
     , m_viewRange(90.0)
     , m_viewAngle(0.45)
@@ -204,14 +205,23 @@ bool World::obstacle(double east, double north) const
     {
         return true;
     }
-    const double reach = m_tower.getFootprint() + m_wallMargin;
-    const bool inTower = std::fabs(east - m_data.m_towerEast) < reach && std::fabs(north - m_data.m_towerNorth) < reach;
-    return inTower || m_reception.contains(east, north, m_wallMargin)
+    return inTower(east, north) || m_reception.contains(east, north, m_wallMargin)
         || std::any_of(m_houses.begin(), m_houses.end(),
             [&](const House& house)
             {
                 return insideHouse(house, east, north, m_wallMargin);
             });
+}
+
+bool World::inTower(double east, double north) const
+{
+    const double reach = m_tower.getFootprint() + m_wallMargin;
+    return std::fabs(east - m_data.m_towerEast) < reach && std::fabs(north - m_data.m_towerNorth) < reach;
+}
+
+double World::clearanceAt(double east, double north) const
+{
+    return inTower(east, north) ? m_tower.getHeight() + m_towerHeadroom : m_clearance;
 }
 
 bool World::standable(double east, double north) const

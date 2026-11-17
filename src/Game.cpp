@@ -19,6 +19,7 @@ Game::Game(const WorldData& data)
     , m_walker()
     , m_scene()
     , m_maxStep(0.02)
+    , m_startPitch(-10.0 * pi / 180.0)
 {
     m_scene.build(m_world);
     reset();
@@ -26,8 +27,14 @@ Game::Game(const WorldData& data)
 
 void Game::reset()
 {
+    // Where the start lies on something, the visitor starts just above it, at the height where landing there
+    // ends, so that he is never inside it
     const WorldData& data = m_world.getData();
-    m_walker.place(m_world, data.m_startEast, data.m_startNorth, data.m_startHeading * pi / 180.0);
+    const double east = data.m_startEast;
+    const double north = data.m_startNorth;
+    const double altitude = m_world.obstacle(east, north) ? m_world.clearanceAt(east, north) : 0.0;
+    m_walker.place(m_world, east, north, data.m_startHeading * pi / 180.0, altitude);
+    m_walker.look(0.0, m_startPitch);
 }
 
 bool Game::goTo(int houseNumber)

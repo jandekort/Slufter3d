@@ -2,11 +2,11 @@
  "note": "Landmarks and points placed by hand, in RD New (EPSG:28992), metres; azimuths in degrees clockwise from north. Read by tools/pack_world.py. Points taken from the first application were moved by the park-wide fit of data/houses.json and are good to a few metres.",
  "start": {
   "rd": [
-   118701.4,
-   574883.8
+   118690.6,
+   574881.3
   ],
-  "heading": 257.5,
-  "source": "v1: the start of the walk, beside the lookout tower"
+  "heading": 90.0,
+  "source": "Above the lookout tower, looking east: the point of the tower itself; src/Game.cpp starts the visitor just above its railings. Before 2026-11-17 the start of v1, on the ground beside the tower: RD 118701.4, 574883.8, heading 257.5."
  },
  "lookout_tower": {
   "rd": [

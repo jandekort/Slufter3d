@@ -41,15 +41,15 @@ Walker::Walker()
 {
 }
 
-void Walker::place(const World& world, double east, double north, double heading)
+void Walker::place(const World& world, double east, double north, double heading, double altitude /* = 0.0 */)
 {
     m_east = east;
     m_north = north;
     m_heading = heading;
     m_pitch = 0.0;
     m_speed = 0.0;
-    m_altitude = 0.0;
-    m_targetAltitude = 0.0;
+    m_altitude = altitude;
+    m_targetAltitude = altitude;
     m_ground = world.getTerrain().height(east, north);
 }
 
@@ -112,8 +112,9 @@ void Walker::step(const World& world, double dt)
     const double stepEast = distance * (forward * std::sin(m_heading) + strafe * std::cos(m_heading));
     const double stepNorth = distance * (forward * std::cos(m_heading) - strafe * std::sin(m_heading));
 
-    // On the ground walls and water stop the visitor, below the roofs walls only, above them the edge of
-    // the world; and only the part of the step that runs into them is lost
+    // On the ground walls and water stop the visitor, below the roofs walls only, unless he is above what stands
+    // there (the lookout tower), above the roofs the edge of the world; and only the part of the step that runs
+    // into them is lost
     const bool walking = !isFlying();
     const bool low = m_altitude < world.getClearance();
     const auto free = [&](double east, double north)
@@ -122,7 +123,11 @@ void Walker::step(const World& world, double dt)
             {
                 return !world.blocked(east, north);
             }
-            return low ? !world.obstacle(east, north) : world.getTerrain().contains(east, north, 2.0 * m_maxAltitude);
+            if (low)
+            {
+                return !world.obstacle(east, north) || m_altitude >= world.clearanceAt(east, north);
+            }
+            return world.getTerrain().contains(east, north, 2.0 * m_maxAltitude);
         };
     const double fromEast = m_east;
     const double fromNorth = m_north;
@@ -141,8 +146,8 @@ void Walker::step(const World& world, double dt)
     }
     m_speed = std::hypot(m_east - fromEast, m_north - fromNorth) / dt;
 
-    // Up and down: the control moves the target, the altitude follows it. Over a roof or over water
-    // there is no landing: the visitor stays above it.
+    // Up and down: the control moves the target, the altitude follows it. Over a roof, the lookout tower or
+    // water there is no landing: the visitor stays above it.
     const double climb = clamp(m_controls.m_climb, -1.0, 1.0);
     if (climb != 0.0)
     {
@@ -152,7 +157,7 @@ void Walker::step(const World& world, double dt)
     double target = m_targetAltitude;
     if (world.obstacle(m_east, m_north))
     {
-        target = std::max(target, world.getClearance());
+        target = std::max(target, world.clearanceAt(m_east, m_north));
     }
     else if (!world.standable(m_east, m_north))
     {

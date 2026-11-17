@@ -16,7 +16,7 @@ public:
     explicit Game(const WorldData& data);
 
     // Mutator
-    void reset();                       // back to the start beside the lookout tower
+    void reset();                       // back to the start: just above the lookout tower, looking east
     void setControls(const Controls& controls) { m_walker.setControls(controls); }
     void setPace(Walker::Pace pace) { m_walker.setPace(pace); }
     void look(double turn, double lift) { m_walker.look(turn, lift); }
@@ -39,4 +39,5 @@ private:
     Walker m_walker;
     Scene m_scene;
     double m_maxStep;   // longest time step taken at once [s]
+    double m_startPitch; // the visit starts looking this far up, down when negative [rad]
 };

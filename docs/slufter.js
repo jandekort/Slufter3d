@@ -11,6 +11,14 @@
     const MAX_PIXEL_RATIO = 2.0;
     const TILES_FADE = [300.0, 600.0];        // the tiles on the ground fade out over these distances [m] ...
     const TILES_FADE_UNFILTERED = [15.0, 50.0]; // ... or these, where they cannot be filtered against shimmer
+    // Weather. The light on the land stays as the world was built, with the sun in the south-west; the page fogs
+    // the land over a shorter distance, takes some of its colour away, tints it and gives the sky other colours.
+    // fog: distance over which the land fades into the horizon [m]; grey: part of the colour taken away
+    const WEATHERS = {
+        fog:      { fog: 90.0,   horizon: [0.80, 0.81, 0.82], zenith: [0.80, 0.81, 0.82], tint: [0.98, 0.99, 1.00], grey: 0.30 },
+        overcast: { fog: 2500.0, horizon: [0.72, 0.74, 0.77], zenith: [0.80, 0.82, 0.85], tint: [0.85, 0.87, 0.90], grey: 0.35 },
+        evening:  { fog: 4000.0, horizon: [0.98, 0.66, 0.44], zenith: [0.20, 0.24, 0.50], tint: [0.95, 0.79, 0.64], grey: 0.10 }
+    };
 
     const canvas = document.getElementById("canvas");
     const hud = {
@@ -19,6 +27,7 @@
         error: document.getElementById("error")
     };
     const paceButtons = document.querySelectorAll("#panel button[data-pace]");
+    const weatherButtons = document.querySelectorAll("#panel button[data-weather]");
     const numberInput = document.getElementById("number");
     const keys = { ahead: false, back: false, left: false, right: false, stepLeft: false, stepRight: false,
         up: false, down: false };
@@ -83,6 +92,8 @@
             toggleTrees();
         } else if (event.code === "KeyG") {
             toggleTiles();
+        } else if (event.code === "KeyF") {
+            nextWeather();
         } else if (/^Digit[1-2]$/.test(event.code)) {
             setPace(Number(event.code.slice(5)));   // 1->slow, 2->fast
         }
@@ -138,6 +149,20 @@
     }
     tilesButton.classList.toggle("on", showTiles);
     tilesButton.addEventListener("click", toggleTiles);
+    let weather = "day";     // a name of WEATHERS, or "day": as the world was built
+    function setWeather(name) {
+        weather = name;
+        weatherButtons.forEach(function (button) {
+            button.classList.toggle("on", button.dataset.weather === weather);
+        });
+    }
+    function nextWeather() {
+        const names = Array.from(weatherButtons).map(function (button) { return button.dataset.weather; });
+        setWeather(names[(names.indexOf(weather) + 1) % names.length]);
+    }
+    weatherButtons.forEach(function (button) {
+        button.addEventListener("click", function () { setWeather(button.dataset.weather); });
+    });
     document.getElementById("land").addEventListener("click", function () { landRequested = true; });
 
     document.querySelectorAll(".pad button").forEach(function (button) {
@@ -230,6 +255,11 @@
         "uniform float uTileSize;" +    // [m]
         "uniform float uTileContrast;" + // 0->no tiles
         "uniform vec2 uTileFade;" +     // the tiles fade out between these distances [m]
+        "uniform vec3 uTint;" +         // the colours are multiplied by this ...
+        "uniform float uGrey;" +        // ... after this part of them is taken away, 0->as built
+        "uniform float uSkyMix;" +      // 1->the sky in the colours below, 0->as built
+        "uniform vec3 uSkyLow;" +       // at the horizon
+        "uniform vec3 uSkyHigh;" +      // overhead
         "varying vec3 vColor;" +
         "varying float vFade;" +
         "varying vec2 vTile;" +         // place in tiles from uTileOrigin
@@ -240,7 +270,13 @@
         "    vec2 place = vec2(world.x, -world.z);" +
         "    float inside = step(uTileArea.x, place.x) * step(place.x, uTileArea.z)" +
         "        * step(uTileArea.y, place.y) * step(place.y, uTileArea.w);" +
-        "    vColor = aColor;" +
+        "    vec3 color = mix(aColor, vec3(dot(aColor, vec3(0.299, 0.587, 0.114))), uGrey) * uTint;" +
+        // The sky as Scene::addSky colours it: rings from 0.12 rad below the horizon, crowding near it
+        "    if (uSkyMix > 0.0) {" +
+        "        float t = sqrt(clamp((asin(clamp(normalize(aPosition).y, -1.0, 1.0)) + 0.12) / 1.6907963, 0.0, 1.0));" +
+        "        color = mix(color, mix(uSkyLow, uSkyHigh, sqrt(clamp(1.6 * t, 0.0, 1.0))), uSkyMix);" +
+        "    }" +
+        "    vColor = color;" +
         "    vFade = 1.0 - exp(-away * uFog);" +
         "    vTile = (place - uTileOrigin) / uTileSize;" +
         "    vContrast = uTileContrast * inside * (1.0 - smoothstep(uTileFade.x, uTileFade.y, away));" +
@@ -287,6 +323,11 @@
     const uTileSize = gl.getUniformLocation(program, "uTileSize");
     const uTileContrast = gl.getUniformLocation(program, "uTileContrast");
     const uTileFade = gl.getUniformLocation(program, "uTileFade");
+    const uTint = gl.getUniformLocation(program, "uTint");
+    const uGrey = gl.getUniformLocation(program, "uGrey");
+    const uSkyMix = gl.getUniformLocation(program, "uSkyMix");
+    const uSkyLow = gl.getUniformLocation(program, "uSkyLow");
+    const uSkyHigh = gl.getUniformLocation(program, "uSkyHigh");
     const buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
     gl.enableVertexAttribArray(aPosition);
@@ -332,12 +373,12 @@
         const flatCount = world.slufter_flat_vertex_count();
         const treeCount = world.slufter_tree_vertex_count();   // just before the flat ones
         const groundCount = world.slufter_ground_vertex_count(); // just after the sky
-        const fog = 1.0 / world.slufter_fog_range();
         gl.bufferData(gl.ARRAY_BUFFER,
             new Float32Array(world.memory.buffer, world.slufter_vertices(), count * FLOATS_PER_VERTEX), gl.STATIC_DRAW);
-        const horizon = new Float32Array(world.memory.buffer, world.slufter_horizon(), 3);
-        gl.uniform3f(uHorizon, horizon[0], horizon[1], horizon[2]);
-        gl.clearColor(horizon[0], horizon[1], horizon[2], 1.0);
+        // The day as the world was built: its haze, its horizon, its sky
+        const day = { fog: world.slufter_fog_range(),
+            horizon: Array.from(new Float32Array(world.memory.buffer, world.slufter_horizon(), 3)),
+            zenith: null, tint: [1.0, 1.0, 1.0], grey: 0.0 };
         // The tiles of the finest grid; a centimetre more all round, so that its edge counts as inside
         const tiles = Array.from(new Float32Array(world.memory.buffer, world.slufter_tiles(), 6));
         const tilePair = 2.0 * tiles[4];   // origins a pair of tiles apart keep odd tiles odd
@@ -391,8 +432,11 @@
                 world.slufter_view_projection(canvas.width / canvas.height), 16);
             const eye = new Float32Array(world.memory.buffer, world.slufter_eye(), 3);
 
+            const w = weather === "day" ? day : WEATHERS[weather];
             gl.viewport(0, 0, canvas.width, canvas.height);
+            gl.clearColor(w.horizon[0], w.horizon[1], w.horizon[2], 1.0);
             gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+            gl.uniform3fv(uHorizon, w.horizon);
             gl.uniformMatrix4fv(uViewProjection, false, matrix);
             gl.uniform3f(uEye, eye[0], eye[1], eye[2]);
 
@@ -400,11 +444,21 @@
             gl.depthMask(false);
             gl.uniform3f(uOffset, eye[0], eye[1], eye[2]);
             gl.uniform1f(uFog, 0.0);
+            gl.uniform3f(uTint, 1.0, 1.0, 1.0);
+            gl.uniform1f(uGrey, 0.0);
+            gl.uniform1f(uSkyMix, w.zenith !== null ? 1.0 : 0.0);
+            if (w.zenith !== null) {
+                gl.uniform3fv(uSkyLow, w.horizon);
+                gl.uniform3fv(uSkyHigh, w.zenith);
+            }
             gl.drawArrays(gl.TRIANGLES, 0, skyCount);
             // The land, with its tiles counted from a corner near the eye, so that the numbers stay small
             gl.depthMask(true);
             gl.uniform3f(uOffset, 0.0, 0.0, 0.0);
-            gl.uniform1f(uFog, fog);
+            gl.uniform1f(uFog, 1.0 / w.fog);
+            gl.uniform3fv(uTint, w.tint);
+            gl.uniform1f(uGrey, w.grey);
+            gl.uniform1f(uSkyMix, 0.0);
             gl.uniform2f(uTileOrigin, tiles[0] + tilePair * Math.floor((eye[0] - tiles[0]) / tilePair),
                 tiles[1] + tilePair * Math.floor((-eye[2] - tiles[1]) / tilePair));
             gl.uniform1f(uTileContrast, showTiles ? tiles[5] : 0.0);
