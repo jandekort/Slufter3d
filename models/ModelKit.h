@@ -94,9 +94,9 @@ namespace ModelKit
         // Mutator
         void panel(Side side, double a0, double a1, double y0, double y1, const Color& color, double out);
 
-        // A framed window of columns by rows panes
+        // A framed window of columns by rows panes; out->its frame stands this far further out, as on a bay
         void window(Side side, double a0, double a1, double y0, double y1, int columns, int rows,
-            const Color& frame, const Color& glass);
+            const Color& frame, const Color& glass, double out = 0.0);
 
         // A door in a frame; glazed->a pane in its upper half
         void door(Side side, double a0, double a1, double y0, double y1, const Color& frame, const Color& leaf,

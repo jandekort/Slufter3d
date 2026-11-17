@@ -146,6 +146,10 @@ int main(int argc, char** argv)
         check(worst < 2.0, "every floor near the ground it stands on: at most " + std::to_string(worst) + " m");
         const House* h449 = world.findHouse(449);
         check(h449 != nullptr && h449->m_type == "8L" && std::string(h449->m_model->name()) == "Luxe8L", "449 is an 8L, drawn as Luxe8L");
+        const House* h452 = world.findHouse(452);
+        check(h452 != nullptr && h452->m_type == "6EL" && std::string(h452->m_model->name()) == "Luxe6EL", "452 is a 6EL, drawn as Luxe6EL");
+        const House* h427 = world.findHouse(427);
+        check(h427 != nullptr && h427->m_type == "8EL" && std::string(h427->m_model->name()) == "Luxe6EL", "427 is an 8EL, drawn as Luxe6EL");
         const House* h26 = world.findHouse(26);
         check(h26 != nullptr && h26->m_type == "6CK" && std::string(h26->m_model->name()) == "Comfort8C", "26 is a 6CK, drawn as Comfort8C");
         const House* h14 = world.findHouse(14);

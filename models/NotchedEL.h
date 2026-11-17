@@ -9,14 +9,12 @@
 
 class Mesh;
 
-// Shared by the models Luxe4EL and LuxeEL
+// Drawn for the model Luxe4EL
 namespace NotchedEL
 {
     std::pair<double, double> size4EL();  // the 4EL has its own plan: length and width of its walls [m]
     double ridgeHeight(double width);     // above the floor [m]
-    // true->the point (du, dv) lies within margin of the walls: of the 4EL, of an EL of this size
+    // true->the point (du, dv) lies within margin of the walls of the 4EL
     bool covers4EL(double du, double dv, double margin);
-    bool coversEL(double length, double width, double du, double dv, double margin);
     void build4EL(Mesh& mesh, const Site& site);
-    void buildEL(Mesh& mesh, const Site& site); // on the rectangle of the site, with the front cut-out only
 }

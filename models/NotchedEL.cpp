@@ -1,7 +1,7 @@
 // Slufter3D - the houses of the EL line
 // Author: Jan de Kort
 // Created: 2026-11-16
-// Luxe4EL and LuxeEL (photos B453_Type_4EL, 4EL-2,
+// Luxe4EL (photos B453_Type_4EL, 4EL-2,
 // images, images-1). A hipped roof over the whole rectangle; at the entrance a corner of the house is cut away.
 // The roof is cut away with it, so that its edges rise from the eaves to the inner corner of the cut-out:
 // with their white boards they form the white ^ of the photographs. The walls in the cut-out are boarded
@@ -51,17 +51,6 @@ namespace
 
     const NotchedPlan plan4EL = makePlan4EL();
 
-    // The other EL types: their surveyed rectangle with the entrance cut-out of the 4EL
-    NotchedPlan planEL(double length, double width)
-    {
-        NotchedPlan plan;
-        plan.m_halfLength = 0.5 * length;
-        plan.m_halfWidth = 0.5 * width;
-        plan.m_front = UV{ plan.m_halfLength - std::min(3.4, 0.40 * length), plan.m_halfWidth - std::min(3.7, 0.45 * width) };
-        plan.m_backNotch = false;
-        return plan;
-    }
-
     const double elWallHeight = 2.55;
     const double elPlinth = 0.60;
     const double elOverhang = 0.50;   // roof beyond the walls on every side [m]
@@ -82,7 +71,6 @@ namespace
         Color(0.13f, 0.14f, 0.16f),   // black doors
         Color(0.13f, 0.14f, 0.16f),
         Color(0.12f, 0.12f, 0.13f) };
-    const Paint& paintEL = paint4EL;
 
     void buildNotchedEL(Mesh& mesh, const Site& site, const Paint& paint, const NotchedPlan& plan)
     {
@@ -283,17 +271,7 @@ bool NotchedEL::covers4EL(double du, double dv, double margin)
     return plan4EL.inWalls(du, dv, margin);
 }
 
-bool NotchedEL::coversEL(double length, double width, double du, double dv, double margin)
-{
-    return planEL(length, width).inWalls(du, dv, margin);
-}
-
 void NotchedEL::build4EL(Mesh& mesh, const Site& site)
 {
     buildNotchedEL(mesh, site, paint4EL, plan4EL);
-}
-
-void NotchedEL::buildEL(Mesh& mesh, const Site& site)
-{
-    buildNotchedEL(mesh, site, paintEL, planEL(site.m_length, site.m_width));
 }

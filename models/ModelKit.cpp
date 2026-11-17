@@ -106,10 +106,10 @@ namespace ModelKit
     }
 
     void Builder::window(Side side, double a0, double a1, double y0, double y1, int columns, int rows,
-        const Color& frame, const Color& glass)
+        const Color& frame, const Color& glass, double out /* = 0.0 */)
     {
         const double bar = 0.09;
-        panel(side, a0, a1, y0, y1, frame, m_skin);
+        panel(side, a0, a1, y0, y1, frame, out + m_skin);
         const double paneWidth = (a1 - a0 - bar) / (double) columns;
         const double paneHeight = (y1 - y0 - bar) / (double) rows;
         for (int c = 0; c < columns; ++c)
@@ -118,7 +118,7 @@ namespace ModelKit
             {
                 const double pa = a0 + bar + (double) c * paneWidth;
                 const double py = y0 + bar + (double) r * paneHeight;
-                panel(side, pa, pa + paneWidth - bar, py, py + paneHeight - bar, glass, 2.0 * m_skin);
+                panel(side, pa, pa + paneWidth - bar, py, py + paneHeight - bar, glass, out + 2.0 * m_skin);
             }
         }
     }
