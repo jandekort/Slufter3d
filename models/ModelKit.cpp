@@ -179,6 +179,11 @@ namespace ModelKit
 
     void Builder::roof()
     {
+        roof(m_paint.m_trim.scaled(0.8f));
+    }
+
+    void Builder::roof(const Color& soffit)
+    {
         const double tangent = std::tan(m_shape.m_pitch);
         const double eaveV = m_halfWidth + m_shape.m_eave;
         const double eaveY = m_shape.m_wallHeight - m_shape.m_eave * tangent;
@@ -220,7 +225,7 @@ namespace ModelKit
             // Underside of the eaves
             m_mesh.addQuad(point(-endU, s*m_halfWidth, eaveY - m_shape.m_fascia), point(endU, s*m_halfWidth, eaveY - m_shape.m_fascia),
                 point(endU, s*eaveV, eaveY - m_shape.m_fascia), point(-endU, s*eaveV, eaveY - m_shape.m_fascia),
-                m_paint.m_trim.scaled(0.8f), -up);
+                soffit, -up);
             // Boards along the verges
             for (const double e : { 1.0, -1.0 })
             {
@@ -333,7 +338,7 @@ namespace ModelKit
         }
     }
 
-    void Builder::downpipe(Side side, double a, const Color& color)
+    void Builder::downpipe(Side side, double a, const Color& color, bool drum /* = true */)
     {
         const double out = 0.12;
         const double drumRadius = 0.21;
@@ -344,8 +349,11 @@ namespace ModelKit
         const double drumTop = ground + drumHeight;
         // From the gutter back to the wall, then down
         m_mesh.addBeam(onWall(side, a, eaveY, m_shape.m_eave - 0.05), onWall(side, a, eaveY - 0.35, out), 0.04, color);
-        m_mesh.addBeam(onWall(side, a, eaveY - 0.35, out), onWall(side, a, drumTop, out), 0.04, color);
-        addDrum(m_mesh, Vec3(foot.x, m_site.m_floor.y + ground - 0.3, foot.z), drumRadius, drumHeight + 0.3, color.scaled(0.93f));
+        m_mesh.addBeam(onWall(side, a, eaveY - 0.35, out), onWall(side, a, drum ? drumTop : ground - 0.2, out), 0.04, color);
+        if (drum)
+        {
+            addDrum(m_mesh, Vec3(foot.x, m_site.m_floor.y + ground - 0.3, foot.z), drumRadius, drumHeight + 0.3, color.scaled(0.93f));
+        }
     }
 
     // Class GableModel

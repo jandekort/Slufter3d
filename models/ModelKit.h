@@ -83,6 +83,9 @@ namespace ModelKit
 
         Vec3 point(double u, double v, double y) const;
 
+        // The mesh drawn into, for the parts of a model that the builder has no method for
+        Mesh& mesh() { return m_mesh; }
+
         Vec3 outward(Side side) const;
 
         // Point on the wall of a side: a runs along the wall, out is the distance in front of it
@@ -112,6 +115,8 @@ namespace ModelKit
 
         // Both slopes, the hips, the boards along eaves and verges, and the ridge
         void roof();
+        // The same with the underside of the eaves in its own colour
+        void roof(const Color& soffit);
 
         // A row of ridge tiles
         void ridgeCap(const Color& color);
@@ -134,8 +139,8 @@ namespace ModelKit
         // A terrace in front of a side: paving laid on the ground, at the foot of the wall
         void terrace(Side side, double a0, double a1, double depth, const Color& color);
 
-        // A downpipe from the gutter at position a of a side into a drum standing on the ground
-        void downpipe(Side side, double a, const Color& color);
+        // A downpipe from the gutter at position a of a side; drum->into a drum standing on the ground, else into the ground
+        void downpipe(Side side, double a, const Color& color, bool drum = true);
 
     private:
         Mesh& m_mesh;
