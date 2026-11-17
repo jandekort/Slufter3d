@@ -7886,32 +7886,6 @@
   },
   {
    "nr": 0,
-   "type": "OTHER",
-   "name": "",
-   "kind": "building",
-   "x": 118773.78,
-   "y": 574710.53,
-   "length": 5.8,
-   "width": 5.2,
-   "axis_azimuth": 19.6,
-   "front_azimuth": 109.6,
-   "source": {
-    "position": "AHN building",
-    "size": "AHN building (roof outline)",
-    "front": "v1 rule: the side nearest south"
-   },
-   "fit": {
-    "building_part": 0.9,
-    "covers": 0.83,
-    "moved_m": 0.3
-   },
-   "review": [],
-   "accepted": [
-    "outline 31 m2, 70 m2 in the v1 table: perhaps another building"
-   ]
-  },
-  {
-   "nr": 0,
    "type": "Visdiefje",
    "name": "Visdiefje",
    "kind": "building",
@@ -7941,12 +7915,12 @@
    "type": "Visdiefje",
    "name": "",
    "kind": "building",
-   "x": 118741.91,
-   "y": 574717.74,
-   "length": 7.2,
-   "width": 5.6,
-   "axis_azimuth": 340.9,
-   "front_azimuth": 70.9,
+   "x": 118773.78,
+   "y": 574710.53,
+   "length": 5.8,
+   "width": 5.2,
+   "axis_azimuth": 19.6,
+   "front_azimuth": 109.6,
    "source": {
     "position": "AHN building",
     "size": "AHN building (roof outline)",
@@ -7954,13 +7928,13 @@
     "type": "data/house_corrections.json"
    },
    "fit": {
-    "building_part": 0.96,
-    "covers": 0.96,
-    "moved_m": 0.2
+    "building_part": 0.9,
+    "covers": 0.83,
+    "moved_m": 0.3
    },
    "review": [],
    "accepted": [
-    "outline 40 m2, 70 m2 in the v1 table: perhaps another building"
+    "outline 31 m2, 70 m2 in the v1 table: perhaps another building"
    ]
   },
   {

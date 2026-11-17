@@ -50,6 +50,7 @@ Scene::Scene()
     , m_skyVertexCount(0)
     , m_flatVertexCount(0)
     , m_treeVertexCount(0)
+    , m_groundVertexCount(0)
     , m_fieldOfView(68.0 * pi / 180.0)
     , m_near(0.15)
     , m_nearPerHeight(0.03)
@@ -81,6 +82,7 @@ Scene::Scene()
     , m_patches({ { 60.0, 0.40, 0.4 }, { 15.0, 0.35, 1.1 }, { 5.0, 0.25, 2.0 } })
     , m_patchTint(0.9)
     , m_patchLight(0.35)
+    , m_tileContrast(0.04)
     , m_roadLift(0.06)
     , m_waterLift(0.05)
     , m_seaReach(40000.0)
@@ -185,11 +187,19 @@ void Scene::addSky()
     }
 }
 
+// The land of every grid first, so that the page can draw it apart, then the sea
 void Scene::addGround(const Terrain& terrain)
 {
+    std::vector<Vec3> sea;
     for (size_t k = 0; k < terrain.levelCount(); ++k)
     {
-        addLevel(terrain.getLevel(k), k > 0 ? &terrain.getLevel(k - 1) : nullptr);
+        addLevel(terrain.getLevel(k), k > 0 ? &terrain.getLevel(k - 1) : nullptr, sea);
+    }
+    m_groundVertexCount = m_mesh.vertexCount() - m_skyVertexCount;
+    for (size_t k = 0; k + 3 < sea.size(); k += 4)
+    {
+        m_mesh.addFlatTriangle(sea[k], sea[k + 1], sea[k + 2], m_sea, m_sea, m_sea);
+        m_mesh.addFlatTriangle(sea[k], sea[k + 2], sea[k + 3], m_sea, m_sea, m_sea);
     }
     addSeaAround(terrain.getLevel(terrain.levelCount() - 1));
 }
@@ -288,7 +298,7 @@ std::vector<Color> Scene::nodeColors(const TerrainLevel& level, const std::vecto
 // One grid, without the part that a finer grid covers. Tiles of the sea and of the beach that reach below the
 // sea level get the sea as well, in strips from west to east; such tiles wholly under it get the sea only.
 // Low ground inland keeps its ground, however low.
-void Scene::addLevel(const TerrainLevel& level, const TerrainLevel* finer)
+void Scene::addLevel(const TerrainLevel& level, const TerrainLevel* finer, std::vector<Vec3>& sea)
 {
     const double cell = level.getCell();
     const double seaLevel = 0.0;
@@ -315,8 +325,7 @@ void Scene::addLevel(const TerrainLevel& level, const TerrainLevel* finer)
                     const Vec3 b(level.getWest() + (double) to * cell, seaLevel, -south);
                     const Vec3 c(b.x, seaLevel, -(south + cell));
                     const Vec3 d(a.x, seaLevel, -(south + cell));
-                    m_mesh.addFlatTriangle(a, b, c, m_sea, m_sea, m_sea);
-                    m_mesh.addFlatTriangle(a, c, d, m_sea, m_sea, m_sea);
+                    sea.insert(sea.end(), { a, b, c, d });
                     inStrip = false;
                 }
             };

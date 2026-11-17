@@ -9,6 +9,8 @@
     const LOOK_RATE = 0.0035;   // radians per pixel dragged
     const WHEEL_NOTCH = 100.0;  // wheel movement that counts as one step higher or lower
     const MAX_PIXEL_RATIO = 2.0;
+    const TILES_FADE = [300.0, 600.0];        // the tiles on the ground fade out over these distances [m] ...
+    const TILES_FADE_UNFILTERED = [15.0, 50.0]; // ... or these, where they cannot be filtered against shimmer
 
     const canvas = document.getElementById("canvas");
     const hud = {
@@ -79,6 +81,8 @@
             landRequested = true;
         } else if (event.code === "KeyT") {
             toggleTrees();
+        } else if (event.code === "KeyG") {
+            toggleTiles();
         } else if (/^Digit[1-2]$/.test(event.code)) {
             setPace(Number(event.code.slice(5)));   // 1->slow, 2->fast
         }
@@ -126,6 +130,14 @@
     }
     treesButton.classList.toggle("on", showTrees);
     treesButton.addEventListener("click", toggleTrees);
+    const tilesButton = document.getElementById("tiles");
+    let showTiles = true;    // true->the tiles of the park's grid are drawn on the land
+    function toggleTiles() {
+        showTiles = !showTiles;
+        tilesButton.classList.toggle("on", showTiles);
+    }
+    tilesButton.classList.toggle("on", showTiles);
+    tilesButton.addEventListener("click", toggleTiles);
     document.getElementById("land").addEventListener("click", function () { landRequested = true; });
 
     document.querySelectorAll(".pad button").forEach(function (button) {
@@ -201,6 +213,10 @@
         return shader;
     }
 
+    // With derivatives the tiles on the ground are averaged over each pixel, so that far away they blend into
+    // their mean colour instead of shimmering; without, they fade out close by
+    const filtered = gl.getExtension("OES_standard_derivatives") !== null;
+
     const program = gl.createProgram();
     gl.attachShader(program, compile(gl.VERTEX_SHADER,
         "attribute vec3 aPosition;" +
@@ -209,20 +225,49 @@
         "uniform vec3 uOffset;" +   // added to every vertex: the eye for the sky, nothing for the land
         "uniform vec3 uEye;" +
         "uniform float uFog;" +     // 1 / fog range, 0->no fog
+        "uniform vec2 uTileOrigin;" +   // corner of a tile near the eye, in metres east and north
+        "uniform vec4 uTileArea;" +     // west, south, east and north of the grid that has the tiles [m]
+        "uniform float uTileSize;" +    // [m]
+        "uniform float uTileContrast;" + // 0->no tiles
+        "uniform vec2 uTileFade;" +     // the tiles fade out between these distances [m]
         "varying vec3 vColor;" +
         "varying float vFade;" +
+        "varying vec2 vTile;" +         // place in tiles from uTileOrigin
+        "varying float vContrast;" +
         "void main() {" +
         "    vec3 world = aPosition + uOffset;" +
+        "    float away = length(world - uEye);" +
+        "    vec2 place = vec2(world.x, -world.z);" +
+        "    float inside = step(uTileArea.x, place.x) * step(place.x, uTileArea.z)" +
+        "        * step(uTileArea.y, place.y) * step(place.y, uTileArea.w);" +
         "    vColor = aColor;" +
-        "    vFade = 1.0 - exp(-length(world - uEye) * uFog);" +
+        "    vFade = 1.0 - exp(-away * uFog);" +
+        "    vTile = (place - uTileOrigin) / uTileSize;" +
+        "    vContrast = uTileContrast * inside * (1.0 - smoothstep(uTileFade.x, uTileFade.y, away));" +
         "    gl_Position = uViewProjection * vec4(world, 1.0);" +
         "}"));
     gl.attachShader(program, compile(gl.FRAGMENT_SHADER,
-        "precision mediump float;" +
+        (filtered ? "#extension GL_OES_standard_derivatives : enable\n" : "") +
+        "#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n" +
         "uniform vec3 uHorizon;" +
         "varying vec3 vColor;" +
         "varying float vFade;" +
-        "void main() { gl_FragColor = vec4(mix(vColor, uHorizon, vFade), 1.0); }"));
+        "varying vec2 vTile;" +
+        "varying float vContrast;" +
+        // 1 on the odd tiles, 0 on the even ones; filtered, the share of odd tile within the pixel
+        "float odd(vec2 p) {" +
+        (filtered ?
+        "    vec2 w = fwidth(p) + 0.001;" +
+        "    vec2 i = 2.0 * (abs(fract((p - 0.5 * w) * 0.5) - 0.5) - abs(fract((p + 0.5 * w) * 0.5) - 0.5)) / w;" +
+        "    return 0.5 - 0.5 * i.x * i.y;" :
+        "    vec2 c = floor(p);" +
+        "    return mod(c.x + c.y, 2.0);") +
+        "}" +
+        "void main() {" +
+        "    vec3 color = vColor;" +
+        "    if (vContrast > 0.0) { color *= 1.0 - vContrast * (2.0 * odd(vTile) - 1.0); }" +
+        "    gl_FragColor = vec4(mix(color, uHorizon, vFade), 1.0);" +
+        "}"));
     gl.linkProgram(program);
     if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
         fail("Shader link failed");
@@ -237,6 +282,11 @@
     const uEye = gl.getUniformLocation(program, "uEye");
     const uFog = gl.getUniformLocation(program, "uFog");
     const uHorizon = gl.getUniformLocation(program, "uHorizon");
+    const uTileOrigin = gl.getUniformLocation(program, "uTileOrigin");
+    const uTileArea = gl.getUniformLocation(program, "uTileArea");
+    const uTileSize = gl.getUniformLocation(program, "uTileSize");
+    const uTileContrast = gl.getUniformLocation(program, "uTileContrast");
+    const uTileFade = gl.getUniformLocation(program, "uTileFade");
     const buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
     gl.enableVertexAttribArray(aPosition);
@@ -281,12 +331,20 @@
         const skyCount = world.slufter_sky_vertex_count();
         const flatCount = world.slufter_flat_vertex_count();
         const treeCount = world.slufter_tree_vertex_count();   // just before the flat ones
+        const groundCount = world.slufter_ground_vertex_count(); // just after the sky
         const fog = 1.0 / world.slufter_fog_range();
         gl.bufferData(gl.ARRAY_BUFFER,
             new Float32Array(world.memory.buffer, world.slufter_vertices(), count * FLOATS_PER_VERTEX), gl.STATIC_DRAW);
         const horizon = new Float32Array(world.memory.buffer, world.slufter_horizon(), 3);
         gl.uniform3f(uHorizon, horizon[0], horizon[1], horizon[2]);
         gl.clearColor(horizon[0], horizon[1], horizon[2], 1.0);
+        // The tiles of the finest grid; a centimetre more all round, so that its edge counts as inside
+        const tiles = Array.from(new Float32Array(world.memory.buffer, world.slufter_tiles(), 6));
+        const tilePair = 2.0 * tiles[4];   // origins a pair of tiles apart keep odd tiles odd
+        gl.uniform4f(uTileArea, tiles[0] - 0.01, tiles[1] - 0.01, tiles[2] + 0.01, tiles[3] + 0.01);
+        gl.uniform1f(uTileSize, tiles[4]);
+        gl.uniform2fv(uTileFade, filtered ? TILES_FADE : TILES_FADE_UNFILTERED);
+        gl.uniform1f(uTileContrast, 0.0);
 
         let last = performance.now();
         function tick(now) {
@@ -343,11 +401,18 @@
             gl.uniform3f(uOffset, eye[0], eye[1], eye[2]);
             gl.uniform1f(uFog, 0.0);
             gl.drawArrays(gl.TRIANGLES, 0, skyCount);
-            // Land and everything on it
+            // The land, with its tiles counted from a corner near the eye, so that the numbers stay small
             gl.depthMask(true);
             gl.uniform3f(uOffset, 0.0, 0.0, 0.0);
             gl.uniform1f(uFog, fog);
-            gl.drawArrays(gl.TRIANGLES, skyCount, count - skyCount - flatCount - (showTrees ? 0 : treeCount));
+            gl.uniform2f(uTileOrigin, tiles[0] + tilePair * Math.floor((eye[0] - tiles[0]) / tilePair),
+                tiles[1] + tilePair * Math.floor((-eye[2] - tiles[1]) / tilePair));
+            gl.uniform1f(uTileContrast, showTiles ? tiles[5] : 0.0);
+            gl.drawArrays(gl.TRIANGLES, skyCount, groundCount);
+            gl.uniform1f(uTileContrast, 0.0);
+            // Everything on it
+            gl.drawArrays(gl.TRIANGLES, skyCount + groundCount,
+                count - skyCount - groundCount - flatCount - (showTrees ? 0 : treeCount));
             // Roads and water lie flat on the land: nudged towards the eye, so that they never flicker against it
             gl.enable(gl.POLYGON_OFFSET_FILL);
             gl.polygonOffset(-2.0, -4.0);

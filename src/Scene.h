@@ -32,16 +32,19 @@ public:
     size_t skyVertexCount() const { return m_skyVertexCount; }
     size_t flatVertexCount() const { return m_flatVertexCount; }   // the last ones of the buffer
     size_t treeVertexCount() const { return m_treeVertexCount; }   // just before the flat ones
+    size_t groundVertexCount() const { return m_groundVertexCount; } // just after the sky: the land, without the sea
     Mat4 viewProjection(const Walker& walker, double aspect) const;
     // beach: share of sand that the sea brings, in [0, 1]; dry and light: the patch the ground lies in, in [-1, 1]
     Color groundColor(double height, double slope, double beach, double dry, double light) const;
     const Color& getHorizon() const { return m_horizon; }
     double getFogRange() const { return m_fogRange; }
+    double getTileContrast() const { return m_tileContrast; }
 
 private:
     void addSky();
     void addGround(const Terrain& terrain);
-    void addLevel(const TerrainLevel& level, const TerrainLevel* finer);
+    // The land of one grid; the sea over its low tiles goes into sea, four corners a strip
+    void addLevel(const TerrainLevel& level, const TerrainLevel* finer, std::vector<Vec3>& sea);
     void addSeaAround(const TerrainLevel& coarsest);
     void addWater(const Terrain& terrain);
     void addRoads(const World& world);
@@ -66,6 +69,7 @@ private:
     size_t m_skyVertexCount;
     size_t m_flatVertexCount;
     size_t m_treeVertexCount;
+    size_t m_groundVertexCount;
     double m_fieldOfView;
     double m_near;          // nearest distance drawn, on the ground [m]
     double m_nearPerHeight; // and what it grows by per metre of altitude
@@ -97,6 +101,7 @@ private:
     std::vector<Patch> m_patches; // broad to fine
     double m_patchTint;     // how far a patch shifts the vegetation towards m_dry or m_lush
     double m_patchLight;    // how much lighter or darker a patch makes the ground
+    double m_tileContrast;  // the page draws the tiles of the finest grid this much lighter and darker in turn
     double m_roadLift;      // roads lie this far above the ground [m]
     double m_waterLift;     // water above its measured level [m]
     double m_seaReach;      // the sea is drawn this far beyond the last grid [m]

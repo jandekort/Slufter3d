@@ -54,6 +54,11 @@ check(sky > 0 && flat > 0 && sky + flat < count, "sky first (" + sky + "), roads
 const vertices = new Float32Array(world.memory.buffer, world.slufter_vertices(), count * 6);
 check(vertices.every(Number.isFinite), "all vertices are finite");
 check(world.slufter_fog_range() > 1000.0, "the land fades over kilometres");
+const ground = world.slufter_ground_vertex_count();
+check(ground > 100000 && ground % 3 === 0 && sky + ground + trees + flat < count, "the land right after the sky (" + ground + ")");
+const tiles = new Float32Array(world.memory.buffer, world.slufter_tiles(), 6);
+check(tiles[0] < 0.0 && tiles[2] > 0.0 && tiles[1] < tiles[3] && tiles[4] === 3.0 && tiles[5] > 0.0 && tiles[5] < 0.1,
+    "tiles of 3 m on the park grid, " + tiles[5] + " lighter and darker");
 
 check(hud()[1] === "20", "sets out at 20 km/h");
 world.slufter_set_pace(0);

@@ -21,6 +21,7 @@ namespace
         Mat4 m_viewProjection;
         float m_eye[3] = { 0.0f, 0.0f, 0.0f };
         float m_horizon[3] = { 0.0f, 0.0f, 0.0f };
+        float m_tiles[6] = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
         std::string m_hud;
     };
 
@@ -129,6 +130,12 @@ SLUFTER_EXPORT(slufter_flat_vertex_count) int slufter_flat_vertex_count()
     return (int) game().getScene().flatVertexCount();
 }
 
+// The land comes just after the sky, so that the page can draw its tiles on it
+SLUFTER_EXPORT(slufter_ground_vertex_count) int slufter_ground_vertex_count()
+{
+    return (int) game().getScene().groundVertexCount();
+}
+
 // The trees come just before the flat vertices, so that the page can leave them out
 SLUFTER_EXPORT(slufter_tree_vertex_count) int slufter_tree_vertex_count()
 {
@@ -169,6 +176,21 @@ SLUFTER_EXPORT(slufter_horizon) const float* slufter_horizon()
     a.m_horizon[1] = horizon.g;
     a.m_horizon[2] = horizon.b;
     return a.m_horizon;
+}
+
+// Six floats: the finest grid of the ground, its west, south, east and north in metres east and north of the
+// origin and the size of its tiles [m], and how much lighter and darker the page draws these tiles in turn
+SLUFTER_EXPORT(slufter_tiles) const float* slufter_tiles()
+{
+    App& a = app();
+    const TerrainLevel& finest = game().getWorld().getTerrain().getLevel(0);
+    a.m_tiles[0] = (float) finest.getWest();
+    a.m_tiles[1] = (float) finest.getSouth();
+    a.m_tiles[2] = (float) finest.getEast();
+    a.m_tiles[3] = (float) finest.getNorth();
+    a.m_tiles[4] = (float) finest.getCell();
+    a.m_tiles[5] = (float) game().getScene().getTileContrast();
+    return a.m_tiles;
 }
 
 // Distance over which the land fades into the horizon [m]

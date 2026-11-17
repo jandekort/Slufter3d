@@ -28,19 +28,19 @@
   "315 (4MH)",
   "316 (4MH)",
   "OTHER at 118698, 574704",
-  "Visdiefje at 118742, 574718",
-  "OTHER at 118774, 574711",
+  "Visdiefje at 118774, 574711",
   "Visdiefje at 118682, 574807",
   "6ST at 118676, 575432",
   "6ST at 118677, 575454"
  ],
  "removed": {
-  "OTHER at 118740, 574741": "The bicycle rental (2026-11-17, by Jan de Kort). No model fits it, so it is left out of the world."
+  "OTHER at 118740, 574741": "The bicycle rental (2026-11-17, by Jan de Kort). No model fits it, so it is left out of the world.",
+  "OTHER at 118742, 574718": "Taken for a second bungalow of the Visdiefje type on 2026-11-17, but it is not one; left out of the world (2026-11-17, by Jan de Kort)."
  },
  "retyped": {
-  "OTHER at 118742, 574718": {
+  "OTHER at 118774, 574711": {
    "type": "Visdiefje",
-   "why": "A second bungalow of the Visdiefje type (2026-11-17, by Jan de Kort)."
+   "why": "The second bungalow of the Visdiefje type (2026-11-17, by Jan de Kort)."
   }
  },
  "resized": {

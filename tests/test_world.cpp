@@ -136,7 +136,7 @@ int main(int argc, char** argv)
 
     { // Houses
         const std::vector<House>& houses = world.getHouses();
-        check(houses.size() == 396, "396 houses and pitches");
+        check(houses.size() == 395, "395 houses and pitches");
         check(std::count_if(houses.begin(), houses.end(), [](const House& h) { return h.m_pitch; }) == 60, "60 of them pitches");
         double worst = 0.0;
         for (const House& house : houses)
@@ -161,10 +161,18 @@ int main(int argc, char** argv)
             {
                 return h.m_type == "Visdiefje" && std::string(h.m_model->name()) == "Visdiefje";
             }) == 2, "two bungalows of the Visdiefje type, both drawn as Visdiefje");
+        check(std::any_of(houses.begin(), houses.end(), [](const House& h)
+            {
+                return h.m_type == "Visdiefje" && std::hypot(h.m_east - 73.8, h.m_north - 10.5) < 3.0;   // RD 118774, 574711
+            }), "the second Visdiefje stands at RD 118774, 574711");
         check(std::none_of(houses.begin(), houses.end(), [](const House& h)
             {
                 return std::hypot(h.m_east - 40.0, h.m_north - 41.3) < 3.0;   // RD 118740, 574741
             }), "the bicycle rental is left out");
+        check(std::none_of(houses.begin(), houses.end(), [](const House& h)
+            {
+                return std::hypot(h.m_east - 41.9, h.m_north - 17.7) < 3.0;   // RD 118742, 574718
+            }), "the building once taken for a second Visdiefje is left out");
         check(world.findHouse(9999) == nullptr, "no house 9999");
         // The front of a house is free of its own walls
         const House* h17 = world.findHouse(17);
@@ -286,6 +294,23 @@ int main(int argc, char** argv)
             && scene.skyVertexCount() + scene.treeVertexCount() + scene.flatVertexCount() < mesh.vertexCount(),
             "the trees are drawn, just before the roads and the water: " + std::to_string(scene.treeVertexCount())
             + " vertices");
+        { // The land comes right after the sky and holds no sea, which follows it
+            const size_t from = scene.skyVertexCount();
+            const size_t to = from + scene.groundVertexCount();
+            const auto colour = [&](size_t k) { return Color(v[6*k + 3], v[6*k + 4], v[6*k + 5]); };
+            const Color sea = colour(to);
+            bool seaInLand = false;
+            for (size_t k = from; k < to; ++k)
+            {
+                const Color c = colour(k);
+                seaInLand = seaInLand || (c.r == sea.r && c.g == sea.g && c.b == sea.b);
+            }
+            check(scene.groundVertexCount() > 100000 && scene.groundVertexCount() % 3 == 0
+                && to + scene.treeVertexCount() + scene.flatVertexCount() < mesh.vertexCount() && !seaInLand
+                && v[6*to + 1] == 0.0f && v[6*(to + 1) + 1] == 0.0f && v[6*(to + 2) + 1] == 0.0f,
+                "the land right after the sky, the sea after it: " + std::to_string(scene.groundVertexCount()) + " vertices");
+            check(scene.getTileContrast() > 0.0 && scene.getTileContrast() < 0.1, "the page draws faint tiles on the land");
+        }
         // The lighthouse stands on its dune, its top near 54 m NAP
         double top = 0.0;
         for (size_t k = scene.skyVertexCount(); k < mesh.vertexCount(); ++k)
