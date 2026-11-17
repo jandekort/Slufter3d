@@ -136,7 +136,7 @@ int main(int argc, char** argv)
 
     { // Houses
         const std::vector<House>& houses = world.getHouses();
-        check(houses.size() == 395, "395 houses and pitches");
+        check(houses.size() == 394, "394 houses and pitches");
         check(std::count_if(houses.begin(), houses.end(), [](const House& h) { return h.m_pitch; }) == 60, "60 of them pitches");
         double worst = 0.0;
         for (const House& house : houses)

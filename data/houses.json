@@ -7812,29 +7812,6 @@
    "review": []
   },
   {
-   "nr": 501,
-   "type": "24L",
-   "name": "",
-   "kind": "building",
-   "x": 118526.08,
-   "y": 574778.0,
-   "length": 9.4,
-   "width": 5.6,
-   "axis_azimuth": 109.6,
-   "front_azimuth": 199.6,
-   "source": {
-    "position": "AHN building",
-    "size": "AHN building (roof outline)",
-    "front": "v1 rule: the side nearest south"
-   },
-   "fit": {
-    "building_part": 0.96,
-    "covers": 0.96,
-    "moved_m": 0.5
-   },
-   "review": []
-  },
-  {
    "nr": 502,
    "type": "Krimweg73",
    "name": "",
