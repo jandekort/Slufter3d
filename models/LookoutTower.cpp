@@ -104,14 +104,17 @@ void LookoutTower::build(Mesh& mesh, const Ground& ground, double east, double n
     addDeck(mesh, foot, m_lowerDeck, mix(m_baseHalf, m_topHalf, m_lowerDeck / top));
     addDeck(mesh, foot, m_upperDeck, mix(m_baseHalf, m_topHalf, m_upperDeck / top));
 
-    { // Ladders: ground to lower deck, lower deck to upper deck
+    { // Ladders on the east side, towards the path: ground to lower deck, lower deck to upper deck. Posts, braces and
+      // decks are the same after a quarter turn, so the ladders alone decide which way the tower faces.
+        const Vec3 out(1.0, 0.0, 0.0);        // the ladders face east
+        const Vec3 across = cross(up, out);   // to the right of someone climbing them
         const double runs[2][2] = { { 0.0, m_lowerDeck }, { m_lowerDeck, m_upperDeck } };
         for (size_t r = 0; r < 2; ++r)
         {
             const double side = r == 0 ? 0.5 : -0.5;
-            const Vec3 low = foot + Vec3(side, runs[r][0], 0.9);
-            const Vec3 high = foot + Vec3(side, runs[r][1], 0.2);
-            const Vec3 half(0.25, 0.0, 0.0);
+            const Vec3 low = foot + across * side + up * runs[r][0] + out * 0.9;
+            const Vec3 high = foot + across * side + up * runs[r][1] + out * 0.2;
+            const Vec3 half = across * 0.25;
             mesh.addBeam(low - half, high - half, 0.035, m_wood);
             mesh.addBeam(low + half, high + half, 0.035, m_wood);
             const int rungs = 8;

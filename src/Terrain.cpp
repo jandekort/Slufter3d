@@ -52,6 +52,11 @@ double TerrainLevel::waterLevel(size_t i, size_t j) const
     return m_water.at(j*(m_nx - 1) + i);
 }
 
+bool TerrainLevel::isSea(size_t i, size_t j) const
+{
+    return m_water.at(j*(m_nx - 1) + i) < 0.5f * (WorldData::dry() + WorldData::sea());
+}
+
 size_t TerrainLevel::tileOf(double east, double north) const
 {
     const double u = clamp((east - m_west) / m_cell, 0.0, (double) (m_nx - 1));
@@ -62,6 +67,11 @@ size_t TerrainLevel::tileOf(double east, double north) const
 bool TerrainLevel::waterAt(double east, double north) const
 {
     return m_water[tileOf(east, north)] > 0.5f * WorldData::dry();
+}
+
+bool TerrainLevel::seaAt(double east, double north) const
+{
+    return m_water[tileOf(east, north)] < 0.5f * (WorldData::dry() + WorldData::sea());
 }
 
 double TerrainLevel::height(double east, double north) const
@@ -95,7 +105,6 @@ Terrain::Terrain(const WorldData& data)
     m_levels()
     , m_seaLevel(0.0)
     , m_seaBed(-1.5)
-    , m_wading(0.25)
 {
     require(!data.m_levels.empty(), "No terrain in the world file");
     m_levels.reserve(data.m_levels.size());
@@ -145,7 +154,9 @@ bool Terrain::waterAt(double east, double north) const
     return level != nullptr && level->waterAt(east, north);
 }
 
+// The sea is where tools/make_terrain.py found it; low ground inland, a polder below 0 m NAP, is no sea
 bool Terrain::seaAt(double east, double north) const
 {
-    return height(east, north) < m_seaLevel - m_wading;
+    const TerrainLevel* level = levelAt(east, north);
+    return level == nullptr || level->seaAt(east, north);
 }

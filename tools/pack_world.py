@@ -32,7 +32,7 @@ TERRAIN = os.path.join(ROOT, "build", "terrain")
 OUT = os.path.join(ROOT, "docs", "data", "world.bin")
 PREVIEW = os.path.join(ROOT, "build", "preview", "world")
 
-VERSION = 2
+VERSION = 3              # 3: the water of a tile may be SEA_MARK
 TREES = os.path.join(ROOT, "data", "trees.json")   # made by tools/make_trees.py; without it: no trees
 ORIGIN = (118700.0, 574700.0)   # RD New of the origin of the application's coordinates: east and north in metres
 
@@ -45,7 +45,9 @@ LEVELS = [
 ]
 SEAM_ROWS = 4            # a grid eases into the next one over this many of its rows from the edge
 WATER_SHARE = 0.4        # a tile is water when this part of it is
+SEA_SHARE = 0.5          # a tile is sea when this part of it is, in the classes of tools/make_terrain.py
 NO_WATER = -32768
+SEA_MARK = -32767        # in place of a water level: the tile is sea, which lies at 0 m NAP
 WATER, SEA = 2, 3        # classes of tools/make_terrain.py
 
 # Paving of a BGT road part (fysiek_voorkomen) -> kind in the file
@@ -71,7 +73,8 @@ def readTerrain(name):
 
 
 def makeLevel(spec):
-    """Heights at the nodes [m NAP] and the water level of every tile, rows from south to north"""
+    """Heights at the nodes [m NAP] and the water of every tile, rows from south to north: its level in cm NAP,
+    NO_WATER when it is dry, SEA_MARK when it is sea"""
     ground, waterLevel, classes, transform = readTerrain(spec["name"])
     cell = spec["cell"]
     west, south, east, north = spec["extent"]
@@ -100,7 +103,10 @@ def makeLevel(spec):
     tileRows = np.clip(rows[:-1] - size // 2, 0, ground.shape[0] - 1)
     tileShare = share[np.ix_(tileRows, tileCols)]
     tileLevel = levelSum[np.ix_(tileRows, tileCols)] / np.maximum(tileShare, 1e-9)
-    water = np.where(tileShare >= WATER_SHARE, np.round(tileLevel * 100.0), NO_WATER).astype(np.int16)
+    water = np.where(tileShare >= WATER_SHARE, np.round(tileLevel * 100.0), NO_WATER)
+    # The sea, as tools/make_terrain.py found it: the application takes nothing else for sea
+    seaShare = ndimage.uniform_filter((classes == SEA).astype(np.float64), size=size, mode="constant")
+    water = np.where(seaShare[np.ix_(tileRows, tileCols)] >= SEA_SHARE, SEA_MARK, water).astype(np.int16)
     return {"name": spec["name"], "cell": cell, "west": west, "south": south, "nx": nx, "nz": nz,
             "heights": heights, "water": water}
 
@@ -350,7 +356,7 @@ def main():
     for level in levels:
         out += struct.pack("<dddII", level["west"], level["south"], level["cell"], level["nx"], level["nz"])
         out += np.round(level["heights"] * 100.0).astype("<i2").tobytes()     # cm NAP, rows from south to north
-        out += level["water"].astype("<i2").tobytes()                          # cm NAP per tile, NO_WATER: dry
+        out += level["water"].astype("<i2").tobytes()                          # cm NAP per tile, NO_WATER, SEA_MARK
     out += struct.pack("<I", len(houses))
     for h in houses:
         out += struct.pack("<ii", h["nr"], h["semi_with"]) + text(h["type"]) + text(h["name"]) + text(h["model"])
@@ -377,7 +383,9 @@ def main():
     for level in levels:
         print("%-8s %3.0f m tiles, %d x %d nodes, %.1f to %.1f m NAP, %d tiles of water"
               % (level["name"], level["cell"], level["nx"], level["nz"], level["heights"].min(), level["heights"].max(),
-                 int((level["water"] != NO_WATER).sum())))
+                 int(((level["water"] != NO_WATER) & (level["water"] != SEA_MARK)).sum())))
+    for level in levels:
+        print("%-8s %d tiles of sea" % (level["name"], int((level["water"] == SEA_MARK).sum())))
     print("houses   %d, of which %d pitches; central building: %d wings cover %.0f%%"
           % (len(houses), sum(h["pitch"] for h in houses), len(wings), 100.0 * covered))
     print("roads    %d triangles: %s" % (len(kinds), ", ".join("%s %.0f m2" % item for item in sorted(areas.items()))))

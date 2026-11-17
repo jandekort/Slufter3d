@@ -11,8 +11,9 @@
 namespace
 {
     const std::uint32_t magic = 0x33464c53;     // "SLF3"
-    const std::uint32_t version = 2;
+    const std::uint32_t version = 3;
     const std::int16_t noWater = -32768;
+    const std::int16_t seaMark = -32767;        // in place of a water level: the tile is sea
     const double centimetre = 0.01;
 
     // Class Reader: takes little-endian values off a block of bytes, one after the other
@@ -88,7 +89,8 @@ WorldData WorldData::parse(const unsigned char* bytes, size_t size)
             for (size_t k = 0; k < tiles; ++k)
             {
                 const std::int16_t water = in.take<std::int16_t>();
-                level.m_water.push_back(water == noWater ? dry() : (float) (centimetre * (double) water));
+                level.m_water.push_back(water == noWater ? dry()
+                    : water == seaMark ? sea() : (float) (centimetre * (double) water));
             }
         }
     }

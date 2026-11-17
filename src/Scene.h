@@ -33,20 +33,34 @@ public:
     size_t flatVertexCount() const { return m_flatVertexCount; }   // the last ones of the buffer
     size_t treeVertexCount() const { return m_treeVertexCount; }   // just before the flat ones
     Mat4 viewProjection(const Walker& walker, double aspect) const;
-    Color groundColor(double height, double slope, bool beach, bool odd) const;
+    // beach: share of sand that the sea brings, in [0, 1]; dry and light: the patch the ground lies in, in [-1, 1]
+    Color groundColor(double height, double slope, double beach, double dry, double light) const;
     const Color& getHorizon() const { return m_horizon; }
     double getFogRange() const { return m_fogRange; }
 
 private:
     void addSky();
     void addGround(const Terrain& terrain);
-    void addLevel(const TerrainLevel& level, const TerrainLevel* finer, bool chequered);
+    void addLevel(const TerrainLevel& level, const TerrainLevel* finer);
     void addSeaAround(const TerrainLevel& coarsest);
     void addWater(const Terrain& terrain);
     void addRoads(const World& world);
     void addTrees(const World& world);
-    // Tiles of a grid that the sea can reach over low ground: beach and salt marsh
-    std::vector<bool> beachTiles(const TerrainLevel& level) const;
+    // Steps from the sea to every tile of a grid over low ground: 0 on the sea, more on beach and salt marsh;
+    // -1 where the sea does not reach
+    std::vector<int> stepsFromSea(const TerrainLevel& level) const;
+    // The ground at every node of a grid, lit, rows from south to north
+    std::vector<Color> nodeColors(const TerrainLevel& level, const std::vector<int>& steps) const;
+    // Gentle, irregular patches in [-1, 1], the same on every run; every seed gives other patches
+    double patches(double east, double north, double cell, unsigned seed) const;
+
+    // Struct Patch: one layer of the patches on the ground
+    struct Patch
+    {
+        double m_size;      // distance between the bumps of its noise [m]
+        double m_weight;
+        double m_turn;      // its lattice is turned this far, so that no layer runs along the grid [rad]
+    };
 
     Mesh m_mesh;
     size_t m_skyVertexCount;
@@ -67,6 +81,8 @@ private:
     Color m_marram;         // dune tops
     Color m_meadow;         // the polder
     Color m_sand;           // steep, bare slopes and the beach
+    Color m_dry;            // straw: patches of drier vegetation
+    Color m_lush;           // patches of deeper green
     Color m_water;
     Color m_sea;
     Color m_asphalt;
@@ -78,7 +94,9 @@ private:
     double m_sandSlope;     // slope from which sand shows
     double m_beachHeight;   // ground below this that the sea can reach is beach [m NAP]
     double m_beachReach;    // and no further from the sea than this [m]
-    float m_tileContrast;   // brightness of every other tile in the park
+    std::vector<Patch> m_patches; // broad to fine
+    double m_patchTint;     // how far a patch shifts the vegetation towards m_dry or m_lush
+    double m_patchLight;    // how much lighter or darker a patch makes the ground
     double m_roadLift;      // roads lie this far above the ground [m]
     double m_waterLift;     // water above its measured level [m]
     double m_seaReach;      // the sea is drawn this far beyond the last grid [m]

@@ -14,7 +14,9 @@
 # The old table is about 16% too large in position and shifted. Its houses are first laid over the AHN buildings
 # with one scale, rotation and shift for the whole park; then every house is fitted to its own building.
 # Houses whose fit is doubtful are listed in build/review/houses_review.md and drawn red in houses_review.png.
-# Decisions taken after a review go into data/house_corrections.json (optional), never into the raw files.
+# Decisions taken after a review go into data/house_corrections.json (optional), never into the raw files: houses
+# accepted as they are, buildings left out of the world, buildings of another type than the old table gives, and
+# buildings whose outline was measured otherwise.
 #
 # Needs: numpy, scipy, rasterio, shapely, opencv-python
 import copy
@@ -483,6 +485,7 @@ def main():
                                "area_m2": round(float(field.m_areas[v - 1]), 0),
                                "nearest_house": label(named[houseTree.query(centre)[1]])})
 
+    records = corrected(records, corrections)
     stale = sorted(accepted - {label(r) for r in records})
     if stale:
         raise RuntimeError("data/house_corrections.json accepts houses that are not there (any more): %s" % ", ".join(stale))
@@ -514,6 +517,34 @@ def main():
           % (len(buildings), sum(r["source"]["position"] == "AHN building" for r in buildings),
              len(records) - len(buildings), len(review), len(unassigned)))
     writeReview(records, unassigned, central, fit, field)
+
+
+def corrected(records, corrections):
+    """The records with the decisions of data/house_corrections.json on what stands there: buildings that are left
+    out of the world (removed), buildings of another type than the old table gives (retyped), and buildings whose
+    outline was measured otherwise than on the AHN (resized). A building that is left out still counts as found, so
+    its AHN building is not listed as a building without a house."""
+    removed = corrections.get("removed", {})
+    retyped = corrections.get("retyped", {})
+    resized = corrections.get("resized", {})
+    stale = sorted((set(removed) | set(retyped) | set(resized)) - {label(r) for r in records})
+    if stale:
+        raise RuntimeError("data/house_corrections.json removes, retypes or resizes houses that are not there (any more): %s"
+                           % ", ".join(stale))
+    kept = []
+    for r in records:
+        key = label(r)
+        if key in removed:
+            continue
+        if key in retyped:
+            r["type"] = retyped[key]["type"]
+            r["source"]["type"] = "data/house_corrections.json"
+        if key in resized:
+            r["length"] = resized[key]["length"]
+            r["width"] = resized[key]["width"]
+            r["source"]["size"] = "data/house_corrections.json"
+        kept.append(r)
+    return kept
 
 
 def label(r):

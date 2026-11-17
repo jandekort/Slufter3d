@@ -8,6 +8,9 @@
 <style>
     html, body { margin: 0; height: 100%; background: #9ec7f2; color: #ffffff; overflow: hidden;
                  font-family: "Helvetica Neue", Arial, sans-serif; }
+    /* A press on a phone is a press, not the start of a selection or of a long-press menu */
+    body { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
+           -webkit-tap-highlight-color: transparent; }
     canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; cursor: grab; }
     .hud { position: absolute; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75); pointer-events: none; font-size: 15px; line-height: 1.45; }
     #where { left: 16px; top: 14px; }
@@ -22,12 +25,12 @@
     #panel .row { display: flex; gap: 0; }
     #panel button, #panel input { font: inherit; color: #ffffff; background: rgba(20, 40, 60, 0.45);
                  border: 1px solid rgba(255, 255, 255, 0.7); padding: 6px 10px; outline: none; }
-    #panel button { cursor: pointer; }
+    #panel button { cursor: pointer; touch-action: manipulation; }  /* quick taps are taps, not a zoom */
     #panel button.on { background: rgba(255, 255, 255, 0.92); color: #173a5c; }
     #panel button:first-child, #panel input:first-child { border-radius: 6px 0 0 6px; }
     #panel button + button { border-left: none; }
     #panel button:last-child { border-radius: 0 6px 6px 0; border-left: none; }
-    #panel input { width: 92px; }
+    #panel input { width: 92px; -webkit-user-select: text; user-select: text; -webkit-touch-callout: default; }
     #panel input::placeholder { color: rgba(255, 255, 255, 0.8); }
     .pad { position: absolute; bottom: 5%; display: none; gap: 2vmin; }
     .pad button { width: 15vmin; height: 15vmin; border-radius: 50%; border: 0.5vmin solid #ffffff;
@@ -35,7 +38,11 @@
                   touch-action: none; user-select: none; -webkit-user-select: none; }
     #padLeft { left: 4%; }
     #padRight { right: 4%; }
-    @media (pointer: coarse) { .pad { display: flex; } #help { display: none; } #credit { bottom: 6px; } }
+    @media (pointer: coarse) { .pad { display: flex; } #help { display: none; } #credit { bottom: 6px; }
+                               /* buttons about 40 px high for a finger; 16 px text keeps iOS from zooming
+                                  into the house number field */
+                               #panel { font-size: 16px; }
+                               #panel button, #panel input { padding: 10px 14px; } }
 </style>
 </head>
 <body>
@@ -54,7 +61,7 @@
         <button id="up">&#9650; higher</button><button id="down">&#9660; lower</button><button id="land">land</button>
     </div>
     <div class="row">
-        <button id="trees">Trees</button>
+        <button id="trees" class="on">Trees</button>
     </div>
 </div>
 <div id="help" class="hud">W / S or arrows: walk &nbsp; A / D or arrows: turn &nbsp; Q / E: step sideways &nbsp; drag: look around &nbsp; wheel or Space / C: fly higher, lower &nbsp; L: land &nbsp; T: trees on, off &nbsp; 1 / 2: slow, fast &nbsp; R: back to the lookout tower</div>

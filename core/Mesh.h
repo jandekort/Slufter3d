@@ -10,7 +10,8 @@
 #include <vector>
 
 // Class Mesh
-// Vertex layout: x, y, z, r, g, b (six floats). Lighting is baked into the colour.
+// Vertex layout: x, y, z, r, g, b (six floats). Lighting is baked into the colour; the page blends the
+// colours of a triangle's corners across it.
 class Mesh
 {
 public:
@@ -25,12 +26,13 @@ public:
         const Vec3& halfSize, const Color& color);
     // A square bar from one end to the other
     void addBeam(const Vec3& from, const Vec3& to, double halfThickness, const Color& color);
-    // No lighting: for the sky and for surfaces that must keep their colour
+    // The colours as given, one per corner: for the sky, for surfaces that must keep their colour, and for
+    // the ground, lit beforehand with litGround()
     void addFlatTriangle(const Vec3& a, const Vec3& b, const Vec3& c, const Color& ca, const Color& cb, const Color& cc);
-    // Lighting with the slope exaggerated, so that gentle relief shows
-    void addGroundTriangle(const Vec3& a, const Vec3& b, const Vec3& c, const Color& color);
 
     // Accessor
+    // The ground lit with its slope exaggerated, so that gentle relief shows
+    Color litGround(const Color& color, const Vec3& normal) const;
     const float* data() const { return m_vertices.data(); }
     size_t vertexCount() const { return m_vertices.size() / m_floatsPerVertex; }
     size_t floatCount() const { return m_vertices.size(); }

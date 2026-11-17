@@ -80,16 +80,9 @@ void Mesh::addFlatTriangle(const Vec3& a, const Vec3& b, const Vec3& c, const Co
     addVertex(c, cc);
 }
 
-void Mesh::addGroundTriangle(const Vec3& a, const Vec3& b, const Vec3& c, const Color& color)
+Color Mesh::litGround(const Color& color, const Vec3& normal) const
 {
-    Vec3 normal = normalize(cross(b - a, c - a));
-    if (normal.y < 0.0)
-    {
-        normal = -normal;
-    }
-    const Vec3 steep = normalize(Vec3(m_relief * normal.x, normal.y, m_relief * normal.z));
-    const Color lit = shade(color, steep);
-    addVertex(a, lit);
-    addVertex(b, lit);
-    addVertex(c, lit);
+    const Vec3 up = normal.y < 0.0 ? -normal : normal;
+    const Vec3 steep = normalize(Vec3(m_relief * up.x, up.y, m_relief * up.z));
+    return shade(color, steep);
 }

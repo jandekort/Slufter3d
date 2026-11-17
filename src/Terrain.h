@@ -26,7 +26,9 @@ public:
     double nodeHeight(size_t i, size_t j) const;
     bool hasWater(size_t i, size_t j) const;             // on the tile north-east of node (i, j)
     double waterLevel(size_t i, size_t j) const;
+    bool isSea(size_t i, size_t j) const;                // the tile north-east of node (i, j) is sea
     bool waterAt(double east, double north) const;
+    bool seaAt(double east, double north) const;
     bool contains(double east, double north, double margin = 0.0) const;
     size_t tileOf(double east, double north) const;      // index of the tile under a point, j * (nx - 1) + i
     size_t getNx() const { return m_nx; }
@@ -60,7 +62,7 @@ public:
     Vec3 normal(double east, double north) const;            // unit normal of the ground
     bool contains(double east, double north, double margin = 0.0) const; // within the coarsest grid
     bool waterAt(double east, double north) const;           // inland water on the tile underneath
-    bool seaAt(double east, double north) const;             // the ground lies under the sea
+    bool seaAt(double east, double north) const;             // the tile underneath is sea; beyond the last grid all is
     size_t levelCount() const { return m_levels.size(); }
     const TerrainLevel& getLevel(size_t k) const { return m_levels.at(k); }
     double getSeaLevel() const { return m_seaLevel; }
@@ -71,5 +73,4 @@ private:
     std::vector<TerrainLevel> m_levels;
     double m_seaLevel;    // [m NAP]
     double m_seaBed;      // height beyond the last grid [m NAP]
-    double m_wading;      // ground this far under the sea level counts as sea [m]
 };

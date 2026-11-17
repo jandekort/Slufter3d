@@ -41,6 +41,33 @@ namespace
         controls.m_forward = 1.0;
         return controls;
     }
+
+    // Colour of the first triangle after the sky that lies over a point, blended from its corners as the page
+    // does: the ground there, as it is lit
+    Color groundColourAt(const Scene& scene, double east, double north)
+    {
+        const Mesh& mesh = scene.getMesh();
+        const float* v = mesh.data();
+        for (size_t t = scene.skyVertexCount() / 3; t < mesh.vertexCount() / 3; ++t)
+        {
+            const float* p = v + 18 * t;
+            const double ax = p[0], an = -p[2], bx = p[6], bn = -p[8], cx = p[12], cn = -p[14];
+            const double d = (bn - cn) * (ax - cx) + (cx - bx) * (an - cn);
+            if (std::fabs(d) < 1.0e-12)
+            {
+                continue;
+            }
+            const double wa = ((bn - cn) * (east - cx) + (cx - bx) * (north - cn)) / d;
+            const double wb = ((cn - an) * (east - cx) + (ax - cx) * (north - cn)) / d;
+            if (wa >= 0.0 && wb >= 0.0 && wa + wb <= 1.0)
+            {
+                const double wc = 1.0 - wa - wb;
+                return Color((float) (wa * p[3] + wb * p[9] + wc * p[15]), (float) (wa * p[4] + wb * p[10] + wc * p[16]),
+                    (float) (wa * p[5] + wb * p[11] + wc * p[17]));
+            }
+        }
+        return Color(0.0f, 0.0f, 0.0f);
+    }
 }
 
 int main(int argc, char** argv)
@@ -102,11 +129,14 @@ int main(int argc, char** argv)
         const TerrainLevel& horizon = terrain.getLevel(2);
         check(terrain.seaAt(horizon.getWest() + 500.0, 0.0) && !terrain.seaAt(0.0, 0.0), "sea in the west, land in the park");
         check(terrain.height(-1.0e6, 0.0) < 0.0, "beyond the grids there is only sea");
+        check(!terrain.seaAt(397.5, 130.5) && terrain.height(397.5, 130.5) < -0.1,
+            "the shore of the pond in the polder lies below 0 m NAP, and is no sea");
+        check(!terrain.seaAt(499.5, 49.5), "the polder in the south-east is no sea");
     }
 
     { // Houses
         const std::vector<House>& houses = world.getHouses();
-        check(houses.size() == 397, "397 houses and pitches");
+        check(houses.size() == 396, "396 houses and pitches");
         check(std::count_if(houses.begin(), houses.end(), [](const House& h) { return h.m_pitch; }) == 60, "60 of them pitches");
         double worst = 0.0;
         for (const House& house : houses)
@@ -123,7 +153,18 @@ int main(int argc, char** argv)
         check(h14 != nullptr && h15 != nullptr && h14->m_semi && h15->m_semi
             && std::fabs(std::hypot(h14->m_east - h15->m_east, h14->m_north - h15->m_north) - h14->m_site.m_length) < 1.2,
             "14 and 15 are the two halves of one block, side by side");
-        check(std::any_of(houses.begin(), houses.end(), [](const House& h) { return h.m_name == "Visdiefje"; }), "the Visdiefje is there");
+        check(std::any_of(houses.begin(), houses.end(), [](const House& h)
+            {
+                return h.m_name == "Visdiefje" && std::fabs(h.m_site.m_length - 5.8) < 0.01 && std::fabs(h.m_site.m_width - 5.2) < 0.01;
+            }), "the Visdiefje is there, with walls of 5.8 m by 5.2 m");
+        check(std::count_if(houses.begin(), houses.end(), [](const House& h)
+            {
+                return h.m_type == "Visdiefje" && std::string(h.m_model->name()) == "Visdiefje";
+            }) == 2, "two bungalows of the Visdiefje type, both drawn as Visdiefje");
+        check(std::none_of(houses.begin(), houses.end(), [](const House& h)
+            {
+                return std::hypot(h.m_east - 40.0, h.m_north - 41.3) < 3.0;   // RD 118740, 574741
+            }), "the bicycle rental is left out");
         check(world.findHouse(9999) == nullptr, "no house 9999");
         // The front of a house is free of its own walls
         const House* h17 = world.findHouse(17);
@@ -255,6 +296,23 @@ int main(int argc, char** argv)
             }
         }
         check(top > 50.0 && top < 60.0, "the lighthouse reaches " + std::to_string(top) + " m NAP");
+        // Only the sea starts a beach: the polder below 0 m NAP is meadow, the beach by the lighthouse sand
+        const Color polder = groundColourAt(scene, 499.5, 49.5);
+        check(polder.g > polder.r, "the polder in the south-east is drawn green, not as beach");
+        const Color sand = groundColourAt(scene, 666.0, 2814.0);
+        check(sand.r > sand.g, "the beach by the lighthouse is drawn as sand");
+        // The ground shows no tiles: on either side of the edge between two tiles of the park it looks the same
+        const TerrainLevel& park = game.getWorld().getTerrain().getLevel(0);
+        double jump = 0.0;
+        for (size_t k = 1; k < 40; ++k)
+        {
+            const double edge = park.getWest() + (double) (7 * k) * park.getCell();
+            const double north = park.getSouth() + (7.5 * (double) k + 0.5) * park.getCell();
+            const Color west = groundColourAt(scene, edge - 0.01, north);
+            const Color east = groundColourAt(scene, edge + 0.01, north);
+            jump = std::max(jump, (double) std::max(std::fabs(west.r - east.r), std::max(std::fabs(west.g - east.g), std::fabs(west.b - east.b))));
+        }
+        check(jump < 0.01, "the ground runs on across the edges of the tiles, at most " + std::to_string(jump) + " apart");
         const Mat4 matrix = scene.viewProjection(game.getWalker(), 1.6);
         check(std::all_of(matrix.m, matrix.m + 16, [](float x) { return std::isfinite(x); }), "the view is finite");
         const std::string hud = game.hudString();

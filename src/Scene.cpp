@@ -13,11 +13,35 @@
 #include "World.h"
 
 #include <algorithm>
+#include <cstdint>
 #include <deque>
 
 namespace
 {
     const double pi = 3.14159265358979323846;
+
+    // A number in [0, 1] for every corner of a lattice, the same on every run and on every machine
+    double lattice(int i, int j, uint32_t seed)
+    {
+        uint32_t h = (uint32_t) i * 374761393u + (uint32_t) j * 668265263u + seed * 2246822519u;
+        h = (h ^ (h >> 13)) * 1274126177u;
+        h ^= h >> 16;
+        return (double) h / 4294967295.0;
+    }
+
+    // Smooth noise in [-1, 1], with bumps about one lattice step apart
+    double valueNoise(double x, double y, uint32_t seed)
+    {
+        const double x0 = std::floor(x);
+        const double y0 = std::floor(y);
+        const int i = (int) x0;
+        const int j = (int) y0;
+        const double u = (x - x0) * (x - x0) * (3.0 - 2.0 * (x - x0));
+        const double v = (y - y0) * (y - y0) * (3.0 - 2.0 * (y - y0));
+        const double south = lattice(i, j, seed) + (lattice(i + 1, j, seed) - lattice(i, j, seed)) * u;
+        const double north = lattice(i, j + 1, seed) + (lattice(i + 1, j + 1, seed) - lattice(i, j + 1, seed)) * u;
+        return 2.0 * (south + (north - south) * v) - 1.0;
+    }
 }
 
 Scene::Scene()
@@ -41,6 +65,8 @@ Scene::Scene()
     , m_marram(0.78f, 0.74f, 0.44f)
     , m_meadow(0.36f, 0.56f, 0.24f)
     , m_sand(0.84f, 0.78f, 0.60f)
+    , m_dry(0.66f, 0.62f, 0.36f)
+    , m_lush(0.17f, 0.40f, 0.20f)
     , m_water(0.20f, 0.36f, 0.52f)
     , m_sea(0.18f, 0.33f, 0.46f)
     , m_asphalt(0.40f, 0.40f, 0.42f)
@@ -52,7 +78,9 @@ Scene::Scene()
     , m_sandSlope(0.38)
     , m_beachHeight(2.6)
     , m_beachReach(600.0)
-    , m_tileContrast(0.92f)
+    , m_patches({ { 60.0, 0.40, 0.4 }, { 15.0, 0.35, 1.1 }, { 5.0, 0.25, 2.0 } })
+    , m_patchTint(0.9)
+    , m_patchLight(0.35)
     , m_roadLift(0.06)
     , m_waterLift(0.05)
     , m_seaReach(40000.0)
@@ -97,18 +125,33 @@ Mat4 Scene::viewProjection(const Walker& walker, double aspect) const
 }
 
 // Low ground is green, dune tops are the yellow-green of marram, steep faces show sand, and so does
-// low ground that the sea can reach. Every other tile of the park is a shade darker.
-Color Scene::groundColor(double height, double slope, bool beach, bool odd) const
+// low ground that the sea can reach. Patches make the vegetation drier or lusher, the ground lighter or darker.
+Color Scene::groundColor(double height, double slope, double beach, double dry, double light) const
 {
     const double dune = clamp((height - m_meadowHeight) / (m_duneHeight - m_meadowHeight), 0.0, 1.0);
     Color color = height < m_meadowHeight ? m_meadow : m_grass.mixed(m_marram, (float) dune);
+    color = color.mixed(dry > 0.0 ? m_dry : m_lush, (float) (m_patchTint * std::fabs(dry)));
     const double bare = clamp((slope - m_sandSlope) / m_sandSlope, 0.0, 1.0);
     color = color.mixed(m_sand, (float) (0.8 * bare));
-    if (beach)
+    color = color.mixed(m_sand, (float) beach);
+    return color.scaled((float) (1.0 + m_patchLight * light));
+}
+
+// A sum of layers of smooth noise. A grid cannot show bumps closer together than two of its tiles, so on the
+// coarser grids the fine layers fade out.
+double Scene::patches(double east, double north, double cell, unsigned seed) const
+{
+    double sum = 0.0;
+    for (size_t k = 0; k < m_patches.size(); ++k)
     {
-        color = m_sand;
+        const Patch& patch = m_patches[k];
+        const double fade = clamp(patch.m_size / (2.0 * cell), 0.0, 1.0);
+        const double c = std::cos(patch.m_turn);
+        const double s = std::sin(patch.m_turn);
+        sum += fade * patch.m_weight * valueNoise((c * east - s * north) / patch.m_size, (s * east + c * north) / patch.m_size,
+            (uint32_t) (seed * m_patches.size() + k));
     }
-    return odd ? color.scaled(m_tileContrast) : color;
+    return sum;
 }
 
 // A dome around the eye: pale at the horizon, deep blue overhead
@@ -146,13 +189,14 @@ void Scene::addGround(const Terrain& terrain)
 {
     for (size_t k = 0; k < terrain.levelCount(); ++k)
     {
-        addLevel(terrain.getLevel(k), k > 0 ? &terrain.getLevel(k - 1) : nullptr, k == 0);
+        addLevel(terrain.getLevel(k), k > 0 ? &terrain.getLevel(k - 1) : nullptr);
     }
     addSeaAround(terrain.getLevel(terrain.levelCount() - 1));
 }
 
-// Starting from the tiles under the sea, over neighbouring tiles of low ground, as far as the beach reaches
-std::vector<bool> Scene::beachTiles(const TerrainLevel& level) const
+// Starting from the tiles of the sea, over neighbouring tiles of low ground, as far as the beach reaches. Only
+// the sea counts: low ground inland, the polder below 0 m NAP with its ditches, does not start a beach.
+std::vector<int> Scene::stepsFromSea(const TerrainLevel& level) const
 {
     const size_t nx = level.getNx() - 1;
     const size_t nz = level.getNz() - 1;
@@ -168,7 +212,7 @@ std::vector<bool> Scene::beachTiles(const TerrainLevel& level) const
     {
         for (size_t i = 0; i < nx; ++i)
         {
-            if (top(i, j) < 0.0)
+            if (level.isSea(i, j))
             {
                 steps[j*nx + i] = 0;
                 open.push_back(j*nx + i);
@@ -197,25 +241,66 @@ std::vector<bool> Scene::beachTiles(const TerrainLevel& level) const
             }
         }
     }
-    std::vector<bool> beach(nx * nz);
-    std::transform(steps.begin(), steps.end(), beach.begin(),
-        [](int s)
-        {
-            return s > 0;
-        });
-    return beach;
+    return steps;
 }
 
-// One grid, without the part that a finer grid covers. Tiles that reach below the sea level get the sea
-// as well, in strips from west to east; tiles wholly under it get the sea only.
-void Scene::addLevel(const TerrainLevel& level, const TerrainLevel* finer, bool chequered)
+// Colour and light belong to the nodes, and the triangles blend them between their corners, so the ground shows
+// no tiles. The slope at a node comes from its neighbours on either side, at the edge of the grid from the one
+// inside. A node takes the beach from the land around it, and nodes amidst the sea are sand.
+std::vector<Color> Scene::nodeColors(const TerrainLevel& level, const std::vector<int>& steps) const
+{
+    const size_t nx = level.getNx();
+    const size_t nz = level.getNz();
+    const double cell = level.getCell();
+    std::vector<Color> colors;
+    colors.reserve(nx * nz);
+    for (size_t j = 0; j < nz; ++j)
+    {
+        for (size_t i = 0; i < nx; ++i)
+        {
+            const size_t west = i > 0 ? i - 1 : i;
+            const size_t east = i + 1 < nx ? i + 1 : i;
+            const size_t south = j > 0 ? j - 1 : j;
+            const size_t north = j + 1 < nz ? j + 1 : j;
+            const double alongEast = (level.nodeHeight(east, j) - level.nodeHeight(west, j)) / ((double) (east - west) * cell);
+            const double alongNorth = (level.nodeHeight(i, north) - level.nodeHeight(i, south)) / ((double) (north - south) * cell);
+            int land = 0;
+            int beach = 0;
+            for (size_t tj = std::min(south, nz - 2); tj <= std::min(j, nz - 2); ++tj)
+            {
+                for (size_t ti = std::min(west, nx - 2); ti <= std::min(i, nx - 2); ++ti)
+                {
+                    const int step = steps[tj*(nx - 1) + ti];
+                    land += step != 0 ? 1 : 0;
+                    beach += step > 0 ? 1 : 0;
+                }
+            }
+            const double x = level.getWest() + (double) i * cell;
+            const double y = level.getSouth() + (double) j * cell;
+            const Color color = groundColor(level.nodeHeight(i, j), std::hypot(alongEast, alongNorth),
+                land > 0 ? (double) beach / (double) land : 1.0, patches(x, y, cell, 1u), patches(x, y, cell, 2u));
+            colors.push_back(m_mesh.litGround(color, normalize(Vec3(-alongEast, 1.0, alongNorth))));
+        }
+    }
+    return colors;
+}
+
+// One grid, without the part that a finer grid covers. Tiles of the sea and of the beach that reach below the
+// sea level get the sea as well, in strips from west to east; such tiles wholly under it get the sea only.
+// Low ground inland keeps its ground, however low.
+void Scene::addLevel(const TerrainLevel& level, const TerrainLevel* finer)
 {
     const double cell = level.getCell();
     const double seaLevel = 0.0;
-    const std::vector<bool> beach = beachTiles(level);
+    const std::vector<int> steps = stepsFromSea(level);
+    const std::vector<Color> colors = nodeColors(level, steps);
     auto node = [&](size_t i, size_t j)
     {
         return Vec3(level.getWest() + (double) i * cell, level.nodeHeight(i, j), -(level.getSouth() + (double) j * cell));
+    };
+    auto color = [&](size_t i, size_t j)
+    {
+        return colors[j*level.getNx() + i];
     };
     for (size_t j = 0; j + 1 < level.getNz(); ++j)
     {
@@ -244,7 +329,9 @@ void Scene::addLevel(const TerrainLevel& level, const TerrainLevel* finer, bool 
             const double lowest = std::min(std::min(sw.y, se.y), std::min(ne.y, nw.y));
             const double highest = std::max(std::max(sw.y, se.y), std::max(ne.y, nw.y));
             const bool covered = finer != nullptr && finer->contains(0.5 * (sw.x + ne.x), -0.5 * (sw.z + ne.z));
-            if (covered || lowest >= seaLevel)
+            const int step = steps[j*(level.getNx() - 1) + i];
+            const bool coast = step >= 0;   // the sea, or the beach it reaches
+            if (covered || lowest >= seaLevel || !coast)
             {
                 endStrip(i);
             }
@@ -253,15 +340,12 @@ void Scene::addLevel(const TerrainLevel& level, const TerrainLevel* finer, bool 
                 inStrip = true;
                 stripFrom = i;
             }
-            if (covered || highest < seaLevel)
+            if (covered || (coast && highest < seaLevel))
             {
                 continue;   // drawn by the finer grid, or all of it under the sea
             }
-            const double mean = 0.25 * (sw.y + se.y + ne.y + nw.y);
-            const double slope = std::hypot(0.5 * (se.y - sw.y + ne.y - nw.y), 0.5 * (nw.y - sw.y + ne.y - se.y)) / cell;
-            const Color color = groundColor(mean, slope, beach[j*(level.getNx() - 1) + i], chequered && ((i + j) % 2) == 1);
-            m_mesh.addGroundTriangle(sw, se, ne, color);
-            m_mesh.addGroundTriangle(sw, ne, nw, color);
+            m_mesh.addFlatTriangle(sw, se, ne, color(i, j), color(i + 1, j), color(i + 1, j + 1));
+            m_mesh.addFlatTriangle(sw, ne, nw, color(i, j), color(i + 1, j + 1), color(i, j + 1));
         }
         endStrip(level.getNx() - 1);
     }

@@ -97,14 +97,34 @@
         event.preventDefault();
         riseNotches -= event.deltaY / WHEEL_NOTCH;
     }, { passive: false });
-    document.getElementById("up").addEventListener("click", function () { riseNotches += 1.0; });
-    document.getElementById("down").addEventListener("click", function () { riseNotches -= 1.0; });
+    // A press on higher or lower is a step; holding it keeps climbing, as Space and C do. Taken at the press
+    // itself, so that a phone cannot turn it into a selection; a click without a pointer is the keyboard.
+    function climbButton(button, notch, key) {
+        button.addEventListener("pointerdown", function (event) {
+            event.preventDefault();
+            riseNotches += notch;
+            keys[key] = true;
+            button.setPointerCapture(event.pointerId);
+        });
+        const release = function () { keys[key] = false; };
+        button.addEventListener("pointerup", release);
+        button.addEventListener("pointercancel", release);
+        button.addEventListener("lostpointercapture", release);
+        button.addEventListener("click", function (event) {
+            if (event.detail === 0) {
+                riseNotches += notch;
+            }
+        });
+    }
+    climbButton(document.getElementById("up"), 1.0, "up");
+    climbButton(document.getElementById("down"), -1.0, "down");
     const treesButton = document.getElementById("trees");
-    let showTrees = false;   // true->the trees are drawn; off at the start, they are heavy to draw
+    let showTrees = true;    // true->the trees are drawn; on at the start, phones draw them smoothly
     function toggleTrees() {
         showTrees = !showTrees;
         treesButton.classList.toggle("on", showTrees);
     }
+    treesButton.classList.toggle("on", showTrees);
     treesButton.addEventListener("click", toggleTrees);
     document.getElementById("land").addEventListener("click", function () { landRequested = true; });
 
@@ -120,6 +140,20 @@
         button.addEventListener("pointerup", set(false));
         button.addEventListener("pointercancel", set(false));
         button.addEventListener("pointerleave", set(false));
+    });
+
+    // No selection of text and no long-press menu, which on a phone would take the press away from a button;
+    // only the house number field and links keep them
+    function keepsSelection(target) {
+        const element = target instanceof Element ? target : target.parentElement;
+        return element !== null && element.closest("input, a") !== null;
+    }
+    ["selectstart", "contextmenu"].forEach(function (type) {
+        document.addEventListener(type, function (event) {
+            if (!keepsSelection(event.target)) {
+                event.preventDefault();
+            }
+        });
     });
 
     // Dragging over the picture turns the head

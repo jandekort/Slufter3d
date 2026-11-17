@@ -21,7 +21,8 @@ struct WorldData
         size_t m_nx = 0;                // nodes from west to east
         size_t m_nz = 0;                // nodes from south to north
         std::vector<float> m_height;    // at the nodes, rows from south to north
-        std::vector<float> m_water;     // level of the water on every tile, (m_nx - 1) * (m_nz - 1); dry()->none
+        std::vector<float> m_water;     // level of the water on every tile, (m_nx - 1) * (m_nz - 1);
+                                        // dry()->none, sea()->the tile is sea
     };
 
     // Struct HouseRecord
@@ -64,6 +65,7 @@ struct WorldData
     };
 
     static float dry() { return -1.0e9f; }  // value of Level::m_water on a tile without water
+    static float sea() { return -2.0e9f; }  // value of Level::m_water on a tile of the sea
     static int roadKinds() { return 4; }    // 0->asphalt, 1->bricks, 2->shells, 3->sand
 
     // Reads the file; anything wrong with it stops the program
