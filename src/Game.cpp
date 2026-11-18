@@ -19,7 +19,7 @@ Game::Game(const WorldData& data)
     , m_walker()
     , m_scene()
     , m_maxStep(0.02)
-    , m_startPitch(-10.0 * pi / 180.0)
+    , m_startPitch(-5.0 * pi / 180.0)
 {
     m_scene.build(m_world);
     reset();
