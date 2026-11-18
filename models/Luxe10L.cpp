@@ -13,7 +13,8 @@
 // Right-hand gable (+u, B405): brick within white boarding; a dark door near the front, a wide window with shutters
 // towards the back; two windows above, with a shutter either side of the pair, as on the other gable.
 // Left-hand gable (-u, 10La, 10Lb, B405_c): French doors towards the back, a window with one large shutter towards
-// the front; the pergola over the terrace, reaching well past the back corner, and a glass screen at its front end.
+// the front; the pergola over the terrace, as far from the one corner of the gable as from the other, and a glass screen at
+// its front end.
 // Back (-v): not photographed; a wide window, as the earlier models had it.
 #include "ModelKit.h"
 #include "Models.h"
@@ -97,8 +98,10 @@ namespace
         b.window(Side::Left, -0.88*hw, -0.36*hw, 0.05, 2.35, 2, 1, darkFrame, paint.m_glass, 0.02);
         b.window(Side::Left, 0.40*hw, 0.62*hw, 1.15, 2.35, 1, 1, paint.m_trim, paint.m_glass, 0.01);
         b.panel(Side::Left, 0.17*hw, 0.39*hw, 1.15, 2.35, paint.m_shutter, 0.06);
-        b.terrace(Side::Left, -1.62*hw, 0.62*hw, 3.4, terraceGrey);
-        b.pergola(Side::Left, -1.55*hw, 0.60*hw, 3.0, 2.95, wood);
+        // The pergola leaves a tenth of the gable free at either corner; the terrace lies under it, out to the ends
+        // of its beam and its laths, 0.3 m beyond its posts
+        b.terrace(Side::Left, -0.80*hw - 0.3, 0.80*hw + 0.3, 3.3, terraceGrey);
+        b.pergola(Side::Left, -0.80*hw, 0.80*hw, 3.0, 2.95, wood);
         glassScreen(b, Side::Left, 0.66*hw, 2.0, 1.60);
         // Front as in B405_b and 10L: the tall window near the pergola, the frosted light and the door, the dormer
         // over the middle, vents near either gable
