@@ -79,6 +79,21 @@
    "size": "model",
    "why": "The one house of its type, Krimweg 73: drawn from its photographs (Krimweg_73_RD_118546574790, _b, _c, _d), the plan from its BGT outline, the heights from the AHN."
   },
+  "Rood": {
+   "model": "BungalowRood",
+   "size": "model",
+   "why": "The red bungalow of before the park, the smallest of three types; none stands today, so no house has this type. Photographed."
+  },
+  "Groen": {
+   "model": "BungalowGroen",
+   "size": "model",
+   "why": "The green bungalow of before the park, the middle one; none stands today, so no house has this type. Photographed."
+  },
+  "Geel": {
+   "model": "BungalowGeel",
+   "size": "model",
+   "why": "The yellow bungalow of before the park, the largest; none stands today, so no house has this type. Photographed."
+  },
   "Visdiefje": {
    "model": "Visdiefje",
    "size": "model",
