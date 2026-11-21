@@ -27,6 +27,9 @@ public:
     // Mutator
     void build(const World& world);
 
+    // Mutator
+    void setFieldOfView(double degrees);    // the lens: 68 is the wide view of a visitor, 27 that of a 50 mm lens
+
     // Accessor
     const Mesh& getMesh() const { return m_mesh; }
     size_t skyVertexCount() const { return m_skyVertexCount; }
@@ -34,6 +37,7 @@ public:
     size_t treeVertexCount() const { return m_treeVertexCount; }   // just before the flat ones
     size_t groundVertexCount() const { return m_groundVertexCount; } // just after the sky: the land, without the sea
     Mat4 viewProjection(const Walker& walker, double aspect) const;
+    double getFieldOfView() const;      // from top to bottom of the picture [deg]
     // beach: share of sand that the sea brings, in [0, 1]; dry and light: the patch the ground lies in, in [-1, 1]
     Color groundColor(double height, double slope, double beach, double dry, double light) const;
     const Color& getHorizon() const { return m_horizon; }

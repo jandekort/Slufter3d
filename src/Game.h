@@ -22,6 +22,7 @@ public:
     void look(double turn, double lift) { m_walker.look(turn, lift); }
     void rise(double notches);
     void land() { m_walker.land(); }
+    void setFieldOfView(double degrees) { m_scene.setFieldOfView(degrees); }   // the lens, see Scene
     void setEra(int era);               // the park as it was in an era, see WorldData::eraCount(); builds the picture anew
     bool goTo(int houseNumber);         // false->no such house
     void place(double east, double north, double headingDegrees); // metres from the origin, on the ground

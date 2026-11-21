@@ -7,6 +7,7 @@
 (function () {
     const FLOATS_PER_VERTEX = 6;
     const LOOK_RATE = 0.0035;   // radians per pixel dragged
+    const WIDE_LENS = 68.0;     // the view the visit starts with, from top to bottom [deg]
     const WHEEL_NOTCH = 100.0;  // wheel movement that counts as one step higher or lower
     const MAX_PIXEL_RATIO = 2.0;
     const TILES_FADE = [300.0, 600.0];        // the tiles on the ground fade out over these distances [m] ...
@@ -31,6 +32,9 @@
     const paceButtons = document.querySelectorAll("#panel button[data-pace]");
     const weatherSelect = document.getElementById("weather");
     const eraSelect = document.getElementById("era");
+    const lensSelect = document.getElementById("lens");
+    const settings = document.getElementById("settings");
+    const settingsButton = document.getElementById("settingsButton");
     const numberInput = document.getElementById("number");
     const keys = { ahead: false, back: false, left: false, right: false, stepLeft: false, stepRight: false,
         up: false, down: false };
@@ -56,6 +60,8 @@
     let lookLift = 0.0;
     let riseNotches = 0.0;   // steps higher (+) or lower (-) asked for since the last frame
     let landRequested = false;
+    let lens = WIDE_LENS;    // the angle the picture spans from top to bottom [deg]
+    let lensChanged = false;
 
     function setPace(value) {
         pace = value;
@@ -97,6 +103,9 @@
             toggleTiles();
         } else if (event.code === "KeyF") {
             nextWeather();
+        } else if (event.code === "KeyZ") {
+            lensSelect.selectedIndex = (lensSelect.selectedIndex + 1) % lensSelect.options.length;
+            setLens(Number(lensSelect.value));
         } else if (/^Digit[1-2]$/.test(event.code)) {
             setPace(Number(event.code.slice(5)));   // 1->slow, 2->fast
         }
@@ -136,22 +145,34 @@
     }
     climbButton(document.getElementById("up"), 1.0, "up");
     climbButton(document.getElementById("down"), -1.0, "down");
-    const treesButton = document.getElementById("trees");
+    const treesSelect = document.getElementById("trees");
     let showTrees = true;    // true->the trees are drawn; on at the start, phones draw them smoothly
+    function setTrees(on) {
+        showTrees = on;
+        treesSelect.value = on ? "on" : "off";
+    }
     function toggleTrees() {
-        showTrees = !showTrees;
-        treesButton.classList.toggle("on", showTrees);
+        setTrees(!showTrees);
     }
-    treesButton.classList.toggle("on", showTrees);
-    treesButton.addEventListener("click", toggleTrees);
-    const tilesButton = document.getElementById("tiles");
+    setTrees(showTrees);
+    treesSelect.addEventListener("change", function () {
+        setTrees(treesSelect.value === "on");
+        treesSelect.blur();     // so that the arrow keys walk again
+    });
+    const tilesSelect = document.getElementById("tiles");
     let showTiles = true;    // true->the tiles of the park's grid are drawn on the land
-    function toggleTiles() {
-        showTiles = !showTiles;
-        tilesButton.classList.toggle("on", showTiles);
+    function setTiles(on) {
+        showTiles = on;
+        tilesSelect.value = on ? "on" : "off";
     }
-    tilesButton.classList.toggle("on", showTiles);
-    tilesButton.addEventListener("click", toggleTiles);
+    function toggleTiles() {
+        setTiles(!showTiles);
+    }
+    setTiles(showTiles);
+    tilesSelect.addEventListener("change", function () {
+        setTiles(tilesSelect.value === "on");
+        tilesSelect.blur();
+    });
     let weather = "day";     // a name of WEATHERS, or "day": as the world was built
     function setWeather(name) {
         weather = name;
@@ -168,6 +189,21 @@
         weatherSelect.blur();
     });
     document.getElementById("land").addEventListener("click", function () { landRequested = true; });
+    // The lens: a longer one sees less, larger, as the photographs of the old park do
+    function setLens(degrees) {
+        lens = degrees;
+        lensChanged = true;
+    }
+    lensSelect.addEventListener("change", function () {
+        setLens(Number(lensSelect.value));
+        lensSelect.blur();
+    });
+    // Settings: what is not needed all the time opens and closes under its button
+    settingsButton.addEventListener("click", function () {
+        settings.hidden = !settings.hidden;
+        settingsButton.classList.toggle("on", !settings.hidden);
+        settingsButton.setAttribute("aria-expanded", String(!settings.hidden));
+    });
 
     document.querySelectorAll(".pad button").forEach(function (button) {
         const name = button.dataset.key;
@@ -210,8 +246,9 @@
     });
     canvas.addEventListener("pointermove", function (event) {
         if (event.pointerId === dragging) {
-            lookTurn -= (event.clientX - dragX) * LOOK_RATE; // the picture follows the hand
-            lookLift += (event.clientY - dragY) * LOOK_RATE;
+            const rate = LOOK_RATE * lens / WIDE_LENS;       // through a long lens the picture turns as far as the hand
+            lookTurn -= (event.clientX - dragX) * rate;      // the picture follows the hand
+            lookLift += (event.clientY - dragY) * rate;
             dragX = event.clientX;
             dragY = event.clientY;
         }
@@ -421,6 +458,10 @@
                     numberInput.placeholder = "no " + gotoRequested;
                 }
                 gotoRequested = 0;
+            }
+            if (lensChanged) {
+                lensChanged = false;
+                world.slufter_set_field_of_view(lens);
             }
             if (paceChanged) {
                 paceChanged = false;

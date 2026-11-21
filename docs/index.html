@@ -30,6 +30,12 @@
     #panel button:first-child, #panel input:first-child { border-radius: 6px 0 0 6px; }
     #panel button + button { border-left: none; }
     #panel button:last-child { border-radius: 0 6px 6px 0; border-left: none; }
+    #panel button.single { border-radius: 6px; border-left: 1px solid rgba(255, 255, 255, 0.7); }
+    /* What is not needed all the time lies under Settings */
+    #settings { display: flex; flex-direction: column; gap: 8px; }
+    #settings[hidden] { display: none; }
+    #panel label span { box-sizing: border-box; width: 78px; padding: 6px 10px; background: rgba(20, 40, 60, 0.45);
+                        border: 1px solid rgba(255, 255, 255, 0.7); border-radius: 6px 0 0 6px; }
     /* The weather: a drop-down at the end of a row of buttons, alike in look */
     #panel select { font: inherit; color: #ffffff; background: rgba(20, 40, 60, 0.45); outline: none; cursor: pointer;
                     border: 1px solid rgba(255, 255, 255, 0.7); border-left: none; border-radius: 0 6px 6px 0;
@@ -50,7 +56,8 @@
                                   into the house number field */
                                #panel { font-size: 16px; }
                                #panel button, #panel input { padding: 10px 14px; }
-                               #panel select { padding: 10px 28px 10px 14px; } }
+                               #panel select { padding: 10px 28px 10px 14px; }
+                               #panel label span { padding: 10px 14px; width: 96px; } }
 </style>
 </head>
 <body>
@@ -60,26 +67,34 @@
 <div id="error" class="hud"></div>
 <div id="panel">
     <div class="row">
-        <button data-pace="1" class="on">Slow</button><button data-pace="2">Fast</button>
-    </div>
-    <div class="row">
-        <input id="number" type="text" inputmode="numeric" placeholder="house no."><button id="go">Go</button>
-    </div>
-    <div class="row">
         <button id="up">&#9650; Up</button><button id="down">&#9660; Down</button><button id="land">Land</button>
     </div>
     <div class="row">
-        <button id="trees" class="on">Trees</button><button id="tiles" class="on">Tiles</button><select id="weather"
-            aria-label="weather"><option value="day">Day</option><option value="fog">Fog</option><option
-            value="overcast">Overcast</option><option value="bluehour">Evening</option></select>
+        <button data-pace="1" class="on">Slow</button><button data-pace="2">Fast</button>
     </div>
     <div class="row">
-        <select id="era" aria-label="the park in the years"><option value="0">1957&ndash;1971</option><option
+        <button id="settingsButton" class="single" aria-expanded="false" aria-controls="settings">Settings &#9662;</button>
+    </div>
+    <div id="settings" hidden>
+        <div class="row">
+            <input id="number" type="text" inputmode="numeric" placeholder="house no."><button id="go">Go</button>
+        </div>
+        <label class="row"><span>Trees</span><select id="trees"><option value="on" selected>On</option><option
+            value="off">Off</option></select></label>
+        <label class="row"><span>Tiles</span><select id="tiles"><option value="on" selected>On</option><option
+            value="off">Off</option></select></label>
+        <label class="row"><span>Weather</span><select id="weather"><option value="day">Day</option><option
+            value="fog">Fog</option><option value="overcast">Overcast</option><option
+            value="bluehour">Evening</option></select></label>
+        <label class="row"><span>Years</span><select id="era"><option value="0">1957&ndash;1971</option><option
             value="1">1971&ndash;1993</option><option value="2">1993&ndash;2013</option><option value="3"
-            selected>2013&ndash;today</option></select>
+            selected>2013&ndash;today</option></select></label>
+        <label class="row"><span>Lens</span><select id="lens"><option value="68" selected>Wide</option><option
+            value="46.4">28 mm</option><option value="37.8">35 mm</option><option value="27">50 mm</option><option
+            value="19.5">70 mm</option><option value="13.7">100 mm</option></select></label>
     </div>
 </div>
-<div id="help" class="hud">W / S / A / D or arrows: walk, turn &nbsp; Q / E: step sideways &nbsp; drag: look around &nbsp; wheel or Space / C: up, down &nbsp; L: land &nbsp; T / G: trees, tiles on, off &nbsp; F: weather &nbsp; 1 / 2: slow, fast &nbsp; R: back to the tower</div>
+<div id="help" class="hud">W / S / A / D or arrows: walk, turn &nbsp; Q / E: step sideways &nbsp; drag: look around &nbsp; wheel or Space / C: up, down &nbsp; L: land &nbsp; T / G: trees, tiles on, off &nbsp; Z: lens &nbsp; F: weather &nbsp; 1 / 2: slow, fast &nbsp; R: back to the tower</div>
 <div id="credit" class="hud">Heights: AHN, Rijkswaterstaat (CC0) &middot; Roads: BGT, Kadaster (CC BY 4.0) &middot; Old park: Topotijdreis, Kadaster</div>
 <div id="padLeft" class="pad">
     <button data-key="left">&#9664;</button>

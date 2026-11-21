@@ -68,6 +68,7 @@ ROAD_WIDEST = 12.0     # what is wider than this is a car park or a crossing, no
 ROAD_STEP = 2.0        # the old roads are worked out point by point, this far apart [m]
 ROAD_STEADY = 30.0     # the move onto the road of today is the median of the moves over this length [m]
 ROAD_SMOOTH = 12.0     # and the road is smoothed over this length [m]
+ROAD_EASE = 30.0       # a road moved by a correction eases back to where it lay over this length [m]
 ROAD_JOIN = 10.0       # an end this near another old road is led up to it [m]
 ROAD_WIDTHS = {"Ring": 5.0, "Road": 3.5, "Path": 2.0}    # how wide each kind is taken to be [m]
 BUNGALOW_CLEAR = 7.0   # a road of today this near the middle of an old bungalow runs over it: the park map decides [m]
@@ -252,7 +253,7 @@ def ontoTodaysRoad(points, roads):
     return out, moved
 
 
-def oldRoads(traced, fit, roads, buildings):
+def oldRoads(traced, fit, roads, buildings, overrides):
     """The roads of the park map in RD: on the road of today where there is one within ROAD_NEAR, else where the
     park map has them; and where the park map has them wherever the road of today runs over an old bungalow"""
     homes = np.array([[b["x"], b["y"]] for b in buildings])
@@ -281,6 +282,20 @@ def oldRoads(traced, fit, roads, buildings):
                 if 0 < k < len(line) - 1:        # an end may lead up to the door
                     away = apart[k, nearest[k]] / max(1.0e-9, far[k, nearest[k]])
                     line[k] = homes[nearest[k]] + BUNGALOW_HALF * away
+        # What a photograph shows better than either map (data/old_park_corrections.json): the road is moved onto
+        # the points given, and eases back to where it lay before the first and beyond the last
+        for override in overrides:
+            if override["name"] != road["name"]:
+                continue
+            through = np.array(override["through"], float)
+            where = [int(np.linalg.norm(line - p, axis=1).argmin()) for p in through]
+            shifts = [p - line[k] for p, k in zip(through, where)]
+            reach = int(round(ROAD_EASE / ROAD_STEP))
+            where = [where[0] - reach] + where + [where[-1] + reach]
+            shifts = [np.zeros(2)] + shifts + [np.zeros(2)]
+            at = np.arange(len(line))
+            line = line + np.c_[np.interp(at, where, [s[0] for s in shifts]), np.interp(at, where, [s[1] for s in shifts])]
+            road = dict(road, overridden=True)
         # Smooth, the ends kept
         smooth = line.copy()
         half = int(round(0.5 * ROAD_SMOOTH / ROAD_STEP))
@@ -289,7 +304,7 @@ def oldRoads(traced, fit, roads, buildings):
             smooth[k] = line[k - reach:k + reach + 1].mean(0)
         out.append({"name": road["name"], "kind": road["kind"], "width": ROAD_WIDTHS[road["kind"]],
                     "on_road_of_today": round(float(moved.mean()), 2), "over_bungalow": bool(over.any()),
-                    "drawn": drawn, "line": smooth})
+                    "overridden": bool(road.get("overridden", False)), "drawn": drawn, "line": smooth})
     # An end that stops short of another road is led up to it
     for road in out:
         for end in (0, -1):
@@ -483,7 +498,7 @@ def main():
         report.append("%s: its front is %.1f m long on the park map and faces %.0f degrees"
                       % (other["name"], others[-1]["front_length"], others[-1]["front_azimuth"]))
     todays = todaysRoads()
-    roads = oldRoads(brochures["roads"], fit, todays, buildings)
+    roads = oldRoads(brochures["roads"], fit, todays, buildings, corrections.get("roads", []))
     report.append("%d old roads, %.0f m: %.0f%% on a road of today; where a road of today runs over a bungalow the park map decides: %s"
                   % (len(roads), sum(ROAD_STEP * (len(r["line"]) - 1) for r in roads),
                      100.0 * np.mean(np.concatenate([[r["on_road_of_today"]] * len(r["line"]) for r in roads])),
@@ -499,12 +514,13 @@ def main():
                 "nearest house of today. others: buildings that are not bungalows: the middle of the part under the main roof, the "
                 "way the front faces, and the length of the front on the park map. roads: the roads of the old park, all unpaved, from the park map: kind Ring, Road or "
                 "Path, width [m], the line through its middle, on_road_of_today: the part of it that was laid on a road "
-                "of today, over_bungalow: whether a road of today that runs over an old bungalow was left for the park map.",
+                "of today, over_bungalow: whether a road of today that runs over an old bungalow was left for the park map, overridden: "
+                "whether data/old_park_corrections.json moves it.",
         "source": "Map of the park's brochure; Topotijdreis, Kadaster: TOP25 of %s" % ", ".join(str(y) for y in sorted(PANELS)),
         "report": report, "notes": notes,
         "others": others,
         "roads": [{"name": r["name"], "kind": r["kind"], "width": r["width"], "on_road_of_today": r["on_road_of_today"],
-                   "over_bungalow": r["over_bungalow"], "line": [[round(float(x), 1), round(float(y), 1)] for x, y in r["line"]]}
+                   "over_bungalow": r["over_bungalow"], "overridden": r["overridden"], "line": [[round(float(x), 1), round(float(y), 1)] for x, y in r["line"]]}
                   for r in roads],
         "not_bungalows": [{"x": round(float(x), 1), "y": round(float(y), 1)} for x, y in unused],
         "buildings": buildings}

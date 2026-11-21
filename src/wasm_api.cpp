@@ -160,6 +160,18 @@ SLUFTER_EXPORT(slufter_vertices) const float* slufter_vertices()
     return game().getScene().getMesh().data();
 }
 
+// The lens: the angle the picture spans from top to bottom [deg]. 68 is the wide view the visit starts with;
+// a 50 mm lens on 35 mm film sees 27, a 100 mm lens 14
+SLUFTER_EXPORT(slufter_set_field_of_view) void slufter_set_field_of_view(float degrees)
+{
+    game().setFieldOfView(degrees);
+}
+
+SLUFTER_EXPORT(slufter_field_of_view) float slufter_field_of_view()
+{
+    return (float) game().getScene().getFieldOfView();
+}
+
 // Sixteen floats, column-major
 SLUFTER_EXPORT(slufter_view_projection) const float* slufter_view_projection(float aspect)
 {

@@ -120,6 +120,16 @@ void Scene::build(const World& world)
     m_flatVertexCount = m_mesh.vertexCount() - before;
 }
 
+void Scene::setFieldOfView(double degrees)
+{
+    m_fieldOfView = clamp(degrees, 5.0, 100.0) * pi / 180.0;
+}
+
+double Scene::getFieldOfView() const
+{
+    return m_fieldOfView * 180.0 / pi;
+}
+
 // High up the nearest things are far away, and a later near plane keeps distant ground sharp
 Mat4 Scene::viewProjection(const Walker& walker, double aspect) const
 {

@@ -137,5 +137,15 @@ run(0.5);
 world.slufter_set_era(3);
 check(world.slufter_vertex_count() === verticesToday && world.slufter_goto(17) === 1, "today is back as it was");
 
+// The lens: a longer one is another projection, and the wide one comes back
+const matrixOf = () => Array.from(new Float32Array(world.memory.buffer, world.slufter_view_projection(1.5), 16));
+const wide = matrixOf();
+world.slufter_set_field_of_view(27.0);
+const long = matrixOf();
+check(Math.abs(world.slufter_field_of_view() - 27.0) < 1e-4 && long[5] > 2.5 * wide[5], "a 50 mm lens enlarges the picture: "
+    + (long[5] / wide[5]).toFixed(2) + " times");
+world.slufter_set_field_of_view(68.0);
+check(matrixOf().every((v, k) => Math.abs(v - wide[k]) < 1e-5), "the wide lens is back as it was");
+
 console.log(failures === 0 ? "Smoke test passed" : "Smoke test failed: " + failures);
 process.exit(failures === 0 ? 0 : 1);

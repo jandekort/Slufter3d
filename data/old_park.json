@@ -1,5 +1,5 @@
 {
- "note": "The buildings of the park as it was from 1957 to 1996. Which there were, their number and their type (A4, A6, B4, B6) are those of the park's own map (raw/park_brochures); their positions those of the topographic maps (raw/topotijdreis) where these have them, RD New (EPSG:28992), metres, good to about 5 m. Made by tools/make_old_park.py. The door, and so the model, follows from the type in data/type_models.json. kind: Bungalow or Chalet. front_azimuth: the way the front door faces, degrees clockwise from north. What is not known is 'Unknown'. source.position: where the position is from; park_map_off: how far the park map, fitted, has it from there [m]. today: the nearest house of today. others: buildings that are not bungalows: the middle of the part under the main roof, the way the front faces, and the length of the front on the park map. roads: the roads of the old park, all unpaved, from the park map: kind Ring, Road or Path, width [m], the line through its middle, on_road_of_today: the part of it that was laid on a road of today, over_bungalow: whether a road of today that runs over an old bungalow was left for the park map.",
+ "note": "The buildings of the park as it was from 1957 to 1996. Which there were, their number and their type (A4, A6, B4, B6) are those of the park's own map (raw/park_brochures); their positions those of the topographic maps (raw/topotijdreis) where these have them, RD New (EPSG:28992), metres, good to about 5 m. Made by tools/make_old_park.py. The door, and so the model, follows from the type in data/type_models.json. kind: Bungalow or Chalet. front_azimuth: the way the front door faces, degrees clockwise from north. What is not known is 'Unknown'. source.position: where the position is from; park_map_off: how far the park map, fitted, has it from there [m]. today: the nearest house of today. others: buildings that are not bungalows: the middle of the part under the main roof, the way the front faces, and the length of the front on the park map. roads: the roads of the old park, all unpaved, from the park map: kind Ring, Road or Path, width [m], the line through its middle, on_road_of_today: the part of it that was laid on a road of today, over_bungalow: whether a road of today that runs over an old bungalow was left for the park map, overridden: whether data/old_park_corrections.json moves it.",
  "source": "Map of the park's brochure; Topotijdreis, Kadaster: TOP25 of 1965, 1983, 1994",
  "report": [
   "1965: 2.030 px/m (206 houses of 1998 fitted, median 3.5 m), grid crossing at (933, 492) px, 56 dots",
@@ -29,6 +29,7 @@
    "width": 5.0,
    "on_road_of_today": 0.74,
    "over_bungalow": false,
+   "overridden": false,
    "line": [
     [
      118759.6,
@@ -1990,6 +1991,7 @@
    "width": 5.0,
    "on_road_of_today": 0.96,
    "over_bungalow": false,
+   "overridden": false,
    "line": [
     [
      118759.6,
@@ -2731,6 +2733,7 @@
    "width": 3.5,
    "on_road_of_today": 0.24,
    "over_bungalow": false,
+   "overridden": false,
    "line": [
     [
      118660.8,
@@ -3108,6 +3111,7 @@
    "width": 3.5,
    "on_road_of_today": 0.86,
    "over_bungalow": false,
+   "overridden": false,
    "line": [
     [
      118879.8,
@@ -3269,6 +3273,7 @@
    "width": 3.5,
    "on_road_of_today": 0.96,
    "over_bungalow": false,
+   "overridden": false,
    "line": [
     [
      118972.7,
@@ -3570,6 +3575,7 @@
    "width": 3.5,
    "on_road_of_today": 0.82,
    "over_bungalow": true,
+   "overridden": false,
    "line": [
     [
      119083.0,
@@ -4923,6 +4929,7 @@
    "width": 3.5,
    "on_road_of_today": 0.74,
    "over_bungalow": false,
+   "overridden": false,
    "line": [
     [
      118848.5,
@@ -5504,6 +5511,7 @@
    "width": 3.5,
    "on_road_of_today": 0.77,
    "over_bungalow": false,
+   "overridden": false,
    "line": [
     [
      118705.2,
@@ -5909,6 +5917,7 @@
    "width": 3.5,
    "on_road_of_today": 0.51,
    "over_bungalow": false,
+   "overridden": false,
    "line": [
     [
      118713.1,
@@ -6294,6 +6303,7 @@
    "width": 3.5,
    "on_road_of_today": 0.79,
    "over_bungalow": false,
+   "overridden": true,
    "line": [
     [
      118681.4,
@@ -6357,267 +6367,267 @@
     ],
     [
      118710.1,
-     574794.4
+     574794.3
     ],
     [
      118712.0,
-     574794.9
+     574794.8
     ],
     [
      118714.0,
-     574795.4
+     574795.2
     ],
     [
      118715.9,
-     574795.8
+     574795.6
     ],
     [
      118717.9,
-     574796.3
+     574796.0
     ],
     [
-     118719.8,
-     574796.8
+     118719.9,
+     574796.4
     ],
     [
      118721.8,
+     574796.7
+    ],
+    [
+     118723.8,
+     574797.0
+    ],
+    [
+     118725.8,
      574797.3
     ],
     [
-     118723.7,
+     118727.8,
      574797.7
     ],
     [
-     118725.7,
-     574798.2
+     118729.7,
+     574798.0
     ],
     [
-     118727.6,
-     574798.6
+     118731.7,
+     574798.3
     ],
     [
-     118729.6,
-     574799.1
+     118733.6,
+     574798.7
     ],
     [
-     118731.5,
-     574799.6
+     118735.6,
+     574799.0
     ],
     [
-     118733.5,
-     574800.1
+     118737.5,
+     574799.4
     ],
     [
-     118735.4,
-     574800.6
+     118739.5,
+     574799.7
     ],
     [
-     118737.3,
-     574801.0
+     118741.5,
+     574799.9
     ],
     [
-     118739.3,
-     574801.5
+     118743.4,
+     574800.4
     ],
     [
-     118741.2,
+     118745.4,
+     574800.9
+    ],
+    [
+     118747.4,
+     574801.3
+    ],
+    [
+     118749.4,
+     574801.6
+    ],
+    [
+     118751.4,
      574802.0
     ],
     [
-     118743.1,
+     118753.2,
+     574802.3
+    ],
+    [
+     118755.1,
+     574802.7
+    ],
+    [
+     118756.9,
+     574802.7
+    ],
+    [
+     118758.8,
      574802.8
     ],
     [
-     118745.0,
-     574803.5
+     118760.6,
+     574803.0
     ],
     [
-     118747.0,
+     118762.5,
+     574803.3
+    ],
+    [
+     118764.4,
+     574803.6
+    ],
+    [
+     118766.3,
+     574803.9
+    ],
+    [
+     118768.3,
      574804.2
     ],
     [
-     118748.9,
+     118770.3,
+     574804.7
+    ],
+    [
+     118772.3,
+     574805.1
+    ],
+    [
+     118774.1,
+     574805.4
+    ],
+    [
+     118775.9,
+     574805.5
+    ],
+    [
+     118777.7,
+     574805.5
+    ],
+    [
+     118779.7,
+     574805.5
+    ],
+    [
+     118781.9,
+     574805.3
+    ],
+    [
+     118784.1,
+     574805.2
+    ],
+    [
+     118786.3,
      574805.0
     ],
     [
-     118750.8,
-     574805.7
+     118788.6,
+     574805.0
     ],
     [
-     118752.5,
-     574806.4
+     118791.0,
+     574805.2
     ],
     [
-     118754.3,
-     574807.2
+     118793.4,
+     574805.5
     ],
     [
-     118756.1,
-     574807.7
+     118795.5,
+     574805.8
     ],
     [
-     118757.9,
-     574808.2
+     118797.5,
+     574806.3
     ],
     [
-     118759.7,
-     574808.7
+     118799.5,
+     574806.8
     ],
     [
-     118761.5,
-     574809.2
+     118801.4,
+     574807.3
     ],
     [
-     118763.3,
-     574809.6
+     118803.4,
+     574807.8
     ],
     [
-     118765.2,
-     574810.0
+     118805.3,
+     574808.3
     ],
     [
-     118767.2,
-     574810.3
+     118807.3,
+     574808.8
     ],
     [
-     118769.2,
-     574810.6
-    ],
-    [
-     118771.2,
-     574810.9
-    ],
-    [
-     118773.1,
-     574810.9
-    ],
-    [
-     118774.9,
-     574810.8
-    ],
-    [
-     118776.7,
-     574810.6
-    ],
-    [
-     118778.7,
-     574810.4
-    ],
-    [
-     118780.9,
-     574810.0
-    ],
-    [
-     118783.2,
-     574809.7
-    ],
-    [
-     118785.4,
+     118809.2,
      574809.3
     ],
     [
-     118787.7,
-     574809.1
-    ],
-    [
-     118790.1,
-     574809.0
-    ],
-    [
-     118792.5,
-     574809.1
-    ],
-    [
-     118794.7,
-     574809.3
-    ],
-    [
-     118796.7,
-     574809.5
-    ],
-    [
-     118798.7,
+     118811.2,
      574809.8
     ],
     [
-     118800.7,
-     574810.2
+     118813.1,
+     574810.3
     ],
     [
-     118802.6,
-     574810.5
+     118815.0,
+     574810.7
     ],
     [
-     118804.6,
-     574810.8
-    ],
-    [
-     118806.6,
+     118817.0,
      574811.1
     ],
     [
-     118808.6,
+     118818.9,
      574811.4
     ],
     [
-     118810.5,
-     574811.7
+     118820.8,
+     574811.8
     ],
     [
-     118812.5,
-     574812.0
+     118822.8,
+     574812.1
     ],
     [
-     118814.5,
-     574812.3
+     118824.7,
+     574812.4
     ],
     [
-     118816.5,
-     574812.5
+     118826.7,
+     574812.6
     ],
     [
-     118818.5,
-     574812.8
-    ],
-    [
-     118820.5,
+     118828.6,
      574812.9
     ],
     [
-     118822.4,
-     574813.1
-    ],
-    [
-     118824.4,
+     118830.6,
      574813.2
     ],
     [
-     118826.4,
+     118832.5,
      574813.4
     ],
     [
-     118828.4,
-     574813.5
-    ],
-    [
-     118830.4,
-     574813.6
-    ],
-    [
-     118832.4,
+     118834.5,
      574813.7
     ],
     [
-     118834.4,
-     574813.9
-    ],
-    [
-     118836.4,
-     574814.3
+     118836.5,
+     574814.1
     ],
     [
      118838.8,
-     574814.7
+     574814.6
     ],
     [
      118841.2,
@@ -6799,6 +6809,7 @@
    "width": 3.5,
    "on_road_of_today": 0.21,
    "over_bungalow": false,
+   "overridden": false,
    "line": [
     [
      118635.9,
@@ -6920,6 +6931,7 @@
    "width": 2.0,
    "on_road_of_today": 0.33,
    "over_bungalow": true,
+   "overridden": false,
    "line": [
     [
      119083.0,
@@ -7101,6 +7113,7 @@
    "width": 2.0,
    "on_road_of_today": 0.0,
    "over_bungalow": false,
+   "overridden": false,
    "line": [
     [
      118708.4,
@@ -7254,6 +7267,7 @@
    "width": 2.0,
    "on_road_of_today": 0.43,
    "over_bungalow": false,
+   "overridden": false,
    "line": [
     [
      118671.4,
@@ -7379,6 +7393,7 @@
    "width": 2.0,
    "on_road_of_today": 0.36,
    "over_bungalow": false,
+   "overridden": false,
    "line": [
     [
      118736.3,
@@ -7444,6 +7459,7 @@
    "width": 2.0,
    "on_road_of_today": 0.0,
    "over_bungalow": false,
+   "overridden": false,
    "line": [
     [
      118778.6,
@@ -7497,6 +7513,7 @@
    "width": 2.0,
    "on_road_of_today": 1.0,
    "over_bungalow": false,
+   "overridden": false,
    "line": [
     [
      118829.4,
@@ -7542,6 +7559,7 @@
    "width": 2.0,
    "on_road_of_today": 0.47,
    "over_bungalow": true,
+   "overridden": false,
    "line": [
     [
      118783.1,
@@ -7627,6 +7645,7 @@
    "width": 2.0,
    "on_road_of_today": 0.29,
    "over_bungalow": false,
+   "overridden": false,
    "line": [
     [
      118812.1,
@@ -7776,6 +7795,7 @@
    "width": 2.0,
    "on_road_of_today": 0.88,
    "over_bungalow": false,
+   "overridden": false,
    "line": [
     [
      118911.4,
@@ -8166,7 +8186,7 @@
    "name": "Unknown",
    "kind": "Bungalow",
    "type": "A6",
-   "front_azimuth": 180,
+   "front_azimuth": 210,
    "x": 118855.5,
    "y": 574862.5,
    "source": {
@@ -8177,7 +8197,7 @@
     "house": 25,
     "distance": 6.6
    },
-   "evidence": "Its front door faces south (Jan de Kort, 2026-11-21)."
+   "evidence": "Its front faces about 210: D16T2_038, taken from RD 118735, 574803, at 244 degrees from it, shows the front under the chimney at the left end of its ridge, and the middle of the ridge left of the middle of the front: the front is turned 27 to 40 degrees from the camera, to between 204 and 217. Its door is behind a shrub. (Before that south, by Jan de Kort, 2026-11-21.)"
   },
   {
    "id": "OP17",
@@ -8347,7 +8367,7 @@
    "name": "Unknown",
    "kind": "Bungalow",
    "type": "A4",
-   "front_azimuth": 180,
+   "front_azimuth": 222,
    "x": 118823.0,
    "y": 574858.0,
    "source": {
@@ -8358,7 +8378,7 @@
     "house": 23,
     "distance": 5.1
    },
-   "evidence": "Its front door faces south (Jan de Kort, 2026-11-21). The red door on a mound with steps down to the field in 'Grutto (right) and Tureluur (middle)'. Its front door faces south-west (Jan de Kort, 2026-11-21). Its front door faces south (Jan de Kort, 2026-11-21)."
+   "evidence": "Its front faces about 222, by two photographs that agree to within some 10 degrees. D16T2_038 ('Grutto (right) and Tureluur (middle)'), taken from RD 118735, 574803, at 237 degrees from it, shows the front 386 px wide and a strip of the left end, 56 px, left of it: the front is turned 10 degrees from the camera, to 227. DoosA_Tray2_030, taken from RD 118879, 574839, before Grutto, at 109 degrees from it, shows the right end 180 px wide and the back, 90 px, right of it: the end is turned 23 degrees from the camera, the front faces 222. (Before that south, by Jan de Kort, and 248, taken for square on in D16T2_038.) The red door on a mound with steps down to the field in 'Grutto (right) and Tureluur (middle)'. Its front door faces south-west (Jan de Kort, 2026-11-21). Its front door faces south (Jan de Kort, 2026-11-21)."
   },
   {
    "id": "OP27",
@@ -8384,7 +8404,7 @@
    "name": "Unknown",
    "kind": "Bungalow",
    "type": "A4",
-   "front_azimuth": 135,
+   "front_azimuth": 170,
    "x": 118806.0,
    "y": 574871.0,
    "source": {
@@ -8395,7 +8415,7 @@
     "house": 18,
     "distance": 3.2
    },
-   "evidence": "Its front door faces south-east (Jan de Kort, 2026-11-21). The red door on the dune, right of the tower in 'From Grutto in direction of outlook tower'. Its front door faces south (Jan de Kort, 2026-11-21). Its front door faces south-east (Jan de Kort, 2026-11-21)."
+   "evidence": "Its front faces about 170: DoosA_Tray2_030, taken from RD 118879, 574839, before Grutto, at 114 degrees from it, shows the front, with the red door, 96 px wide and the right end, 135 px, right of it: the front is turned 58 degrees from the camera, to 172; 166 if the camera stood 15 m further north-east. (Before that south-east, by Jan de Kort, 2026-11-21.) The red door on the dune, right of the tower in 'From Grutto in direction of outlook tower'. Its front door faces south (Jan de Kort, 2026-11-21). Its front door faces south-east (Jan de Kort, 2026-11-21)."
   },
   {
    "id": "OP29",
@@ -8529,7 +8549,7 @@
    "name": "Mantelmeeuw",
    "kind": "Bungalow",
    "type": "B4",
-   "front_azimuth": "Unknown",
+   "front_azimuth": 236,
    "x": 118751.9,
    "y": 574831.9,
    "source": {
@@ -8540,7 +8560,7 @@
     "house": 13,
     "distance": 4.0
    },
-   "evidence": "One of 36, 34, 26 or 16, with a yellow door (Jan de Kort, 2026-11-21): 36 is the only one of these of type B4, the type with the yellow door."
+   "evidence": "Its front faces about 236: DoosA_Tray2_030, taken from RD 118879, 574839, at 87 degrees from it, shows the right end, with the glazed doors and the chairs before them, 60 px wide and the back, with three windows as type B4 has, 150 px, right of it: the end is turned 59 degrees from the camera. One of 36, 34, 26 or 16, with a yellow door (Jan de Kort, 2026-11-21): 36 is the only one of these of type B4, the type with the yellow door."
   },
   {
    "id": "OP37",

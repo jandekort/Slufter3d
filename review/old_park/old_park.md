@@ -32,7 +32,7 @@ Dots of the topographic maps that no bungalow takes: (118883, 575227), (118863, 
 | 13 |  | B4 | Bungalow | Unknown | 118914 | 574803 | map of 1983 | 3 | 56 | 1 |
 | 14 | Tureluur | A6 | Bungalow | 247.5 | 118897 | 574860 | map of 1983 | 6 | 26 | 1 |
 | 15 |  | A4 | Bungalow | Unknown | 118923 | 574829 | map of 1983 | 1 | 57 | 2 |
-| 16 |  | A6 | Bungalow | 180 | 118856 | 574862 | map of 1983 | 0 | 25 | 7 |
+| 16 |  | A6 | Bungalow | 210 | 118856 | 574862 | map of 1983 | 0 | 25 | 7 |
 | 17 |  | A4 | Bungalow | Unknown | 118924 | 574863 | map of 1983 | 2 | 59 | 6 |
 | 18 |  | A4 | Bungalow | Unknown | 118866 | 574895 | map of 1983 | 4 | 22 | 5 |
 | 19 |  | B4 | Bungalow | Unknown | 118916 | 574890 | map of 1983 | 2 | 61 | 4 |
@@ -42,9 +42,9 @@ Dots of the topographic maps that no bungalow takes: (118883, 575227), (118863, 
 | 23 |  | A6 | Bungalow | Unknown | 118897 | 574918 | map of 1983 | 4 | 63 | 6 |
 | 24 |  | A6 | Bungalow | Unknown | 118840 | 574895 | map of 1994 | 11 | 19 | 10 |
 | 25 |  | A6 | Bungalow | Unknown | 118918 | 574947 | map of 1983 | 8 | 66 | 15 |
-| 26 |  | A4 | Bungalow | 180 | 118823 | 574858 | map of 1983, read by eye | 5 | 23 | 5 |
+| 26 |  | A4 | Bungalow | 222 | 118823 | 574858 | map of 1983, read by eye | 5 | 23 | 5 |
 | 27 |  | A6 | Bungalow | Unknown | 118941 | 574969 | map of 1983 | 5 | 259 | 4 |
-| 28 |  | A4 | Bungalow | 135 | 118806 | 574871 | map of 1983, read by eye | 2 | 18 | 3 |
+| 28 |  | A4 | Bungalow | 170 | 118806 | 574871 | map of 1983, read by eye | 2 | 18 | 3 |
 | 29 |  | A6 | Bungalow | Unknown | 118967 | 574995 | map of 1983 | 3 | 144 | 5 |
 | 30 |  | A6 | Bungalow | Unknown | 118788 | 574901 | map of 1983 | 3 | 17 | 0 |
 | 31 |  | A6 | Bungalow | Unknown | 118913 | 574990 | map of 1983 | 5 | 142 | 6 |
@@ -52,7 +52,7 @@ Dots of the topographic maps that no bungalow takes: (118883, 575227), (118863, 
 | 33 |  | A6 | Bungalow | Unknown | 118872 | 574983 | map of 1983 | 6 | 141 | 8 |
 | 34 |  | A6 | Bungalow | Unknown | 118782 | 574848 | map of 1983 | 1 | 14 | 2 |
 | 35 |  | A6 | Bungalow | Unknown | 118846 | 574955 | map of 1994 | 8 | 140 | 5 |
-| 36 | Mantelmeeuw | B4 | Bungalow | Unknown | 118752 | 574832 | map of 1983 | 3 | 13 | 4 |
+| 36 | Mantelmeeuw | B4 | Bungalow | 236 | 118752 | 574832 | map of 1983 | 3 | 13 | 4 |
 | 37 |  | A6 | Bungalow | Unknown | 118817 | 574948 | map of 1983 | 2 | 138 | 3 |
 | 38 |  | A6 | Bungalow | Unknown | 118731 | 574850 | map of 1983 | 4 | 11 | 6 |
 | 39 |  | A6 | Bungalow | Unknown | 118836 | 574994 | map of 1983 | 9 | 133 | 3 |
