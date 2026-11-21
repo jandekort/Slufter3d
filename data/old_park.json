@@ -10,7 +10,9 @@
   "Taveerne: its front is 28.8 m long on the park map and faces 234 degrees",
   "20 old roads, 3784 m: 70% on a road of today; where a road of today runs over a bungalow the park map decides: east of the chalets, to the south, to 57 and 58, from 30 to 34"
  ],
- "notes": [],
+ "notes": [
+  "47: its door is Red in a photograph, but type A6 has a Green door"
+ ],
  "others": [
   {
    "name": "Taveerne",
@@ -7400,43 +7402,43 @@
      574953.3
     ],
     [
-     118738.4,
-     574954.5
+     118737.8,
+     574954.2
     ],
     [
-     118739.9,
+     118739.7,
+     574954.2
+    ],
+    [
+     118742.0,
      574955.7
     ],
     [
-     118741.4,
-     574956.8
+     118743.6,
+     574956.9
     ],
     [
-     118743.0,
+     118745.3,
      574958.0
     ],
     [
-     118744.5,
-     574959.2
+     118747.0,
+     574959.3
     ],
     [
-     118746.1,
-     574960.3
+     118748.7,
+     574960.9
     ],
     [
-     118747.7,
-     574961.5
+     118750.1,
+     574962.6
     ],
     [
-     118749.3,
-     574962.7
-    ],
-    [
-     118751.1,
+     118751.3,
      574963.9
     ],
     [
-     118752.8,
+     118752.9,
      574965.0
     ],
     [
@@ -7474,28 +7476,28 @@
      574939.9
     ],
     [
-     118781.8,
-     574941.4
+     118781.6,
+     574941.5
     ],
     [
-     118783.0,
-     574942.9
+     118782.8,
+     574943.0
     ],
     [
-     118784.3,
-     574944.3
+     118784.2,
+     574944.4
     ],
     [
-     118785.7,
-     574945.6
+     118785.6,
+     574945.7
     ],
     [
-     118787.3,
-     574946.8
+     118787.2,
+     574946.9
     ],
     [
      118788.9,
-     574948.1
+     574947.9
     ],
     [
      118790.6,
@@ -8677,17 +8679,17 @@
    "kind": "Bungalow",
    "type": "A4",
    "front_azimuth": 180,
-   "x": 118780.4,
-   "y": 574948.8,
+   "x": 118783.3,
+   "y": 574951.3,
    "source": {
-    "position": "map of 1983",
-    "park_map_off": 3.8
+    "position": "park map, 4 m from the map of 1983",
+    "park_map_off": 0.0
    },
    "today": {
     "house": 136,
-    "distance": 6.1
+    "distance": 3.6
    },
-   "evidence": "Its front door faces south (Jan de Kort, 2026-11-21). Its front door faces south (Jan de Kort, 2026-11-21). Its front door faces south (Jan de Kort, 2026-11-21)."
+   "evidence": "Its front door faces south (Jan de Kort, 2026-11-21). Its front door faces south (Jan de Kort, 2026-11-21). Its front door faces south (Jan de Kort, 2026-11-21). The dot of 1983 lies on the foot of the dune ridge, where the ground falls 2.0 m within 4 m; the park map has it 4.5 m north-east of that, on level ground (0.7 m): it stands there (Jan de Kort, 2026-11-21: too close to the ridge)."
   },
   {
    "id": "OP44",
@@ -8750,18 +8752,18 @@
    "name": "Unknown",
    "kind": "Bungalow",
    "type": "A6",
-   "front_azimuth": 180,
-   "x": 118733.4,
-   "y": 574954.0,
+   "front_azimuth": 235,
+   "x": 118742.0,
+   "y": 574960.0,
    "source": {
-    "position": "map of 1994",
-    "park_map_off": 13.6
+    "position": "photograph, 10 m from the map of 1994",
+    "park_map_off": 23.1
    },
    "today": {
     "house": 127,
-    "distance": 16.7
+    "distance": 7.8
    },
-   "evidence": "Its front door faces south (Jan de Kort, 2026-11-21). Its front door faces south (Jan de Kort, 2026-11-21). Its front door faces south (Jan de Kort, 2026-11-21)."
+   "evidence": "The bungalow of the postcard of 1968 (sluftervallei_1968), taken from the dune ridge behind it, looking north-north-east: behind it the ring road towards the entrance, right of it bungalow 45 at some 50 m, left of it no bungalow but the camping; at 43 there would be bungalows left and right and no road so near. A camera fitted to the corners of the house (as 6.0 m long: 21 m from it, 6.3 m above its floor, a lens of some 60 mm; the fit is rough, 25 px) and then laid on the ground of today, on the old roads and on 45, puts the house between RD 118736, 574964 and 118746, 574959, on level ground 10 to 14 m north-east of the dot of 1994, which lies on the slope of the ridge, and its front between 222 and 256: taken as RD 118742, 574960, facing 235. As 6.4 m long, which type A6 is, nothing fits as well. Its door is red there, though type A6 has a green one. (Before that its front faced south, by Jan de Kort, 2026-11-21.)"
   },
   {
    "id": "OP48",

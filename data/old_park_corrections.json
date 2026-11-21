@@ -1,5 +1,5 @@
 {
- "note": "What tools/make_old_park.py cannot read off the maps by itself. Positions in RD New (EPSG:28992), metres. hidden: dots of the topographic maps that the detection misses, with the map they were read from and the reason. types: what a type of the park map is: kind (Bungalow or Chalet) and, where it was not there from the start, since. named: what is known of a bungalow besides, by its number on the park map: name, front_azimuth where a photograph shows the way the front door faces, door_seen: the colour of the door in a photograph, which must agree with the door of its type in data/type_models.json; front_from_today: it still stands, so its front is that of data/houses.json. roads: where a road of the old park ran otherwise than tools/make_old_park.py lays it, by its name in data/old_park_brochures.json: through: points in RD that its middle passes, in the order of the road; the road is moved onto them, and eases back to where it was laid within 30 m before the first and beyond the last.",
+ "note": "What tools/make_old_park.py cannot read off the maps by itself. Positions in RD New (EPSG:28992), metres. hidden: dots of the topographic maps that the detection misses, with the map they were read from and the reason. types: what a type of the park map is: kind (Bungalow or Chalet) and, where it was not there from the start, since. named: what is known of a bungalow besides, by its number on the park map: name, front_azimuth where a photograph shows the way the front door faces, door_seen: the colour of the door in a photograph, which must agree with the door of its type in data/type_models.json; front_from_today: it still stands, so its front is that of data/houses.json. roads: where a road of the old park ran otherwise than tools/make_old_park.py lays it, by its name in data/old_park_brochures.json: through: points in RD that its middle passes, in the order of the road; the road is moved onto them, and eases back to where it was laid within 30 m before the first and beyond the last. position: where a bungalow stood when the dot of the topographic map is not it: 'park map' for its place on the park map, or RD coordinates read off a photograph.",
  "hidden": [
   {
    "x": 118806,
@@ -91,13 +91,19 @@
   },
   {
    "number": 47,
-   "front_azimuth": 180,
-   "why": "Its front door faces south (Jan de Kort, 2026-11-21). Its front door faces south (Jan de Kort, 2026-11-21). Its front door faces south (Jan de Kort, 2026-11-21)."
+   "front_azimuth": 235,
+   "why": "The bungalow of the postcard of 1968 (sluftervallei_1968), taken from the dune ridge behind it, looking north-north-east: behind it the ring road towards the entrance, right of it bungalow 45 at some 50 m, left of it no bungalow but the camping; at 43 there would be bungalows left and right and no road so near. A camera fitted to the corners of the house (as 6.0 m long: 21 m from it, 6.3 m above its floor, a lens of some 60 mm; the fit is rough, 25 px) and then laid on the ground of today, on the old roads and on 45, puts the house between RD 118736, 574964 and 118746, 574959, on level ground 10 to 14 m north-east of the dot of 1994, which lies on the slope of the ridge, and its front between 222 and 256: taken as RD 118742, 574960, facing 235. As 6.4 m long, which type A6 is, nothing fits as well. Its door is red there, though type A6 has a green one. (Before that its front faced south, by Jan de Kort, 2026-11-21.)",
+   "position": [
+    118742,
+    574960
+   ],
+   "door_seen": "Red"
   },
   {
    "number": 43,
    "front_azimuth": 180,
-   "why": "Its front door faces south (Jan de Kort, 2026-11-21). Its front door faces south (Jan de Kort, 2026-11-21). Its front door faces south (Jan de Kort, 2026-11-21)."
+   "why": "Its front door faces south (Jan de Kort, 2026-11-21). Its front door faces south (Jan de Kort, 2026-11-21). Its front door faces south (Jan de Kort, 2026-11-21). The dot of 1983 lies on the foot of the dune ridge, where the ground falls 2.0 m within 4 m; the park map has it 4.5 m north-east of that, on level ground (0.7 m): it stands there (Jan de Kort, 2026-11-21: too close to the ridge).",
+   "position": "park map"
   },
   {
    "number": 16,

@@ -478,6 +478,17 @@ def main():
         for field in ("name", "front_azimuth"):
             if field in entry:
                 b[field] = entry[field]
+        if "position" in entry:
+            # A photograph, or the park map where the dot of the topographic map lies on a slope, knows better
+            spot = parkPlace[entry["number"]] if entry["position"] == "park map" else np.array(entry["position"], float)
+            moved = float(np.hypot(spot[0] - b["x"], spot[1] - b["y"]))
+            b["x"], b["y"] = round(float(spot[0]), 1), round(float(spot[1]), 1)
+            b["source"]["position"] = ("park map" if entry["position"] == "park map" else "photograph") \
+                + ", %.0f m from the %s" % (moved, b["source"]["position"])
+            b["source"]["park_map_off"] = round(float(np.linalg.norm(parkPlace[entry["number"]] - spot)), 1)
+            apart = np.hypot(houses[:, 0] - b["x"], houses[:, 1] - b["y"])
+            nearest = today[int(apart.argmin())]
+            b["today"] = {"house": nearest["nr"] or nearest["type"], "distance": round(float(apart.min()), 1)}
         if entry.get("front_from_today"):
             standing = today[int(np.argmin(np.hypot(houses[:, 0] - b["x"], houses[:, 1] - b["y"])))]
             b["front_azimuth"] = standing["front_azimuth"]
