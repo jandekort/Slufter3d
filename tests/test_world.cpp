@@ -217,15 +217,15 @@ int main(int argc, char** argv)
             };
             check(eras.getEra() == WorldData::today() && eras.getHouses().size() == 394, "the world starts today, with 394 houses and pitches");
             eras.setEra(0);
-            check(count("Bungalow") == 51 && count("Comfort") == 0 && count("Luxe") == 0 && count("SafariTent") == 0,
-                "1957 to 1971: the 51 white bungalows, no chalets, none of today's bungalows: " + std::to_string(count("Bungalow")));
+            check(count("Bungalow") == 50 && count("Comfort") == 0 && count("Luxe") == 0 && count("SafariTent") == 0,
+                "1957 to 1971: the 50 white bungalows, no chalets, none of today's bungalows: " + std::to_string(count("Bungalow")));
             check(std::any_of(eras.getHouses().begin(), eras.getHouses().end(), [](const House& h)
                 {
                     return h.m_name == "Grutto" && std::string(h.m_model->name()) == "BungalowGeel";
                 }), "Grutto is there, yellow");
             check(eras.findHouse(17) == nullptr, "house 17 is not there yet");
             eras.setEra(1);
-            check(count("Bungalow") == 51 && count("SafariTent") == 33, "1971 to 1993: with the 33 chalets, drawn as safari tents: "
+            check(count("Bungalow") == 50 && count("SafariTent") == 30, "1971 to 1993: with the 30 chalets, drawn as safari tents: "
                 + std::to_string(count("SafariTent")));
             eras.setEra(2);
             check(count("Comfort") > 200 && count("Luxe") == 0 && count("Notched") == 0 && count("Bungalow") == 2,

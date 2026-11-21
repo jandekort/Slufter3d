@@ -142,7 +142,8 @@ def packHouses(levels):
     floors = {(f["nr"], f["x"], f["y"]): f["floor"]
               for f in json.load(open(os.path.join(TERRAIN, "terrain.json"))).get("houses", [])}
     houses = []
-    for h in json.load(open(os.path.join(ROOT, "data", "houses.json")))["houses"]:
+    park = json.load(open(os.path.join(ROOT, "data", "houses.json")))
+    for h in park["houses"]:
         entry = types[h["type"]]
         semi = bool(h.get("semi_with"))
         houses.append({"nr": h["nr"], "type": h["type"], "name": h["name"] if h["kind"] == "building" else "",
@@ -153,7 +154,7 @@ def packHouses(levels):
                        "floor": floors[(h["nr"], h["x"], h["y"])]})
         model = houses[-1]["model"]
         houses[-1]["eras"] = (ALWAYS if h["type"] in STANDING else TODAY if model.startswith(LUXE) else SINCE_1993)
-    return houses + packOldPark(levels, types, houses)
+    return houses + packOldPark(levels, types, houses, Polygon(park["central_building"]["outline"]).buffer(CENTRAL_MARGIN))
 
 
 # The eras of the park, as bits: 1->1957 to 1971, 2->1971 to 1993, 4->1993 to 2013, 8->2013 to today
@@ -162,32 +163,31 @@ SINCE_1993 = COMFORT | TODAY
 ALWAYS = OLD | OLD_WITH_CHALETS | COMFORT | TODAY
 LUXE = ("Luxe", "Notched")              # the models of the Luxe bungalows start so: they came in 2013
 STANDING = ("Visdiefje", "Krimweg73")   # types of houses that stood in the old park and still stand
-DOOR_TYPES = {"Red": "Rood", "Green": "Groen", "Yellow": "Geel", "Unknown": "Rood"}    # the type of a bungalow by its door
 FALLBACK_FRONT = 270.0     # a front that is not known: the terrace, right of the front door, then faces south
 SAME_BUILDING = 8.0        # an old building this near a house that still stands is that house [m]
+CENTRAL_MARGIN = 4.0       # an old building within this of the central building of today is not drawn [m]
 OLD_FOOT = 3.0             # the ground is taken this far round the middle of an old building [m]
 FLOOR_PERCENTILE = 75.0    # of that ground: on the high side of the plot, as tools/make_terrain.py has it
 FLOOR_LIFT = 0.15          # and the floor this far above it [m]
 
 
-def packOldPark(levels, types, houses):
+def packOldPark(levels, types, houses, central):
     """The buildings of the park of 1957 to 1996 (data/old_park.json), on the ground of today"""
     standing = [h for h in houses if h["type"] in STANDING]
     old = []
     for b in json.load(open(os.path.join(ROOT, "data", "old_park.json")))["buildings"]:
         east, north = b["x"] - ORIGIN[0], b["y"] - ORIGIN[1]
-        if b["kind"] == "Reception":
-            continue        # the central building of today stands where it stood
+        if central.contains(Point(b["x"], b["y"])):
+            continue        # the central building of today, drawn in every era, stands there
         if any(math.hypot(h["east"] - east, h["north"] - north) < SAME_BUILDING for h in standing):
             continue        # it still stands: the house of today is drawn in every era
         chalet = b["kind"] == "Chalet"
-        kind = "Chalet" if chalet else DOOR_TYPES[b["door"]]
         front = b["front_azimuth"] if b["front_azimuth"] != "Unknown" else FALLBACK_FRONT
         steps = np.linspace(-OLD_FOOT, OLD_FOOT, 5)
         ee, nn = np.meshgrid(east + steps, north + steps)
         floor = float(np.percentile(heightOn(levels[0], ee, nn), FLOOR_PERCENTILE)) + FLOOR_LIFT
-        old.append({"nr": 0, "type": kind, "name": "" if b["name"] == "Unknown" else b["name"],
-                    "model": types[kind]["model"], "semi": False, "semi_with": 0, "pitch": False, "outline": False,
+        old.append({"nr": 0, "type": b["type"], "name": "" if b["name"] == "Unknown" else b["name"],
+                    "model": types[b["type"]]["model"], "semi": False, "semi_with": 0, "pitch": False, "outline": False,
                     "east": east, "north": north, "length": 0.0, "width": 0.0, "axis": (front - 90.0) % 360.0,
                     "front": front, "floor": floor, "eras": OLD_WITH_CHALETS if chalet else OLD | OLD_WITH_CHALETS})
     return old

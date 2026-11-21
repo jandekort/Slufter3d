@@ -79,25 +79,33 @@
    "size": "model",
    "why": "The one house of its type, Krimweg 73: drawn from its photographs (Krimweg_73_RD_118546574790, _b, _c, _d), the plan from its BGT outline, the heights from the AHN."
   },
-  "Rood": {
+  "A4": {
    "model": "BungalowRood",
    "size": "model",
-   "why": "The red bungalow of the park of 1957 to 1996, the smallest of three types; also the type of an old bungalow whose door is not known. Photographed."
+   "door": "Red",
+   "why": "Old park, 1957 to 1996: 4 persons, type A on the park maps; the red door, the smallest. Photographed."
   },
-  "Groen": {
+  "A6": {
    "model": "BungalowGroen",
    "size": "model",
-   "why": "The green bungalow of the park of 1957 to 1996, the middle one. Photographed."
+   "door": "Green",
+   "why": "Old park: 6 persons, type A on the park maps; the green door. Photographed."
   },
-  "Geel": {
+  "B4": {
    "model": "BungalowGeel",
    "size": "model",
-   "why": "The yellow bungalow of the park of 1957 to 1996, the largest. Photographed."
+   "door": "Yellow",
+   "why": "Old park: 4 persons, type B on the park maps; the yellow door, the largest. Photographed."
+  },
+  "B6": {
+   "model": "SafariTent",
+   "size": "model",
+   "why": "Old park: 6 persons, type B on the park maps, the chalets north-east of the park from 1971: no model yet, drawn as a safari tent for now (Jan de Kort, 2026-11-21)."
   },
   "Visdiefje": {
    "model": "BungalowRood",
    "size": "model",
-   "why": "The two bungalows of before the park that still stand, the Visdiefje and a second one, not on the park map: drawn as the red bungalow of the old park (Jan de Kort, 2026-11-21)."
+   "why": "The two bungalows of the old park that still stand, numbers 44 (the Visdiefje) and 5 on the old park maps, both of type A4: drawn as the red bungalow in every era."
   },
   "C2": {
    "model": "Tent",
@@ -149,11 +157,6 @@
    "model": "ReceptionWing",
    "size": "outline",
    "why": "The central building is drawn as a number of wings, each a ReceptionWing."
-  },
-  "Chalet": {
-   "model": "SafariTent",
-   "size": "model",
-   "why": "The chalets north-east of the park, 1971 to 1993: no model yet, drawn as a safari tent for now (Jan de Kort, 2026-11-21)."
   }
  }
 }

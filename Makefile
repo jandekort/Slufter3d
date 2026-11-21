@@ -5,7 +5,7 @@
 #   make serve    local web server on http://localhost:8000
 #   make houses   regenerate data/houses.json from raw/ (needs Python, see tools/make_houses.py)
 #   make trees    regenerate data/trees.json from raw/ (needs Python, see tools/make_trees.py)
-#   make oldpark  regenerate data/old_park.json from raw/topotijdreis (needs Python, see tools/make_old_park.py)
+#   make oldpark  regenerate data/old_park.json from raw/topotijdreis and raw/park_brochures (needs Python, see tools/make_old_park.py)
 #   make world    regenerate the ground and docs/data/world.bin from raw/ and data/ (needs Python)
 
 EMXX ?= em++

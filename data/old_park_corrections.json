@@ -1,5 +1,5 @@
 {
- "note": "What tools/make_old_park.py cannot read off the maps of raw/topotijdreis by itself. Positions in RD New (EPSG:28992), metres. hidden: buildings the detection misses, with the map they were read from and the reason. named: what is known of a building from the photographs of raw/park_1957_1996, by its position (the nearest building within 10 m): name, number, door (Red, Green or Yellow), kind where it is not a bungalow, front_azimuth where a photograph shows the way the front door faces; front_from_today: it still stands, so its front is that of data/houses.json. groups: what holds for every building of a group.",
+ "note": "What tools/make_old_park.py cannot read off the maps by itself. Positions in RD New (EPSG:28992), metres. hidden: dots of the topographic maps that the detection misses, with the map they were read from and the reason. types: what a type of the park maps is: kind (Bungalow or Chalet) and, where it was not there from the start, since. named: what is known of a bungalow besides, by its number on the park maps: name, front_azimuth where a photograph shows the way the front door faces, door_seen: the colour of the door in a photograph, which must agree with the door of its type in data/type_models.json; front_from_today: it still stands, so its front is that of data/houses.json.",
  "hidden": [
   {
    "x": 118806,
@@ -46,87 +46,63 @@
  ],
  "named": [
   {
-   "x": 118684,
-   "y": 574806,
+   "number": 44,
    "name": "Visdiefje",
-   "why": "Still stands; the map of 1983 has it 2 m from where it is.",
-   "door": "",
-   "front_from_today": true
+   "front_from_today": true,
+   "why": "Still stands; the map of 1983 has it 2 m from where it is."
   },
   {
-   "x": 118773,
-   "y": 574715,
-   "name": "",
-   "why": "Still stands, the second house of the type of the Visdiefje; the map of 1983 has it 4 m from where it is.",
-   "door": "",
-   "front_from_today": true
+   "number": 5,
+   "front_from_today": true,
+   "why": "Still stands, the second house of the type of the Visdiefje; the map of 1983 has it 4 m from where it is."
   },
   {
-   "x": 118886,
-   "y": 574831,
-   "name": "Grutto",
-   "why": "The photograph 'From Grutto in direction of outlook tower' was taken 12 m from it, by the bearings to the tower and to six buildings, and 'Grutto (yellow)' 13 m from it, on the dune behind it. The number 12 is on its door frame in the photograph of the door. Its front is seen square on from the field in 'Grutto (right) and Tureluur (middle)', taken looking 68 degrees: it faces about 255, its glazed doors south.",
-   "door": "Yellow",
    "number": 12,
-   "front_azimuth": 255
+   "name": "Grutto",
+   "door_seen": "Yellow",
+   "front_azimuth": 255,
+   "why": "The number 12 is on its door frame in the photograph of the door. 'From Grutto in direction of outlook tower' was taken 12 m from it, by the bearings to the tower and to six buildings, and 'Grutto (yellow)' 13 m from it, on the dune behind it. Its front is seen square on from the field in 'Grutto (right) and Tureluur (middle)', taken looking 68 degrees: it faces about 255, its glazed doors south."
   },
   {
-   "x": 118898,
-   "y": 574860,
+   "number": 14,
    "name": "Tureluur",
-   "why": "Left of Grutto and a quarter further away in 'Grutto (right) and Tureluur (middle)', 0.3 m from the line of sight; behind Grutto in 'Grutto with Tureluur in the background'. Has a brick chimney.",
-   "door": "Green"
+   "door_seen": "Green",
+   "why": "Left of Grutto and a quarter further away in 'Grutto (right) and Tureluur (middle)', 2 m from the line of sight; behind Grutto in 'Grutto with Tureluur in the background'. Has a brick chimney."
   },
   {
-   "x": 118782,
-   "y": 574848,
+   "number": 36,
    "name": "Mantelmeeuw",
-   "why": "Probable. Around house 15 by the name of its photograph; its glazed doors face east, as the end seen from Grutto does, with the dune of the tower behind it on the left. Its end with the glazed doors is seen nearly square on from Grutto, so the doors face about 100 and the front about 190.",
-   "door": "Yellow",
-   "front_azimuth": 190
+   "door_seen": "Yellow",
+   "why": "One of 36, 34, 26 or 16, with a yellow door (Jan de Kort, 2026-11-21): 36 is the only one of these of type B4, the type with the yellow door."
   },
   {
-   "x": 118823,
-   "y": 574858,
-   "name": "",
-   "why": "The red door on a mound with steps down to the field in 'Grutto (right) and Tureluur (middle)'.",
-   "door": "Red"
+   "number": 26,
+   "door_seen": "Red",
+   "why": "The red door on a mound with steps down to the field in 'Grutto (right) and Tureluur (middle)'."
   },
   {
-   "x": 118806,
-   "y": 574871,
-   "name": "",
-   "why": "The red door on the dune, right of the tower in 'From Grutto in direction of outlook tower'.",
-   "door": "Red"
-  },
-  {
-   "x": 118856,
-   "y": 574862,
-   "name": "",
-   "why": "Has a brick chimney: 'Grutto (yellow)' and 'Grutto (right) and Tureluur (middle)'.",
-   "door": ""
-  },
-  {
-   "x": 118816,
-   "y": 574899,
-   "name": "",
-   "why": "Has a brick chimney: 'Grutto (yellow)'.",
-   "door": ""
-  },
-  {
-   "x": 118713,
-   "y": 574725,
-   "name": "Reception",
-   "why": "The old reception stood where the central building stands today (Jan de Kort).",
-   "door": "",
-   "kind": "Reception"
+   "number": 28,
+   "door_seen": "Red",
+   "why": "The red door on the dune, right of the tower in 'From Grutto in direction of outlook tower'."
   }
  ],
- "groups": {
-  "north-east": {
+ "types": {
+  "A4": {
+   "kind": "Bungalow",
+   "why": "4 persons, type A. Bungalows 26 and 28, both of this type, have red doors in the photographs."
+  },
+  "A6": {
+   "kind": "Bungalow",
+   "why": "6 persons, type A. Tureluur, 14, has a green door."
+  },
+  "B4": {
+   "kind": "Bungalow",
+   "why": "4 persons, type B. Grutto, 12, has a yellow door."
+  },
+  "B6": {
    "kind": "Chalet",
    "since": 1971,
-   "why": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+   "why": "6 persons, type B: numbers 52 to 81, north-east of the park. On the topographic maps from 1971 onwards; chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
   }
  }
 }

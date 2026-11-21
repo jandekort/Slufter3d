@@ -12,30 +12,43 @@
 #   2. takes the scale from the panel of 1998: its buildings are fitted onto the houses of data/houses.json;
 #   3. finds the dots of each old map and gives them RD coordinates: the scale of the 1998 panel, anchored on
 #      the old map's own grid crossing;
-#   4. takes the map of 1983 as the list of buildings, since nearly nothing hides its dots, and notes for each
-#      whether 1994 and 1965 have it too;
-#   5. adds and names what data/old_park_corrections.json says: dots under a label, and what the photographs
-#      of raw/park_1957_1996 tell (see tools/check_old_park_photos.py).
-# Writes data/old_park.json and, to check it by, review/old_park/: the dots found on each map, the buildings on
-# the relief of today with the houses of today, and a table.
+#   4. takes the dots of 1983, with those that data/old_park_corrections.json adds, as the buildings the
+#      topographic maps know;
+#   5. fits the two maps of the park's own brochures (raw/park_brochures, read by hand into
+#      data/old_park_brochures.json) onto them: the earlier one by a linear fit that pairs each numbered bungalow
+#      with a dot, the later one, bent where the brochure folds, by a quadratic fit through the bungalows of the
+#      same number;
+#   6. decides. The earlier park map (the later one already shows bungalows that came after the old park, and
+#      only serves to compare by) says which bungalows there were, their number and their type; the topographic maps
+#      say where: a bungalow stands on the dot it is paired with. One without a dot of 1983 takes a dot of 1994
+#      or 1965 near it, and failing that its place on the park map. Dots that no bungalow takes are not
+#      bungalows: the old reception, Krimweg 73, buildings of the camping.
+#   7. adds what data/old_park_corrections.json knows besides: names, fronts, what kind each type is.
+# Writes data/old_park.json and, to check it by, review/old_park/: the dots found on each map, everything on the
+# relief of today (every map's idea of every bungalow, and the place decided on), and a table.
 #
 # How good: the two houses that still stand lie 2 m and 4 m from their dot of 1983. The dots of 1994 lie 4 m
 # (median) from those of 1983; those of 1965 about 11 m, after a shift of 7 m is taken out, and are hard to tell
-# from the red shading of the dunes, so 1965 only confirms. A dot is a symbol of about 8 m, drawn by hand.
+# from the red shading of the dunes. The park maps, though drawn by hand, lie 4 m (median) from the dots after
+# their fit; 77 of the 81 bungalows of the earlier one have a dot of 1983 within 15 m.
 #
 # Needs: numpy, scipy, pillow, rasterio (for the relief of the review map)
 import json
+import math
 import os
 
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 from scipy import ndimage
+from scipy.optimize import linear_sum_assignment
 
 ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 MAPS = os.path.join(ROOT, "raw", "topotijdreis")
 HOUSES = os.path.join(ROOT, "data", "houses.json")
 LANDMARKS = os.path.join(ROOT, "data", "landmarks.json")
 CORRECTIONS = os.path.join(ROOT, "data", "old_park_corrections.json")
+BROCHURES = os.path.join(ROOT, "data", "old_park_brochures.json")
+TYPE_MODELS = os.path.join(ROOT, "data", "type_models.json")
 GROUND = os.path.join(ROOT, "raw", "ahn", "park_dtm_05m.tif")
 OUT = os.path.join(ROOT, "data", "old_park.json")
 REVIEW = os.path.join(ROOT, "review", "old_park")
@@ -48,12 +61,9 @@ PANELS = {
     1983: {"file": "Map_1983.png", "old": (131, 1430), "new": (1437, 2735), "rows": (0, -25)},
     1994: {"file": "Map_1994.png", "old": (130, 1458), "new": (1466, 2794), "rows": (122, 1350)}}
 UNKNOWN = "Unknown"    # what is not known of a building
-SAME = 12.0            # two dots of different maps within this are one building [m]
-SAME_1965 = 14.0       # and this for the map of 1965, which is less exact [m]
-NAMED_WITHIN = 10.0    # a name of the corrections belongs to the nearest building within this [m]
-PARK_NORTH = 575000.0  # north of this line stands the north-east group, south of it the park round the field;
-NORTH_EAST = (118990.0, 574960.0)   # and so does what lies east and north of this corner
-
+PAIRED = 15.0          # a bungalow of the park map and a dot of 1983 this near are one building [m]
+OTHER_MAP = 15.0       # a bungalow without one takes a dot of 1994, or else of 1965, up to this far [m]
+SAME_DOT = 8.0         # a dot of 1994 this near a bungalow that has its place is that bungalow [m]
 
 def panels(year):
     """The old map and the map of 1998 of a screenshot, as arrays of red, green, blue"""
@@ -132,8 +142,40 @@ def review(name, panel, marks):
     image.save(os.path.join(REVIEW, name))
 
 
-def reliefMap(buildings, others, houses, tower):
-    """The buildings of the old park on the relief of today, with the houses of today"""
+def linearFit(pixels, world):
+    """The linear map from pixels to RD that fits pairs of points best"""
+    solution = np.linalg.lstsq(np.c_[pixels, np.ones(len(pixels))], world, rcond=None)[0]
+    return lambda points: np.c_[np.asarray(points, float), np.ones(len(points))] @ solution
+
+
+def quadraticFit(pixels, world):
+    """As linearFit, with the squares: for a page that is bent"""
+    def terms(points):
+        points = np.asarray(points, float)
+        x, y = (points[:, 0] - 800.0) / 400.0, (points[:, 1] - 1300.0) / 400.0
+        return np.c_[np.ones(len(points)), x, y, x * x, x * y, y * y]
+    solution = np.linalg.lstsq(terms(pixels), world, rcond=None)[0]
+    return lambda points: terms(points) @ solution
+
+
+def pairWithDots(parkMap, start, dots, tower):
+    """Fits the earlier park map onto the dots; returns the fit and, per number, the index of its dot"""
+    bungalows = parkMap["bungalows"]
+    pixels = np.array([[b["x_px"], b["y_px"]] for b in bungalows], float)
+    numbers = [b["number"] for b in bungalows]
+    anchor = np.array([parkMap["tower_px"]] * 3, float)        # the tower counts for three
+    fit = linearFit(np.r_[[pixels[numbers.index(s["number"])] for s in start], anchor[:1]],
+                    np.r_[[[s["x"], s["y"]] for s in start], [tower]])
+    for gate in (60.0, 45.0, 35.0, 28.0, 22.0, 18.0, PAIRED, PAIRED):
+        distance = np.linalg.norm(fit(pixels)[:, None] - dots[None], axis=2)
+        rows, columns = linear_sum_assignment(np.minimum(distance, gate))
+        near = distance[rows, columns] < gate
+        fit = linearFit(np.r_[pixels[rows[near]], anchor], np.r_[dots[columns[near]], [tower] * 3])
+    return fit, {numbers[r]: int(c) for r, c in zip(rows[near], columns[near])}
+
+
+def reliefMap(buildings, found, parkPlaces, laterOnly, unused, houses, tower):
+    """Everything on the relief of today: every map's idea of every bungalow, and the place decided on"""
     import rasterio
     from rasterio.windows import from_bounds
     x0, x1, y0, y1 = 118540.0, 119180.0, 574620.0, 575320.0
@@ -146,37 +188,72 @@ def reliefMap(buildings, others, houses, tower):
     shade = np.clip(0.55 - 0.9 * east + 0.9 * north, 0.0, 1.3) / 1.3
     high = np.clip((filled - 2.0) / 12.0, 0.0, 1.0)
     colour = np.stack([0.60 + 0.35 * high, 0.80 - 0.15 * high, 0.56 - 0.10 * high], -1) * (0.5 + 0.5 * shade[..., None])
-    colour[missing] = (0.78, 0.78, 0.78)
-    zoom = 2
+    colour = 0.45 + 0.55 * colour      # pale, so that the marks stand out
+    colour[missing] = (0.86, 0.86, 0.86)
+    zoom = 3
     image = Image.fromarray((np.clip(colour, 0.0, 1.0) * 255).astype(np.uint8)).resize((z.shape[1] * zoom, z.shape[0] * zoom))
     draw = ImageDraw.Draw(image)
     try:
-        bold = ImageFont.truetype("DejaVuSans-Bold.ttf", 14)
-        plain = ImageFont.truetype("DejaVuSans.ttf", 12)
+        bold = ImageFont.truetype("DejaVuSans-Bold.ttf", 17)
+        plain = ImageFont.truetype("DejaVuSans.ttf", 14)
     except OSError:
         bold = plain = ImageFont.load_default()
     at = lambda x, y: ((x - x0) * 2.0 * zoom, (y1 - y) * 2.0 * zoom)
+    inside = lambda x, y: x0 < x < x1 and y0 < y < y1
     for number, x, y in houses:
-        if x0 < x < x1 and y0 < y < y1:
+        if inside(x, y):
             px, py = at(x, y)
-            draw.text((px - 8, py + 10), str(number), fill=(90, 90, 90), font=plain)
-    for x, y in others:
+            draw.text((px - 8, py + 14), str(number), fill=(150, 150, 150), font=plain)
+    for x, y in found[1965]:
+        if inside(x, y):
+            px, py = at(x, y)
+            draw.line([px - 7, py - 7, px + 7, py + 7], fill=(230, 130, 0), width=2)
+            draw.line([px - 7, py + 7, px + 7, py - 7], fill=(230, 130, 0), width=2)
+    for x, y in found[1994]:
+        if inside(x, y):
+            px, py = at(x, y)
+            draw.ellipse([px - 15, py - 15, px + 15, py + 15], outline=(0, 0, 0), width=2)
+    for x, y in found[MASTER]:
+        if inside(x, y):
+            px, py = at(x, y)
+            draw.ellipse([px - 6, py - 6, px + 6, py + 6], fill=(215, 30, 30))
+    for x, y in unused:
         px, py = at(x, y)
-        draw.ellipse([px - 14, py - 14, px + 14, py + 14], outline=(0, 0, 0), width=2)
+        draw.rectangle([px - 12, py - 12, px + 12, py + 12], outline=(215, 30, 30), width=2)
+    fills = {"A4": (205, 60, 40), "A6": (110, 140, 40), "B4": (235, 200, 60), "B6": (60, 110, 200)}
+    for b in laterOnly:
+        px, py = at(b["x"], b["y"])
+        draw.rectangle([px - 7, py - 7, px + 7, py + 7], outline=(160, 0, 200), width=2)
+        draw.text((px + 10, py - 8), "%s %s" % (b["number"] if b["number"] != UNKNOWN else "?", b["type"]), fill=(120, 0, 160), font=plain)
     for b in buildings:
         px, py = at(b["x"], b["y"])
-        fill = {"Red": (205, 60, 40), "Green": (120, 140, 40), "Yellow": (225, 190, 60)}.get(b["door"], (150, 150, 150))
-        if b["kind"] == "Chalet":
-            fill = (90, 120, 190)
-        draw.ellipse([px - 9, py - 9, px + 9, py + 9], fill=fill, outline=(255, 255, 255), width=2)
-        draw.text((px + 12, py - 18), b["id"] if b["name"] == UNKNOWN else b["name"], fill=(60, 0, 0), font=bold)
+        for which, colour in ((0, (0, 110, 255)), (1, (160, 0, 200))):
+            place = parkPlaces[which].get(b["id"])
+            if place is not None and inside(*place):
+                qx, qy = at(*place)
+                draw.line([px, py, qx, qy], fill=colour, width=2)
+                if which == 0:
+                    draw.polygon([qx, qy - 7, qx - 6, qy + 5, qx + 6, qy + 5], fill=colour)
+                else:
+                    draw.rectangle([qx - 5, qy - 5, qx + 5, qy + 5], fill=colour)
+    for b in buildings:
+        px, py = at(b["x"], b["y"])
+        draw.ellipse([px - 11, py - 11, px + 11, py + 11], outline=fills[b["type"]], width=5)
+        label = str(b["number"]) if b["number"] != UNKNOWN else "?"
+        draw.text((px + 13, py - 22), label if b["name"] == UNKNOWN else "%s %s" % (label, b["name"]), fill=(0, 0, 0), font=bold)
     px, py = at(*tower)
     draw.rectangle([px - 9, py - 9, px + 9, py + 9], outline=(0, 0, 0), width=3)
-    draw.text((px + 12, py - 7), "tower", fill=(0, 0, 0), font=bold)
-    draw.rectangle([8, 8, 860, 62], fill=(255, 255, 255))
-    draw.text((14, 12), "filled dot: building of the old park, from the map of 1983 (red, green, yellow: door known; blue: chalet; grey: door unknown)", fill=(0, 0, 0), font=plain)
-    draw.text((14, 34), "open black ring: a dot found on the map of 1994, as a check   grey numbers: houses of today, on the relief of today (AHN)", fill=(0, 0, 0), font=plain)
-    image.save(os.path.join(REVIEW, "old_park_on_the_relief_of_today.png"))
+    draw.text((px + 12, py + 6), "tower", fill=(0, 0, 0), font=bold)
+    legend = [
+        "TOPOGRAPHIC MAPS   red dot: 1983    black ring: 1994    orange cross: 1965    red square: a dot no bungalow takes",
+        "PARK MAPS, fitted   blue triangle: the earlier one    purple square: the later one    each tied to the place decided on",
+        "DECIDED   thick ring with the number: red A4, green A6, yellow B4, blue B6",
+        "hollow purple square with number and type: on the later park map only, so not of the old park",
+        "grey numbers: the houses of today, on the relief of today (AHN)"]
+    draw.rectangle([8, 8, 1010, 20 + 24 * len(legend)], fill=(255, 255, 255), outline=(0, 0, 0))
+    for k, line in enumerate(legend):
+        draw.text((16, 14 + 24 * k), line, fill=(0, 0, 0), font=plain)
+    image.save(os.path.join(REVIEW, "old_park_all_maps.png"))
 
 
 def main():
@@ -185,6 +262,9 @@ def main():
     houses = np.array([[h["x"], h["y"]] for h in today])
     numbered = [(h["nr"], h["x"], h["y"]) for h in today if h["nr"]]
     corrections = json.load(open(CORRECTIONS))
+    brochures = json.load(open(BROCHURES))
+    doors = {name: entry.get("door") for name, entry in json.load(open(TYPE_MODELS))["types"].items()}
+    tower = np.array(json.load(open(LANDMARKS))["lookout_tower"]["rd"], float)
 
     found = {}
     report = []
@@ -197,84 +277,130 @@ def main():
         review("dots_%d.png" % year, old, marks)
         report.append("%d: %.3f px/m (%d houses of 1998 fitted, median %.1f m), grid crossing at (%.0f, %.0f) px, %d dots"
                       % (year, scale, matched, residual, gx, gy, len(marks)))
-        print(report[-1])
-
-    master = found[MASTER]
     # The map of 1965 lies a little off: take out its median shift against the master
-    distance = np.linalg.norm(found[1965][:, None] - master[None], axis=2)
+    distance = np.linalg.norm(found[1965][:, None] - found[MASTER][None], axis=2)
     pairs = distance.min(1) < 20.0
-    shift = np.median(master[distance.argmin(1)[pairs]] - found[1965][pairs], axis=0)
+    shift = np.median(found[MASTER][distance.argmin(1)[pairs]] - found[1965][pairs], axis=0)
     found[1965] = found[1965] + shift
-    print("1965 shifted by (%.1f, %.1f) m onto %d" % (shift[0], shift[1], MASTER))
+    report.append("1965 shifted by (%.1f, %.1f) m onto %d" % (shift[0], shift[1], MASTER))
 
-    points = [(x, y, MASTER, "") for x, y in master]
-    points += [(h["x"], h["y"], h["map"], h["why"]) for h in corrections["hidden"]]
-    points.sort(key=lambda p: (-round(p[1] / 40.0), p[0]))      # in rows from the north, each from the west
-    near = lambda cloud, x, y, within: bool(np.hypot(cloud[:, 0] - x, cloud[:, 1] - y).min() < within)
+    hidden = corrections["hidden"]
+    dots = np.r_[found[MASTER], [[h["x"], h["y"]] for h in hidden]]
+    dotSource = ["map of %d" % MASTER] * len(found[MASTER]) + ["map of %d, read by eye" % h["map"] for h in hidden]
+
+    # The earlier park map: every bungalow with its dot
+    first, second = brochures["maps"]
+    fitFirst, paired = pairWithDots(first, brochures["start"], dots, tower)
+    byNumber = {}       # number -> what the park maps say of it
+    for which, parkMap in enumerate((first, second)):
+        for k, b in enumerate(parkMap["bungalows"]):
+            key = b["number"] if b["number"] != UNKNOWN else "x%d" % k
+            entry = byNumber.setdefault(key, {"number": b["number"], "types": [None, None], "px": [None, None]})
+            entry["types"][which] = b["type"]
+            entry["px"][which] = (b["x_px"], b["y_px"])
+    firstPlace = {key: fitFirst([e["px"][0]])[0] for key, e in byNumber.items() if e["px"][0]}
+    place, source = {}, {}
+    for key in firstPlace:
+        if key in paired:
+            place[key], source[key] = dots[paired[key]], dotSource[paired[key]]
+    taken = set(paired.values())
+    for key in sorted(k for k in firstPlace if k not in place):
+        spot = firstPlace[key]
+        for year in (1994, 1965):
+            away = np.linalg.norm(found[year] - spot, axis=1)
+            if away.min() < OTHER_MAP:
+                place[key], source[key] = found[year][int(away.argmin())], "map of %d" % year
+                break
+        else:
+            place[key], source[key] = spot, "park map"
+    # The later park map, through the bungalows of the same number
+    common = [key for key, e in byNumber.items() if e["px"][1] and key in paired]
+    fitSecond = quadraticFit([byNumber[key]["px"][1] for key in common], [dots[paired[key]] for key in common])
+    secondPlace = {key: fitSecond([e["px"][1]])[0] for key, e in byNumber.items() if e["px"][1]}
+    # What only the later map has came after the old park (the Comfort bungalows): kept apart, to compare by
+    laterOnly = [{"number": byNumber[key]["number"], "type": byNumber[key]["types"][1],
+                  "x": round(float(secondPlace[key][0]), 1), "y": round(float(secondPlace[key][1]), 1)}
+                 for key in sorted(secondPlace, key=lambda key: (isinstance(key, str), key)) if key not in place]
+    for name, fit, where in (("earlier", fitFirst, firstPlace), ("later", fitSecond, secondPlace)):
+        off = [np.linalg.norm(where[key] - dots[paired[key]]) for key in where if key in paired]
+        report.append("the %s park map: %d bungalows with a dot of %d, median %.1f m from it, at most %.1f m"
+                      % (name, len(off), MASTER, np.median(off), max(off)))
+    unused = [dots[j] for j in range(len(dots)) if j not in taken]
+
+    order = sorted(place)
     buildings = []
-    for k, (x, y, source, why) in enumerate(points):
+    notes = []
+    for key in order:
+        e = byNumber[key]
+        kind = e["types"][0]        # the earlier map is the one of the old park
+        if e["types"][0] and e["types"][1] and e["types"][0] != e["types"][1]:
+            notes.append("%s is %s on the earlier park map, which is followed, and %s on the later one" % (key, e["types"][0], e["types"][1]))
+        x, y = place[key]
         apart = np.hypot(houses[:, 0] - x, houses[:, 1] - y)
         nearest = today[int(apart.argmin())]
-        buildings.append({
-            "id": "OP%02d" % (k + 1), "x": round(float(x), 1), "y": round(float(y), 1),
-            "group": "north-east" if y > PARK_NORTH or (x > NORTH_EAST[0] and y > NORTH_EAST[1]) else "park",
-            "number": UNKNOWN, "name": UNKNOWN, "kind": "Bungalow", "door": UNKNOWN, "front_azimuth": UNKNOWN,
-            "source": {"map": source, "read": "by eye" if why else "detected", "why": why,
-                       "on_1994": near(found[1994], x, y, SAME), "on_1965": near(found[1965], x, y, SAME_1965)},
-            "today": {"house": nearest["nr"] or nearest["type"], "distance": round(float(apart.min()), 1)}})
-    unplaced = []
+        what = corrections["types"][kind]
+        b = {"id": "OP%s" % key, "number": e["number"], "name": UNKNOWN, "kind": what["kind"], "type": kind,
+             "front_azimuth": UNKNOWN, "x": round(float(x), 1), "y": round(float(y), 1)}
+        if "since" in what:
+            b["since"] = what["since"]
+        b["source"] = {"position": source[key], "on_later_park_map": e["px"][1] is not None,
+                       "park_maps_off": [None if where.get(key) is None else round(float(np.linalg.norm(where[key] - place[key])), 1)
+                                         for where in (firstPlace, secondPlace)]}
+        b["today"] = {"house": nearest["nr"] or nearest["type"], "distance": round(float(apart.min()), 1)}
+        buildings.append(b)
+    known = {b["number"]: b for b in buildings}
     for entry in corrections["named"]:
-        apart = [np.hypot(b["x"] - entry["x"], b["y"] - entry["y"]) for b in buildings]
-        k = int(np.argmin(apart))
-        if apart[k] > NAMED_WITHIN:
-            unplaced.append(entry)
-            continue
-        b = buildings[k]
-        for key in ("name", "number", "door", "kind", "front_azimuth"):
-            if entry.get(key):
-                b[key] = entry[key]
+        b = known[entry["number"]]
+        for field in ("name", "front_azimuth"):
+            if field in entry:
+                b[field] = entry[field]
         if entry.get("front_from_today"):
             standing = today[int(np.argmin(np.hypot(houses[:, 0] - b["x"], houses[:, 1] - b["y"])))]
             b["front_azimuth"] = standing["front_azimuth"]
-        b["evidence"] = (b.get("evidence", "") + " " + entry["why"]).strip()
-    for b in buildings:
-        group = corrections["groups"].get(b["group"])
-        if group:
-            b["kind"] = group["kind"]
-            b["since"] = group["since"]
-            b["evidence"] = (b.get("evidence", "") + " " + group["why"]).strip()
-    if unplaced:
-        raise SystemExit("No building within %.0f m of: %s" % (NAMED_WITHIN, [(e["x"], e["y"]) for e in unplaced]))
+        if "door_seen" in entry and entry["door_seen"] != doors[b["type"]]:
+            notes.append("%s: its door is %s in a photograph, but type %s has a %s door"
+                         % (entry["number"], entry["door_seen"], b["type"], doors[b["type"]]))
+        b["evidence"] = entry["why"]
 
-    tower = json.load(open(LANDMARKS))["lookout_tower"]["rd"]
     out = {
-        "note": "The buildings of the park as it was from 1957 to 1996, read off the topographic maps of "
-                "raw/topotijdreis by tools/make_old_park.py; positions in RD New (EPSG:28992), metres, good to about "
-                "5 m. id: ours, in rows from the north. number: the number the park gave it. name. kind: Bungalow, "
-                "Chalet or Reception. door: Red, Green or Yellow, which is also its size (red the smallest). "
-                "front_azimuth: the way the front door faces, degrees clockwise from north. What is not known is "
-                "'Unknown'. group: park (round the field) or north-east. today: the nearest house of today.",
-        "source": "Topotijdreis, Kadaster: TOP25 of %s" % ", ".join(str(y) for y in sorted(PANELS)),
-        "master": MASTER, "report": report,
+        "note": "The buildings of the park as it was from 1957 to 1996. Which there were, their number and their type "
+                "(A4, A6, B4, B6) are those of the earlier of the park's own two maps (raw/park_brochures); their positions those "
+                "of the topographic maps (raw/topotijdreis) where these have them, RD New (EPSG:28992), metres, good to "
+                "about 5 m. Made by tools/make_old_park.py. The door, and so the model, follows from the type in "
+                "data/type_models.json. kind: Bungalow or Chalet. front_azimuth: the way the front door faces, degrees "
+                "clockwise from north. What is not known is 'Unknown'. source.position: where the position is from; "
+                "park_maps_off: how far the earlier and the later park map, fitted, have it from there [m]. today: the "
+                "nearest house of today. later_map_only: what only the later park map shows, the bungalows that came after "
+                "the old park (type E): not part of the old park, their fitted positions are rough.",
+        "source": "Maps of the park's brochures; Topotijdreis, Kadaster: TOP25 of %s" % ", ".join(str(y) for y in sorted(PANELS)),
+        "report": report, "notes": notes,
+        "later_map_only": laterOnly,
+        "not_bungalows": [{"x": round(float(x), 1), "y": round(float(y), 1)} for x, y in unused],
         "buildings": buildings}
     with open(OUT, "w") as f:
         json.dump(out, f, indent=1, ensure_ascii=False)
         f.write("\n")
 
-    park = [b for b in buildings if b["group"] == "park"]
-    lines = ["# The old park, 1957 to 1996", "", "Made by tools/make_old_park.py from raw/topotijdreis.", ""] + ["- " + r for r in report] + [
-        "", "%d buildings: %d in the park, %d in the north-east group; %d of them within 12 m of a house of today."
-        % (len(buildings), len(park), len(buildings) - len(park), sum(b["today"]["distance"] <= 12.0 for b in buildings)),
-        "", "| id | number | name | kind | door | front | x | y | group | map | 1994 | 1965 | house today | m |", "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
+    counts = {}
     for b in buildings:
-        s = b["source"]
-        lines.append("| %s | %s | %s | %s | %s | %s | %.0f | %.0f | %s | %d%s | %s | %s | %s | %.0f |" % (
-            b["id"], b["number"], b["name"], b["kind"], b["door"], b["front_azimuth"], b["x"], b["y"], b["group"], s["map"],
-            " (by eye)" if s["why"] else "",
-            "yes" if s["on_1994"] else "", "yes" if s["on_1965"] else "", b["today"]["house"], b["today"]["distance"]))
+        counts[b["source"]["position"].split(",")[0]] = counts.get(b["source"]["position"].split(",")[0], 0) + 1
+    lines = ["# The old park, 1957 to 1996", "", "Made by tools/make_old_park.py from raw/topotijdreis and raw/park_brochures.", ""]
+    lines += ["- " + r for r in report] + [""] + ["- " + n for n in notes] + [
+        "", "%d buildings. Their positions: %s." % (len(buildings), ", ".join("%d from the %s" % (n, s) for s, n in sorted(counts.items()))),
+        "", "Dots of the topographic maps that no bungalow takes: %s." % ", ".join("(%.0f, %.0f)" % (x, y) for x, y in unused),
+        "", "| number | name | type | kind | front | x | y | position from | earlier park map off | later off | house today | m |",
+        "|---|---|---|---|---|---|---|---|---|---|---|---|"]
+    for b in buildings:
+        off = ["" if v is None else "%.0f" % v for v in b["source"]["park_maps_off"]]
+        lines.append("| %s | %s | %s | %s | %s | %.0f | %.0f | %s | %s | %s | %s | %.0f |" % (
+            b["number"], "" if b["name"] == UNKNOWN else b["name"], b["type"], b["kind"], b["front_azimuth"], b["x"], b["y"],
+            b["source"]["position"], off[0], off[1], b["today"]["house"], b["today"]["distance"]))
     with open(os.path.join(REVIEW, "old_park.md"), "w") as f:
         f.write("\n".join(lines) + "\n")
-    reliefMap(buildings, found[1994][(found[1994][:, 1] < 575320.0) & (found[1994][:, 0] > 118540.0)], numbered, tower)
+    ids = lambda where: {"OP%s" % key: value for key, value in where.items()}
+    reliefMap(buildings, found, (ids(firstPlace), ids(secondPlace)), laterOnly, unused, numbered, tower)
+    for line in report + notes:
+        print(line)
     print("%d buildings -> %s; review in %s" % (len(buildings), os.path.relpath(OUT, ROOT), os.path.relpath(REVIEW, ROOT)))
 
 
