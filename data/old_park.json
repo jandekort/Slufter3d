@@ -1,0 +1,1958 @@
+{
+ "note": "The buildings of the park as it was from 1957 to 1996, read off the topographic maps of raw/topotijdreis by tools/make_old_park.py; positions in RD New (EPSG:28992), metres, good to about 5 m. id: ours, in rows from the north. number: the number the park gave it. name. kind: Bungalow, Chalet or Reception. door: Red, Green or Yellow, which is also its size (red the smallest). front_azimuth: the way the front door faces, degrees clockwise from north. What is not known is 'Unknown'. group: park (round the field) or north-east. today: the nearest house of today.",
+ "source": "Topotijdreis, Kadaster: TOP25 of 1965, 1983, 1994",
+ "master": 1983,
+ "report": [
+  "1965: 2.030 px/m (206 houses of 1998 fitted, median 3.5 m), grid crossing at (933, 492) px, 56 dots",
+  "1983: 2.030 px/m (207 houses of 1998 fitted, median 3.5 m), grid crossing at (933, 500) px, 78 dots",
+  "1994: 1.920 px/m (225 houses of 1998 fitted, median 3.5 m), grid crossing at (965, 543) px, 134 dots"
+ ],
+ "buildings": [
+  {
+   "id": "OP01",
+   "x": 118882.9,
+   "y": 575227.3,
+   "group": "north-east",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Chalet",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": false,
+    "on_1965": false
+   },
+   "today": {
+    "house": 251,
+    "distance": 18.6
+   },
+   "since": 1971,
+   "evidence": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "id": "OP02",
+   "x": 119086.6,
+   "y": 575235.9,
+   "group": "north-east",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Chalet",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": false,
+    "on_1965": false
+   },
+   "today": {
+    "house": 89,
+    "distance": 13.1
+   },
+   "since": 1971,
+   "evidence": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "id": "OP03",
+   "x": 119108.5,
+   "y": 575229.9,
+   "group": "north-east",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Chalet",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": false
+   },
+   "today": {
+    "house": 104,
+    "distance": 9.6
+   },
+   "since": 1971,
+   "evidence": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "id": "OP04",
+   "x": 119018.6,
+   "y": 575190.8,
+   "group": "north-east",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Chalet",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": false
+   },
+   "today": {
+    "house": 166,
+    "distance": 6.9
+   },
+   "since": 1971,
+   "evidence": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "id": "OP05",
+   "x": 119057.4,
+   "y": 575190.9,
+   "group": "north-east",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Chalet",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": false
+   },
+   "today": {
+    "house": 110,
+    "distance": 14.1
+   },
+   "since": 1971,
+   "evidence": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "id": "OP06",
+   "x": 119057.9,
+   "y": 575219.0,
+   "group": "north-east",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Chalet",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": false,
+    "on_1965": false
+   },
+   "today": {
+    "house": 107,
+    "distance": 11.2
+   },
+   "since": 1971,
+   "evidence": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "id": "OP07",
+   "x": 119094.9,
+   "y": 575199.6,
+   "group": "north-east",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Chalet",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": false
+   },
+   "today": {
+    "house": 88,
+    "distance": 5.3
+   },
+   "since": 1971,
+   "evidence": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "id": "OP08",
+   "x": 119027.0,
+   "y": 575154.3,
+   "group": "north-east",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Chalet",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": false
+   },
+   "today": {
+    "house": 160,
+    "distance": 4.3
+   },
+   "since": 1971,
+   "evidence": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "id": "OP09",
+   "x": 119074.3,
+   "y": 575170.4,
+   "group": "north-east",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Chalet",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": false
+   },
+   "today": {
+    "house": 111,
+    "distance": 7.2
+   },
+   "since": 1971,
+   "evidence": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "id": "OP10",
+   "x": 119099.1,
+   "y": 575174.9,
+   "group": "north-east",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Chalet",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": false,
+    "on_1965": false
+   },
+   "today": {
+    "house": 87,
+    "distance": 11.0
+   },
+   "since": 1971,
+   "evidence": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "id": "OP11",
+   "x": 119106.3,
+   "y": 575147.1,
+   "group": "north-east",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Chalet",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": false
+   },
+   "today": {
+    "house": 86,
+    "distance": 8.9
+   },
+   "since": 1971,
+   "evidence": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "id": "OP12",
+   "x": 118862.8,
+   "y": 575107.2,
+   "group": "north-east",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Chalet",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": false,
+    "on_1965": false
+   },
+   "today": {
+    "house": 227,
+    "distance": 2.8
+   },
+   "since": 1971,
+   "evidence": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "id": "OP13",
+   "x": 119008.7,
+   "y": 575121.5,
+   "group": "north-east",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Chalet",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": false
+   },
+   "today": {
+    "house": 159,
+    "distance": 10.7
+   },
+   "since": 1971,
+   "evidence": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "id": "OP14",
+   "x": 119031.1,
+   "y": 575101.6,
+   "group": "north-east",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Chalet",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": false
+   },
+   "today": {
+    "house": 158,
+    "distance": 8.6
+   },
+   "since": 1971,
+   "evidence": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "id": "OP15",
+   "x": 119084.4,
+   "y": 575110.5,
+   "group": "north-east",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Chalet",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": false
+   },
+   "today": {
+    "house": 84,
+    "distance": 5.0
+   },
+   "since": 1971,
+   "evidence": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "id": "OP16",
+   "x": 119090.1,
+   "y": 575131.7,
+   "group": "north-east",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Chalet",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": false
+   },
+   "today": {
+    "house": 83,
+    "distance": 9.1
+   },
+   "since": 1971,
+   "evidence": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "id": "OP17",
+   "x": 119106.8,
+   "y": 575115.9,
+   "group": "north-east",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Chalet",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": false
+   },
+   "today": {
+    "house": 82,
+    "distance": 10.3
+   },
+   "since": 1971,
+   "evidence": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "id": "OP18",
+   "x": 118746.8,
+   "y": 575095.4,
+   "group": "north-east",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Chalet",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": false,
+    "on_1965": false
+   },
+   "today": {
+    "house": 432,
+    "distance": 8.2
+   },
+   "since": 1971,
+   "evidence": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "id": "OP19",
+   "x": 119006.9,
+   "y": 575086.2,
+   "group": "north-east",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Chalet",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": false
+   },
+   "today": {
+    "house": 157,
+    "distance": 9.5
+   },
+   "since": 1971,
+   "evidence": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "id": "OP20",
+   "x": 119032.3,
+   "y": 575069.1,
+   "group": "north-east",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Chalet",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": false
+   },
+   "today": {
+    "house": 78,
+    "distance": 8.4
+   },
+   "since": 1971,
+   "evidence": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "id": "OP21",
+   "x": 119060.0,
+   "y": 575089.9,
+   "group": "north-east",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Chalet",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": false
+   },
+   "today": {
+    "house": 79,
+    "distance": 1.5
+   },
+   "since": 1971,
+   "evidence": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "id": "OP22",
+   "x": 119069.9,
+   "y": 575062.5,
+   "group": "north-east",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Chalet",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": false
+   },
+   "today": {
+    "house": 77,
+    "distance": 2.6
+   },
+   "since": 1971,
+   "evidence": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "id": "OP23",
+   "x": 119103.2,
+   "y": 575085.2,
+   "group": "north-east",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Chalet",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": false,
+    "on_1965": false
+   },
+   "today": {
+    "house": 81,
+    "distance": 8.9
+   },
+   "since": 1971,
+   "evidence": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "id": "OP24",
+   "x": 118851.8,
+   "y": 575046.1,
+   "group": "north-east",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Chalet",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": false
+   },
+   "today": {
+    "house": 222,
+    "distance": 4.4
+   },
+   "since": 1971,
+   "evidence": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "id": "OP25",
+   "x": 118993.1,
+   "y": 575023.8,
+   "group": "north-east",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Chalet",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": true
+   },
+   "today": {
+    "house": 146,
+    "distance": 12.3
+   },
+   "since": 1971,
+   "evidence": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "id": "OP26",
+   "x": 119006.7,
+   "y": 575051.8,
+   "group": "north-east",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Chalet",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": false
+   },
+   "today": {
+    "house": 148,
+    "distance": 11.5
+   },
+   "since": 1971,
+   "evidence": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "id": "OP27",
+   "x": 119046.3,
+   "y": 575040.0,
+   "group": "north-east",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Chalet",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": false
+   },
+   "today": {
+    "house": 76,
+    "distance": 3.2
+   },
+   "since": 1971,
+   "evidence": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "id": "OP28",
+   "x": 119073.3,
+   "y": 575035.8,
+   "group": "north-east",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Chalet",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": false
+   },
+   "today": {
+    "house": 74,
+    "distance": 4.7
+   },
+   "since": 1971,
+   "evidence": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "id": "OP29",
+   "x": 119092.3,
+   "y": 575057.1,
+   "group": "north-east",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Chalet",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": false,
+    "on_1965": false
+   },
+   "today": {
+    "house": 80,
+    "distance": 8.1
+   },
+   "since": 1971,
+   "evidence": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "id": "OP30",
+   "x": 118795.3,
+   "y": 574988.5,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": false
+   },
+   "today": {
+    "house": 132,
+    "distance": 2.8
+   }
+  },
+  {
+   "id": "OP31",
+   "x": 118836.2,
+   "y": 574993.8,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": false,
+    "on_1965": false
+   },
+   "today": {
+    "house": 133,
+    "distance": 2.6
+   }
+  },
+  {
+   "id": "OP32",
+   "x": 118871.8,
+   "y": 574983.3,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": true
+   },
+   "today": {
+    "house": 141,
+    "distance": 8.0
+   }
+  },
+  {
+   "id": "OP33",
+   "x": 118913.2,
+   "y": 574990.5,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": true
+   },
+   "today": {
+    "house": 142,
+    "distance": 5.8
+   }
+  },
+  {
+   "id": "OP34",
+   "x": 118967.0,
+   "y": 574995.0,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": true
+   },
+   "today": {
+    "house": 144,
+    "distance": 5.2
+   }
+  },
+  {
+   "id": "OP35",
+   "x": 118999.0,
+   "y": 574987.0,
+   "group": "north-east",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Chalet",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "by eye",
+    "why": "On the grid line x = 119000; read by eye.",
+    "on_1994": true,
+    "on_1965": false
+   },
+   "today": {
+    "house": 70,
+    "distance": 3.8
+   },
+   "since": 1971,
+   "evidence": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "id": "OP36",
+   "x": 119013.3,
+   "y": 575016.9,
+   "group": "north-east",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Chalet",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": false
+   },
+   "today": {
+    "house": 72,
+    "distance": 7.8
+   },
+   "since": 1971,
+   "evidence": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "id": "OP37",
+   "x": 119019.0,
+   "y": 574993.0,
+   "group": "north-east",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Chalet",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "by eye",
+    "why": "Against the road, half its size; read by eye.",
+    "on_1994": true,
+    "on_1965": false
+   },
+   "today": {
+    "house": 71,
+    "distance": 8.8
+   },
+   "since": 1971,
+   "evidence": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "id": "OP38",
+   "x": 119044.5,
+   "y": 575016.5,
+   "group": "north-east",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Chalet",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": false
+   },
+   "today": {
+    "house": 75,
+    "distance": 5.8
+   },
+   "since": 1971,
+   "evidence": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "id": "OP39",
+   "x": 118760.6,
+   "y": 574978.3,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": true
+   },
+   "today": {
+    "house": 130,
+    "distance": 9.8
+   }
+  },
+  {
+   "id": "OP40",
+   "x": 118780.4,
+   "y": 574948.8,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": true
+   },
+   "today": {
+    "house": 136,
+    "distance": 6.1
+   }
+  },
+  {
+   "id": "OP41",
+   "x": 118817.1,
+   "y": 574947.7,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": false,
+    "on_1965": false
+   },
+   "today": {
+    "house": 138,
+    "distance": 3.3
+   }
+  },
+  {
+   "id": "OP42",
+   "x": 118918.5,
+   "y": 574947.1,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": true
+   },
+   "today": {
+    "house": 66,
+    "distance": 15.3
+   }
+  },
+  {
+   "id": "OP43",
+   "x": 118941.1,
+   "y": 574968.7,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": true
+   },
+   "today": {
+    "house": 259,
+    "distance": 4.3
+   }
+  },
+  {
+   "id": "OP44",
+   "x": 118980.3,
+   "y": 574976.1,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": false
+   },
+   "today": {
+    "house": 69,
+    "distance": 5.8
+   }
+  },
+  {
+   "id": "OP45",
+   "x": 118788.3,
+   "y": 574900.9,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": false,
+    "on_1965": true
+   },
+   "today": {
+    "house": 17,
+    "distance": 0.5
+   }
+  },
+  {
+   "id": "OP46",
+   "x": 118856.5,
+   "y": 574916.3,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": false,
+    "on_1965": true
+   },
+   "today": {
+    "house": 20,
+    "distance": 11.2
+   }
+  },
+  {
+   "id": "OP47",
+   "x": 118874.3,
+   "y": 574913.7,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": false,
+    "on_1965": true
+   },
+   "today": {
+    "house": 21,
+    "distance": 6.2
+   }
+  },
+  {
+   "id": "OP48",
+   "x": 118897.0,
+   "y": 574918.4,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": false
+   },
+   "today": {
+    "house": 63,
+    "distance": 6.0
+   }
+  },
+  {
+   "id": "OP49",
+   "x": 118636.9,
+   "y": 574881.1,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": true
+   },
+   "today": {
+    "house": 124,
+    "distance": 5.0
+   }
+  },
+  {
+   "id": "OP50",
+   "x": 118662.0,
+   "y": 574891.0,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1965,
+    "read": "by eye",
+    "why": "Under the S of the label of 1983; on the map of 1965 only, so less certain.",
+    "on_1994": false,
+    "on_1965": true
+   },
+   "today": {
+    "house": 124,
+    "distance": 25.8
+   }
+  },
+  {
+   "id": "OP51",
+   "x": 118776.3,
+   "y": 574878.0,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": false,
+    "on_1965": false
+   },
+   "today": {
+    "house": 16,
+    "distance": 7.1
+   }
+  },
+  {
+   "id": "OP52",
+   "x": 118806.0,
+   "y": 574871.0,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Red",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "by eye",
+    "why": "Half under the v of the label Sluftervallei; read by eye. Where house 18 stands today.",
+    "on_1994": false,
+    "on_1965": true
+   },
+   "today": {
+    "house": 18,
+    "distance": 3.2
+   },
+   "evidence": "The red door on the dune, right of the tower in 'From Grutto in direction of outlook tower'."
+  },
+  {
+   "id": "OP53",
+   "x": 118816.0,
+   "y": 574899.0,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1965,
+    "read": "by eye",
+    "why": "Under the label of 1983 and of 1994; on the map of 1965, and in the photograph 'Grutto (yellow)' a roof with a chimney stands 3 m from the line of sight to it.",
+    "on_1994": true,
+    "on_1965": true
+   },
+   "today": {
+    "house": 19,
+    "distance": 20.6
+   },
+   "evidence": "Has a brick chimney: 'Grutto (yellow)'."
+  },
+  {
+   "id": "OP54",
+   "x": 118855.5,
+   "y": 574862.5,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": false,
+    "on_1965": true
+   },
+   "today": {
+    "house": 25,
+    "distance": 6.6
+   },
+   "evidence": "Has a brick chimney: 'Grutto (yellow)' and 'Grutto (right) and Tureluur (middle)'."
+  },
+  {
+   "id": "OP55",
+   "x": 118865.5,
+   "y": 574894.6,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": false
+   },
+   "today": {
+    "house": 22,
+    "distance": 5.2
+   }
+  },
+  {
+   "id": "OP56",
+   "x": 118888.7,
+   "y": 574890.0,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": false,
+    "on_1965": false
+   },
+   "today": {
+    "house": 62,
+    "distance": 6.2
+   }
+  },
+  {
+   "id": "OP57",
+   "x": 118897.4,
+   "y": 574860.4,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Tureluur",
+   "kind": "Bungalow",
+   "door": "Green",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": true
+   },
+   "today": {
+    "house": 26,
+    "distance": 1.1
+   },
+   "evidence": "Left of Grutto and a quarter further away in 'Grutto (right) and Tureluur (middle)', 0.3 m from the line of sight; behind Grutto in 'Grutto with Tureluur in the background'. Has a brick chimney."
+  },
+  {
+   "id": "OP58",
+   "x": 118915.5,
+   "y": 574890.2,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": false,
+    "on_1965": true
+   },
+   "today": {
+    "house": 61,
+    "distance": 4.5
+   }
+  },
+  {
+   "id": "OP59",
+   "x": 118923.7,
+   "y": 574862.8,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": false,
+    "on_1965": true
+   },
+   "today": {
+    "house": 59,
+    "distance": 6.0
+   }
+  },
+  {
+   "id": "OP60",
+   "x": 118613.8,
+   "y": 574830.5,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": true
+   },
+   "today": {
+    "house": 5,
+    "distance": 13.8
+   }
+  },
+  {
+   "id": "OP61",
+   "x": 118648.1,
+   "y": 574853.8,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": true
+   },
+   "today": {
+    "house": 7,
+    "distance": 4.6
+   }
+  },
+  {
+   "id": "OP62",
+   "x": 118689.9,
+   "y": 574837.3,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": true
+   },
+   "today": {
+    "house": 10,
+    "distance": 2.2
+   }
+  },
+  {
+   "id": "OP63",
+   "x": 118730.9,
+   "y": 574850.3,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": false,
+    "on_1965": true
+   },
+   "today": {
+    "house": 11,
+    "distance": 6.1
+   }
+  },
+  {
+   "id": "OP64",
+   "x": 118751.9,
+   "y": 574831.9,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": true
+   },
+   "today": {
+    "house": 13,
+    "distance": 4.0
+   }
+  },
+  {
+   "id": "OP65",
+   "x": 118782.1,
+   "y": 574848.5,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Mantelmeeuw",
+   "kind": "Bungalow",
+   "door": "Yellow",
+   "front_azimuth": 190,
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": false,
+    "on_1965": true
+   },
+   "today": {
+    "house": 14,
+    "distance": 1.6
+   },
+   "evidence": "Probable. Around house 15 by the name of its photograph; its glazed doors face east, as the end seen from Grutto does, with the dune of the tower behind it on the left. Its end with the glazed doors is seen nearly square on from Grutto, so the doors face about 100 and the front about 190."
+  },
+  {
+   "id": "OP66",
+   "x": 118823.0,
+   "y": 574858.0,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Red",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "by eye",
+    "why": "Under the a of the label Sluftervallei; read by eye. Where house 23 stands today.",
+    "on_1994": false,
+    "on_1965": true
+   },
+   "today": {
+    "house": 23,
+    "distance": 5.1
+   },
+   "evidence": "The red door on a mound with steps down to the field in 'Grutto (right) and Tureluur (middle)'."
+  },
+  {
+   "id": "OP67",
+   "x": 118886.0,
+   "y": 574831.6,
+   "group": "park",
+   "number": 12,
+   "name": "Grutto",
+   "kind": "Bungalow",
+   "door": "Yellow",
+   "front_azimuth": 255,
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": false
+   },
+   "today": {
+    "house": 27,
+    "distance": 3.9
+   },
+   "evidence": "The photograph 'From Grutto in direction of outlook tower' was taken 12 m from it, by the bearings to the tower and to six buildings, and 'Grutto (yellow)' 13 m from it, on the dune behind it. The number 12 is on its door frame in the photograph of the door. Its front is seen square on from the field in 'Grutto (right) and Tureluur (middle)', taken looking 68 degrees: it faces about 255, its glazed doors south."
+  },
+  {
+   "id": "OP68",
+   "x": 118922.8,
+   "y": 574828.8,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": false
+   },
+   "today": {
+    "house": 57,
+    "distance": 2.2
+   }
+  },
+  {
+   "id": "OP69",
+   "x": 118543.5,
+   "y": 574781.1,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": false,
+    "on_1965": false
+   },
+   "today": {
+    "house": 502,
+    "distance": 9.3
+   }
+  },
+  {
+   "id": "OP70",
+   "x": 118683.6,
+   "y": 574805.9,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Visdiefje",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": 186.1,
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": true
+   },
+   "today": {
+    "house": "Visdiefje",
+    "distance": 2.4
+   },
+   "evidence": "Still stands; the map of 1983 has it 2 m from where it is."
+  },
+  {
+   "id": "OP71",
+   "x": 118708.8,
+   "y": 574818.9,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": true
+   },
+   "today": {
+    "house": 1,
+    "distance": 3.3
+   }
+  },
+  {
+   "id": "OP72",
+   "x": 118864.8,
+   "y": 574798.1,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": true
+   },
+   "today": {
+    "house": 29,
+    "distance": 5.9
+   }
+  },
+  {
+   "id": "OP73",
+   "x": 118914.1,
+   "y": 574803.4,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": true
+   },
+   "today": {
+    "house": 56,
+    "distance": 1.2
+   }
+  },
+  {
+   "id": "OP74",
+   "x": 118768.0,
+   "y": 574746.0,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "by eye",
+    "why": "Under the 0 of the spot height 2.0; read by eye. Where house 36 stands today.",
+    "on_1994": false,
+    "on_1965": true
+   },
+   "today": {
+    "house": 36,
+    "distance": 4.8
+   }
+  },
+  {
+   "id": "OP75",
+   "x": 118823.1,
+   "y": 574740.3,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": false
+   },
+   "today": {
+    "house": 33,
+    "distance": 9.8
+   }
+  },
+  {
+   "id": "OP76",
+   "x": 118844.3,
+   "y": 574779.7,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": true
+   },
+   "today": {
+    "house": 31,
+    "distance": 4.2
+   }
+  },
+  {
+   "id": "OP77",
+   "x": 118865.3,
+   "y": 574753.8,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": true
+   },
+   "today": {
+    "house": 39,
+    "distance": 1.5
+   }
+  },
+  {
+   "id": "OP78",
+   "x": 118891.0,
+   "y": 574774.6,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": true
+   },
+   "today": {
+    "house": 38,
+    "distance": 2.4
+   }
+  },
+  {
+   "id": "OP79",
+   "x": 118712.3,
+   "y": 574724.9,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Reception",
+   "kind": "Reception",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": true
+   },
+   "today": {
+    "house": "OTHER",
+    "distance": 25.6
+   },
+   "evidence": "The old reception stood where the central building stands today (Jan de Kort)."
+  },
+  {
+   "id": "OP80",
+   "x": 118744.2,
+   "y": 574715.2,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": false,
+    "on_1965": true
+   },
+   "today": {
+    "house": "Visdiefje",
+    "distance": 29.9
+   }
+  },
+  {
+   "id": "OP81",
+   "x": 118774.7,
+   "y": 574707.3,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": 109.6,
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": true
+   },
+   "today": {
+    "house": "Visdiefje",
+    "distance": 3.3
+   },
+   "evidence": "Still stands, the second house of the type of the Visdiefje; the map of 1983 has it 4 m from where it is."
+  },
+  {
+   "id": "OP82",
+   "x": 118792.4,
+   "y": 574731.4,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": true
+   },
+   "today": {
+    "house": 35,
+    "distance": 10.6
+   }
+  },
+  {
+   "id": "OP83",
+   "x": 118850.4,
+   "y": 574729.8,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": false,
+    "on_1965": true
+   },
+   "today": {
+    "house": 40,
+    "distance": 3.1
+   }
+  },
+  {
+   "id": "OP84",
+   "x": 118676.7,
+   "y": 574697.8,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": false
+   },
+   "today": {
+    "house": "OTHER",
+    "distance": 21.7
+   }
+  },
+  {
+   "id": "OP85",
+   "x": 118705.5,
+   "y": 574691.6,
+   "group": "park",
+   "number": "Unknown",
+   "name": "Unknown",
+   "kind": "Bungalow",
+   "door": "Unknown",
+   "front_azimuth": "Unknown",
+   "source": {
+    "map": 1983,
+    "read": "detected",
+    "why": "",
+    "on_1994": true,
+    "on_1965": false
+   },
+   "today": {
+    "house": "OTHER",
+    "distance": 14.6
+   }
+  }
+ ]
+}

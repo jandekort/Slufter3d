@@ -11,7 +11,7 @@
 namespace
 {
     const std::uint32_t magic = 0x33464c53;     // "SLF3"
-    const std::uint32_t version = 3;
+    const std::uint32_t version = 4;
     const std::int16_t noWater = -32768;
     const std::int16_t seaMark = -32767;        // in place of a water level: the tile is sea
     const double centimetre = 0.01;
@@ -108,6 +108,8 @@ WorldData WorldData::parse(const unsigned char* bytes, size_t size)
             house.m_semi = in.take<std::uint8_t>() != 0;
             house.m_pitch = in.take<std::uint8_t>() != 0;
             house.m_outline = in.take<std::uint8_t>() != 0;
+            house.m_eras = in.take<std::uint8_t>();
+            require(house.m_eras != 0 && house.m_eras < (1u << eraCount()), "World file: eras of a house");
             house.m_east = in.take<float>();
             house.m_north = in.take<float>();
             house.m_length = in.take<float>();

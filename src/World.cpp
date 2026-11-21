@@ -41,7 +41,9 @@ World::World(const WorldData& data)
     , m_terrain(data)
     , m_reception(data, m_terrain)
     , m_tower()
+    , m_everyHouse()
     , m_houses()
+    , m_era(WorldData::today())
     , m_roadStart()
     , m_roadOrder()
     , m_wallMargin(0.35)
@@ -67,6 +69,7 @@ World::World(const WorldData& data)
             house.m_north = record.m_north;
             house.m_semi = record.m_semi;
             house.m_pitch = record.m_pitch;
+            house.m_eras = record.m_eras;
             // The long axis lies a quarter turn anticlockwise of the front
             const double front = record.m_front * pi / 180.0;
             const double along = front - 0.5 * pi;
@@ -88,7 +91,21 @@ World::World(const WorldData& data)
             return house;
         });
     joinSemiDetached(data);
+    m_everyHouse = m_houses;
+    setEra(m_era);
     indexRoads();
+}
+
+void World::setEra(int era)
+{
+    if (era < 0 || era >= WorldData::eraCount())
+    {
+        return;
+    }
+    m_era = era;
+    m_houses.clear();
+    std::copy_if(m_everyHouse.begin(), m_everyHouse.end(), std::back_inserter(m_houses),
+        [&](const House& house) { return (house.m_eras & (1u << era)) != 0; });
 }
 
 // The two halves of a block lie a quarter of the block from its middle. Their models have their own

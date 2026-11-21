@@ -15,7 +15,6 @@ const std::vector<const Model*>& Models::all()
         &luxe10L(),
         &luxe6L(),
         &luxe4EL(),
-        &visdiefje(),
         &bungalowRood(),
         &bungalowGroen(),
         &bungalowGeel(),

@@ -26,6 +26,7 @@ struct House
     double m_north = 0.0;
     bool m_semi = false;              // true->half of a semi-detached block
     bool m_pitch = false;             // true->a camping pitch
+    unsigned m_eras = 0;              // bit k set->it stands in era k, see WorldData::eraCount()
 
     std::string debugString() const;
 };
@@ -47,10 +48,14 @@ public:
 
     explicit World(const WorldData& data);
 
+    // Mutator
+    void setEra(int era);               // shows the park as it was in an era; others than those of WorldData are ignored
+
     // Accessor
     const WorldData& getData() const { return m_data; }
     const Terrain& getTerrain() const { return m_terrain; }
-    const std::vector<House>& getHouses() const { return m_houses; }
+    const std::vector<House>& getHouses() const { return m_houses; }    // those of the era shown
+    int getEra() const { return m_era; }
     const Reception& getReception() const { return m_reception; }
     const LookoutTower& getTower() const { return m_tower; }
     const House* findHouse(int number) const;                  // nullptr->no such number
@@ -79,7 +84,9 @@ private:
     Terrain m_terrain;
     Reception m_reception;
     LookoutTower m_tower;
-    std::vector<House> m_houses;
+    std::vector<House> m_everyHouse;    // of every era
+    std::vector<House> m_houses;        // of the era shown
+    int m_era;
     std::vector<size_t> m_roadStart;    // per tile of the finest grid: its first road triangle in m_roadOrder
     std::vector<size_t> m_roadOrder;    // road triangles, tile by tile
     double m_wallMargin;    // a pedestrian keeps this far from walls [m]

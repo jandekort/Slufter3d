@@ -1,0 +1,132 @@
+{
+ "note": "What tools/make_old_park.py cannot read off the maps of raw/topotijdreis by itself. Positions in RD New (EPSG:28992), metres. hidden: buildings the detection misses, with the map they were read from and the reason. named: what is known of a building from the photographs of raw/park_1957_1996, by its position (the nearest building within 10 m): name, number, door (Red, Green or Yellow), kind where it is not a bungalow, front_azimuth where a photograph shows the way the front door faces; front_from_today: it still stands, so its front is that of data/houses.json. groups: what holds for every building of a group.",
+ "hidden": [
+  {
+   "x": 118806,
+   "y": 574871,
+   "map": 1983,
+   "why": "Half under the v of the label Sluftervallei; read by eye. Where house 18 stands today."
+  },
+  {
+   "x": 118823,
+   "y": 574858,
+   "map": 1983,
+   "why": "Under the a of the label Sluftervallei; read by eye. Where house 23 stands today."
+  },
+  {
+   "x": 118768,
+   "y": 574746,
+   "map": 1983,
+   "why": "Under the 0 of the spot height 2.0; read by eye. Where house 36 stands today."
+  },
+  {
+   "x": 118999,
+   "y": 574987,
+   "map": 1983,
+   "why": "On the grid line x = 119000; read by eye."
+  },
+  {
+   "x": 119019,
+   "y": 574993,
+   "map": 1983,
+   "why": "Against the road, half its size; read by eye."
+  },
+  {
+   "x": 118816,
+   "y": 574899,
+   "map": 1965,
+   "why": "Under the label of 1983 and of 1994; on the map of 1965, and in the photograph 'Grutto (yellow)' a roof with a chimney stands 3 m from the line of sight to it."
+  },
+  {
+   "x": 118662,
+   "y": 574891,
+   "map": 1965,
+   "why": "Under the S of the label of 1983; on the map of 1965 only, so less certain."
+  }
+ ],
+ "named": [
+  {
+   "x": 118684,
+   "y": 574806,
+   "name": "Visdiefje",
+   "why": "Still stands; the map of 1983 has it 2 m from where it is.",
+   "door": "",
+   "front_from_today": true
+  },
+  {
+   "x": 118773,
+   "y": 574715,
+   "name": "",
+   "why": "Still stands, the second house of the type of the Visdiefje; the map of 1983 has it 4 m from where it is.",
+   "door": "",
+   "front_from_today": true
+  },
+  {
+   "x": 118886,
+   "y": 574831,
+   "name": "Grutto",
+   "why": "The photograph 'From Grutto in direction of outlook tower' was taken 12 m from it, by the bearings to the tower and to six buildings, and 'Grutto (yellow)' 13 m from it, on the dune behind it. The number 12 is on its door frame in the photograph of the door. Its front is seen square on from the field in 'Grutto (right) and Tureluur (middle)', taken looking 68 degrees: it faces about 255, its glazed doors south.",
+   "door": "Yellow",
+   "number": 12,
+   "front_azimuth": 255
+  },
+  {
+   "x": 118898,
+   "y": 574860,
+   "name": "Tureluur",
+   "why": "Left of Grutto and a quarter further away in 'Grutto (right) and Tureluur (middle)', 0.3 m from the line of sight; behind Grutto in 'Grutto with Tureluur in the background'. Has a brick chimney.",
+   "door": "Green"
+  },
+  {
+   "x": 118782,
+   "y": 574848,
+   "name": "Mantelmeeuw",
+   "why": "Probable. Around house 15 by the name of its photograph; its glazed doors face east, as the end seen from Grutto does, with the dune of the tower behind it on the left. Its end with the glazed doors is seen nearly square on from Grutto, so the doors face about 100 and the front about 190.",
+   "door": "Yellow",
+   "front_azimuth": 190
+  },
+  {
+   "x": 118823,
+   "y": 574858,
+   "name": "",
+   "why": "The red door on a mound with steps down to the field in 'Grutto (right) and Tureluur (middle)'.",
+   "door": "Red"
+  },
+  {
+   "x": 118806,
+   "y": 574871,
+   "name": "",
+   "why": "The red door on the dune, right of the tower in 'From Grutto in direction of outlook tower'.",
+   "door": "Red"
+  },
+  {
+   "x": 118856,
+   "y": 574862,
+   "name": "",
+   "why": "Has a brick chimney: 'Grutto (yellow)' and 'Grutto (right) and Tureluur (middle)'.",
+   "door": ""
+  },
+  {
+   "x": 118816,
+   "y": 574899,
+   "name": "",
+   "why": "Has a brick chimney: 'Grutto (yellow)'.",
+   "door": ""
+  },
+  {
+   "x": 118713,
+   "y": 574725,
+   "name": "Reception",
+   "why": "The old reception stood where the central building stands today (Jan de Kort).",
+   "door": "",
+   "kind": "Reception"
+  }
+ ],
+ "groups": {
+  "north-east": {
+   "kind": "Chalet",
+   "since": 1971,
+   "why": "The buildings north-east of the park are on the maps from 1971 onwards and were chalets, not the bungalows with a red, green or yellow door (Jan de Kort, 2026-11-21)."
+  }
+ }
+}

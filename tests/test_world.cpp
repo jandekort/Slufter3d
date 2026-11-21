@@ -187,12 +187,12 @@ int main(int argc, char** argv)
         }
         check(std::any_of(houses.begin(), houses.end(), [](const House& h)
             {
-                return h.m_name == "Visdiefje" && std::fabs(h.m_site.m_length - 5.8) < 0.01 && std::fabs(h.m_site.m_width - 5.2) < 0.01;
-            }), "the Visdiefje is there, with walls of 5.8 m by 5.2 m");
+                return h.m_name == "Visdiefje" && std::fabs(h.m_site.m_length - 6.0) < 0.01 && std::fabs(h.m_site.m_width - 5.2) < 0.01;
+            }), "the Visdiefje is there, with walls of 6.0 m by 5.2 m");
         check(std::count_if(houses.begin(), houses.end(), [](const House& h)
             {
-                return h.m_type == "Visdiefje" && std::string(h.m_model->name()) == "Visdiefje";
-            }) == 2, "two bungalows of the Visdiefje type, both drawn as Visdiefje");
+                return h.m_type == "Visdiefje" && std::string(h.m_model->name()) == "BungalowRood";
+            }) == 2, "two bungalows of the Visdiefje type, both drawn as the red bungalow of the old park");
         check(std::any_of(houses.begin(), houses.end(), [](const House& h)
             {
                 return h.m_type == "Visdiefje" && std::hypot(h.m_east - 73.8, h.m_north - 10.5) < 3.0;   // RD 118774, 574711
@@ -206,6 +206,35 @@ int main(int argc, char** argv)
                 return std::hypot(h.m_east - 41.9, h.m_north - 17.7) < 3.0;   // RD 118742, 574718
             }), "the building once taken for a second Visdiefje is left out");
         check(world.findHouse(9999) == nullptr, "no house 9999");
+        { // The eras of the park: each shows its own houses, and today's come back unchanged
+            World eras(data);
+            const auto count = [&](const char* start)
+            {
+                return std::count_if(eras.getHouses().begin(), eras.getHouses().end(), [&](const House& h)
+                    {
+                        return std::string(h.m_model->name()).rfind(start, 0) == 0;
+                    });
+            };
+            check(eras.getEra() == WorldData::today() && eras.getHouses().size() == 394, "the world starts today, with 394 houses and pitches");
+            eras.setEra(0);
+            check(count("Bungalow") == 51 && count("Comfort") == 0 && count("Luxe") == 0 && count("SafariTent") == 0,
+                "1957 to 1971: the 51 white bungalows, no chalets, none of today's bungalows: " + std::to_string(count("Bungalow")));
+            check(std::any_of(eras.getHouses().begin(), eras.getHouses().end(), [](const House& h)
+                {
+                    return h.m_name == "Grutto" && std::string(h.m_model->name()) == "BungalowGeel";
+                }), "Grutto is there, yellow");
+            check(eras.findHouse(17) == nullptr, "house 17 is not there yet");
+            eras.setEra(1);
+            check(count("Bungalow") == 51 && count("SafariTent") == 33, "1971 to 1993: with the 33 chalets, drawn as safari tents: "
+                + std::to_string(count("SafariTent")));
+            eras.setEra(2);
+            check(count("Comfort") > 200 && count("Luxe") == 0 && count("Notched") == 0 && count("Bungalow") == 2,
+                "1993 to 2013: the Comfort bungalows without the Luxe ones; of the old ones the two that still stand");
+            eras.setEra(7);
+            check(eras.getEra() == 2, "an era that does not exist is ignored");
+            eras.setEra(WorldData::today());
+            check(eras.getHouses().size() == 394 && count("Luxe") > 40, "today: 394 again, with the Luxe bungalows");
+        }
         // The front of a house is free of its own walls
         const House* h17 = world.findHouse(17);
         check(h17 != nullptr && world.insideHouse(*h17, h17->m_east, h17->m_north, 0.0)

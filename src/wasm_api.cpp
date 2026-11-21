@@ -108,6 +108,18 @@ SLUFTER_EXPORT(slufter_place) void slufter_place(float east, float north, float 
     game().place(east, north, headingDegrees);
 }
 
+// The park as it was in an era: 0->1957 to 1971, 1->1971 to 1993, 2->1993 to 2013, 3->2013 to today. The mesh
+// changes: the page reads the vertices and their counts again
+SLUFTER_EXPORT(slufter_set_era) void slufter_set_era(int era)
+{
+    game().setEra(era);
+}
+
+SLUFTER_EXPORT(slufter_era) int slufter_era()
+{
+    return game().getWorld().getEra();
+}
+
 SLUFTER_EXPORT(slufter_step) void slufter_step(float elapsed)
 {
     game().step(elapsed);

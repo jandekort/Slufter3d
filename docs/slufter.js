@@ -30,6 +30,7 @@
     };
     const paceButtons = document.querySelectorAll("#panel button[data-pace]");
     const weatherSelect = document.getElementById("weather");
+    const eraSelect = document.getElementById("era");
     const numberInput = document.getElementById("number");
     const keys = { ahead: false, back: false, left: false, right: false, stepLeft: false, stepRight: false,
         up: false, down: false };
@@ -370,14 +371,29 @@
         world.slufter_init();
         window.slufter = world; // handy in the browser console
 
-        // The park stands still, so its mesh is uploaded once
-        const count = world.slufter_vertex_count();
-        const skyCount = world.slufter_sky_vertex_count();
-        const flatCount = world.slufter_flat_vertex_count();
-        const treeCount = world.slufter_tree_vertex_count();   // just before the flat ones
-        const groundCount = world.slufter_ground_vertex_count(); // just after the sky
-        gl.bufferData(gl.ARRAY_BUFFER,
-            new Float32Array(world.memory.buffer, world.slufter_vertices(), count * FLOATS_PER_VERTEX), gl.STATIC_DRAW);
+        // The park stands still within an era, so its mesh is uploaded once for each era that is chosen
+        let count = 0;
+        let skyCount = 0;
+        let flatCount = 0;
+        let treeCount = 0;      // just before the flat ones
+        let groundCount = 0;    // just after the sky
+        function upload() {
+            count = world.slufter_vertex_count();
+            skyCount = world.slufter_sky_vertex_count();
+            flatCount = world.slufter_flat_vertex_count();
+            treeCount = world.slufter_tree_vertex_count();
+            groundCount = world.slufter_ground_vertex_count();
+            gl.bufferData(gl.ARRAY_BUFFER,
+                new Float32Array(world.memory.buffer, world.slufter_vertices(), count * FLOATS_PER_VERTEX), gl.STATIC_DRAW);
+        }
+        upload();
+        // The era: 0->1957 to 1971, 1->1971 to 1993, 2->1993 to 2013, 3->2013 to today
+        eraSelect.value = String(world.slufter_era());
+        eraSelect.addEventListener("change", function () {
+            world.slufter_set_era(Number(eraSelect.value));
+            upload();
+            eraSelect.blur();   // so that the arrow keys walk again
+        });
         // The day as the world was built: its haze, its horizon, its sky
         const day = { fog: world.slufter_fog_range(),
             horizon: Array.from(new Float32Array(world.memory.buffer, world.slufter_horizon(), 3)),

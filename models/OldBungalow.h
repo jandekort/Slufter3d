@@ -3,7 +3,7 @@
 // Created: 2026-11-18
 // Three types, named after the colour of their doors and, with it, the number of guests: red the smallest, green,
 // yellow the largest. They were alike in all but their size and that colour, so one class draws them from a plan
-// that says where their parts are. The Visdiefje, the only one still standing, has a model of its own.
+// that says where their parts are. The two that still stand, the Visdiefje among them, are drawn as the red one.
 #pragma once
 
 #include "Color.h"

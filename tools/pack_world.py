@@ -32,7 +32,7 @@ TERRAIN = os.path.join(ROOT, "build", "terrain")
 OUT = os.path.join(ROOT, "docs", "data", "world.bin")
 PREVIEW = os.path.join(ROOT, "build", "preview", "world")
 
-VERSION = 3              # 3: the water of a tile may be SEA_MARK
+VERSION = 4              # 4: every house has the eras it stands in; 3: the water of a tile may be SEA_MARK
 TREES = os.path.join(ROOT, "data", "trees.json")   # made by tools/make_trees.py; without it: no trees
 ORIGIN = (118700.0, 574700.0)   # RD New of the origin of the application's coordinates: east and north in metres
 
@@ -151,7 +151,46 @@ def packHouses(levels):
                        "east": h["x"] - ORIGIN[0], "north": h["y"] - ORIGIN[1], "length": h["length"], "width": h["width"],
                        "axis": h["axis_azimuth"], "front": h["front_azimuth"],
                        "floor": floors[(h["nr"], h["x"], h["y"])]})
-    return houses
+        model = houses[-1]["model"]
+        houses[-1]["eras"] = (ALWAYS if h["type"] in STANDING else TODAY if model.startswith(LUXE) else SINCE_1993)
+    return houses + packOldPark(levels, types, houses)
+
+
+# The eras of the park, as bits: 1->1957 to 1971, 2->1971 to 1993, 4->1993 to 2013, 8->2013 to today
+OLD, OLD_WITH_CHALETS, COMFORT, TODAY = 1, 2, 4, 8
+SINCE_1993 = COMFORT | TODAY
+ALWAYS = OLD | OLD_WITH_CHALETS | COMFORT | TODAY
+LUXE = ("Luxe", "Notched")              # the models of the Luxe bungalows start so: they came in 2013
+STANDING = ("Visdiefje", "Krimweg73")   # types of houses that stood in the old park and still stand
+DOOR_TYPES = {"Red": "Rood", "Green": "Groen", "Yellow": "Geel", "Unknown": "Rood"}    # the type of a bungalow by its door
+FALLBACK_FRONT = 270.0     # a front that is not known: the terrace, right of the front door, then faces south
+SAME_BUILDING = 8.0        # an old building this near a house that still stands is that house [m]
+OLD_FOOT = 3.0             # the ground is taken this far round the middle of an old building [m]
+FLOOR_PERCENTILE = 75.0    # of that ground: on the high side of the plot, as tools/make_terrain.py has it
+FLOOR_LIFT = 0.15          # and the floor this far above it [m]
+
+
+def packOldPark(levels, types, houses):
+    """The buildings of the park of 1957 to 1996 (data/old_park.json), on the ground of today"""
+    standing = [h for h in houses if h["type"] in STANDING]
+    old = []
+    for b in json.load(open(os.path.join(ROOT, "data", "old_park.json")))["buildings"]:
+        east, north = b["x"] - ORIGIN[0], b["y"] - ORIGIN[1]
+        if b["kind"] == "Reception":
+            continue        # the central building of today stands where it stood
+        if any(math.hypot(h["east"] - east, h["north"] - north) < SAME_BUILDING for h in standing):
+            continue        # it still stands: the house of today is drawn in every era
+        chalet = b["kind"] == "Chalet"
+        kind = "Chalet" if chalet else DOOR_TYPES[b["door"]]
+        front = b["front_azimuth"] if b["front_azimuth"] != "Unknown" else FALLBACK_FRONT
+        steps = np.linspace(-OLD_FOOT, OLD_FOOT, 5)
+        ee, nn = np.meshgrid(east + steps, north + steps)
+        floor = float(np.percentile(heightOn(levels[0], ee, nn), FLOOR_PERCENTILE)) + FLOOR_LIFT
+        old.append({"nr": 0, "type": kind, "name": "" if b["name"] == "Unknown" else b["name"],
+                    "model": types[kind]["model"], "semi": False, "semi_with": 0, "pitch": False, "outline": False,
+                    "east": east, "north": north, "length": 0.0, "width": 0.0, "axis": (front - 90.0) % 360.0,
+                    "front": front, "floor": floor, "eras": OLD_WITH_CHALETS if chalet else OLD | OLD_WITH_CHALETS})
+    return old
 
 
 def largestRectangle(free):
@@ -360,7 +399,7 @@ def main():
     out += struct.pack("<I", len(houses))
     for h in houses:
         out += struct.pack("<ii", h["nr"], h["semi_with"]) + text(h["type"]) + text(h["name"]) + text(h["model"])
-        out += struct.pack("<BBB", h["semi"], h["pitch"], h["outline"])
+        out += struct.pack("<BBBB", h["semi"], h["pitch"], h["outline"], h["eras"])
         out += struct.pack("<7f", h["east"], h["north"], h["length"], h["width"], h["axis"], h["front"], h["floor"])
     out += struct.pack("<I", len(wings))
     for wing in wings:

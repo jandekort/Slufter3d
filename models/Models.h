@@ -20,7 +20,6 @@ namespace Models
     const Model& luxe10L();
     const Model& luxe6L();
     const Model& luxe4EL();
-    const Model& visdiefje();
     const Model& bungalowRood();
     const Model& bungalowGroen();
     const Model& bungalowGeel();

@@ -5,6 +5,7 @@
 #   make serve    local web server on http://localhost:8000
 #   make houses   regenerate data/houses.json from raw/ (needs Python, see tools/make_houses.py)
 #   make trees    regenerate data/trees.json from raw/ (needs Python, see tools/make_trees.py)
+#   make oldpark  regenerate data/old_park.json from raw/topotijdreis (needs Python, see tools/make_old_park.py)
 #   make world    regenerate the ground and docs/data/world.bin from raw/ and data/ (needs Python)
 
 EMXX ?= em++
@@ -18,7 +19,7 @@ INCLUDES := -Icore -Imodels -Isrc
 WASM_FLAGS := -std=c++17 -O2 -Wall -Wextra -fno-exceptions -fno-rtti \
 	-sSTANDALONE_WASM --no-entry -sALLOW_MEMORY_GROWTH=1 -sINITIAL_MEMORY=134217728
 
-.PHONY: all test wasm smoke serve houses trees world clean
+.PHONY: all test wasm smoke serve houses trees oldpark world clean
 
 all: test wasm
 
@@ -53,6 +54,10 @@ houses:
 THRESHOLD ?= 1.0
 trees:
 	python3 tools/make_trees.py --threshold $(THRESHOLD)
+
+oldpark:
+	python3 tools/make_old_park.py
+	python3 tools/check_old_park_photos.py
 
 world:
 	python3 tools/make_terrain.py

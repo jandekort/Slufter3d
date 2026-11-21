@@ -118,5 +118,18 @@ world.slufter_rise(1.0);
 run(1.0);
 check(Number(hud()[10]) > 9.0, "the first notch from the tower goes above its top: " + hud()[10] + " m");
 
+// The eras: another era is another mesh, and today's comes back as it was
+const verticesToday = world.slufter_vertex_count();
+check(world.slufter_era() === 3, "the visit starts today");
+world.slufter_set_era(0);
+const verticesOld = world.slufter_vertex_count();
+check(world.slufter_era() === 0 && verticesOld !== verticesToday && verticesOld > 0, "1957 to 1971 is another mesh: " + verticesOld + " vertices");
+check(world.slufter_goto(17) === 0, "house 17 does not stand in 1957");
+world.slufter_set_era(1);
+check(world.slufter_vertex_count() > verticesOld, "1971 to 1993 adds the chalets");
+run(0.5);
+world.slufter_set_era(3);
+check(world.slufter_vertex_count() === verticesToday && world.slufter_goto(17) === 1, "today is back as it was");
+
 console.log(failures === 0 ? "Smoke test passed" : "Smoke test failed: " + failures);
 process.exit(failures === 0 ? 0 : 1);

@@ -38,6 +38,26 @@ void Game::reset()
     m_walker.look(0.0, m_startPitch);
 }
 
+void Game::setEra(int era)
+{
+    if (era == m_world.getEra() || era < 0 || era >= WorldData::eraCount())
+    {
+        return;
+    }
+    m_world.setEra(era);
+    m_scene.build(m_world);
+    // Where a house of this era stands on the visitor, he is lifted over it and comes down on it
+    const double east = m_walker.getEast();
+    const double north = m_walker.getNorth();
+    if (m_world.obstacle(east, north) && m_walker.getAltitude() < m_world.clearanceAt(east, north))
+    {
+        const double pitch = m_walker.getPitch();
+        m_walker.place(m_world, east, north, m_walker.getHeading(), m_world.clearanceAt(east, north));
+        m_walker.land();
+        m_walker.look(0.0, pitch);
+    }
+}
+
 bool Game::goTo(int houseNumber)
 {
     const House* house = m_world.findHouse(houseNumber);

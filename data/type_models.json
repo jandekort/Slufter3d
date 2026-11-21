@@ -82,22 +82,22 @@
   "Rood": {
    "model": "BungalowRood",
    "size": "model",
-   "why": "The red bungalow of before the park, the smallest of three types; none stands today, so no house has this type. Photographed."
+   "why": "The red bungalow of the park of 1957 to 1996, the smallest of three types; also the type of an old bungalow whose door is not known. Photographed."
   },
   "Groen": {
    "model": "BungalowGroen",
    "size": "model",
-   "why": "The green bungalow of before the park, the middle one; none stands today, so no house has this type. Photographed."
+   "why": "The green bungalow of the park of 1957 to 1996, the middle one. Photographed."
   },
   "Geel": {
    "model": "BungalowGeel",
    "size": "model",
-   "why": "The yellow bungalow of before the park, the largest; none stands today, so no house has this type. Photographed."
+   "why": "The yellow bungalow of the park of 1957 to 1996, the largest. Photographed."
   },
   "Visdiefje": {
-   "model": "Visdiefje",
+   "model": "BungalowRood",
    "size": "model",
-   "why": "The 1950s bungalows, not on the park map: the Visdiefje itself and a second one of its type; photographed."
+   "why": "The two bungalows of before the park that still stand, the Visdiefje and a second one, not on the park map: drawn as the red bungalow of the old park (Jan de Kort, 2026-11-21)."
   },
   "C2": {
    "model": "Tent",
@@ -149,6 +149,11 @@
    "model": "ReceptionWing",
    "size": "outline",
    "why": "The central building is drawn as a number of wings, each a ReceptionWing."
+  },
+  "Chalet": {
+   "model": "SafariTent",
+   "size": "model",
+   "why": "The chalets north-east of the park, 1971 to 1993: no model yet, drawn as a safari tent for now (Jan de Kort, 2026-11-21)."
   }
  }
 }

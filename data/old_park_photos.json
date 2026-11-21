@@ -1,0 +1,183 @@
+{
+ "note": "Where things stand in the photographs of raw/park_1957_1996, measured by hand: x_px is the column of the middle of a building in the full picture, frame the columns between which the slide lies, tower_px the column of the lookout tower. building is the RD position of the building of data/old_park.json it is taken to be. start is a first guess of where the photographer stood. Read by tools/check_old_park_photos.py, which finds where each photograph was taken and how far each building lies from its line of sight.",
+ "photos": [
+  {
+   "file": "From Grutto in direction of outlook tower.jpeg",
+   "frame": [
+    376,
+    6946
+   ],
+   "tower_px": 3614,
+   "start": [
+    118880,
+    574830
+   ],
+   "sights": [
+    {
+     "what": "far left: the Visdiefje",
+     "x_px": 524,
+     "building": [
+      118684,
+      574806
+     ]
+    },
+    {
+     "what": "second from the left",
+     "x_px": 990,
+     "building": [
+      118709,
+      574819
+     ]
+    },
+    {
+     "what": "third from the left",
+     "x_px": 1594,
+     "building": [
+      118752,
+      574832
+     ]
+    },
+    {
+     "what": "at the field, chimney, chairs",
+     "x_px": 2949,
+     "building": [
+      118782,
+      574848
+     ]
+    },
+    {
+     "what": "large, left of the red door",
+     "x_px": 4282,
+     "building": [
+      118823,
+      574858
+     ]
+    },
+    {
+     "what": "red door",
+     "x_px": 5136,
+     "building": [
+      118806,
+      574871
+     ]
+    }
+   ]
+  },
+  {
+   "file": "Grutto (yellow).jpeg",
+   "frame": [
+    319,
+    6912
+   ],
+   "tower_px": 1708,
+   "start": [
+    118900,
+    574825
+   ],
+   "sights": [
+    {
+     "what": "at the field, chimney, chairs",
+     "x_px": 1184,
+     "building": [
+      118782,
+      574848
+     ]
+    },
+    {
+     "what": "right of the tower",
+     "x_px": 2368,
+     "building": [
+      118823,
+      574858
+     ]
+    },
+    {
+     "what": "behind the ridge of Grutto",
+     "x_px": 3040,
+     "building": [
+      118806,
+      574871
+     ]
+    },
+    {
+     "what": "near, right of Grutto",
+     "x_px": 4669,
+     "building": [
+      118856,
+      574862
+     ]
+    },
+    {
+     "what": "behind it, chimney",
+     "x_px": 5033,
+     "building": [
+      118816,
+      574899
+     ]
+    }
+   ]
+  },
+  {
+   "file": "Grutto (right) and Tureluur (middle).jpeg",
+   "frame": [
+    302,
+    6891
+   ],
+   "tower_px": null,
+   "start": [
+    118780,
+    574815
+   ],
+   "sights": [
+    {
+     "what": "red door on a mound",
+     "x_px": 1611,
+     "building": [
+      118823,
+      574858
+     ]
+    },
+    {
+     "what": "chimney, at the foot of the dune",
+     "x_px": 2506,
+     "building": [
+      118856,
+      574862
+     ]
+    },
+    {
+     "what": "Tureluur",
+     "x_px": 4038,
+     "building": [
+      118898,
+      574860
+     ]
+    },
+    {
+     "what": "behind Tureluur",
+     "x_px": 4273,
+     "building": [
+      118924,
+      574863
+     ]
+    },
+    {
+     "what": "Grutto",
+     "x_px": 5549,
+     "building": [
+      118886,
+      574831
+     ]
+    },
+    {
+     "what": "far right",
+     "x_px": 6097,
+     "building": [
+      118923,
+      574829
+     ]
+    }
+   ]
+  }
+ ]
+}

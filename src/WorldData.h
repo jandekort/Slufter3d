@@ -36,6 +36,7 @@ struct WorldData
         bool m_semi = false;            // true->half of a semi-detached block
         bool m_pitch = false;           // true->a camping pitch, false->a building
         bool m_outline = false;         // true->drawn at the size of its outline, false->the model decides
+        unsigned m_eras = 0;            // bit k set->it stands in era k of the park, see eraCount()
         double m_east = 0.0;            // centre of the outline
         double m_north = 0.0;
         double m_length = 0.0;          // outline; for a building that of its roof
@@ -67,6 +68,10 @@ struct WorldData
     static float dry() { return -1.0e9f; }  // value of Level::m_water on a tile without water
     static float sea() { return -2.0e9f; }  // value of Level::m_water on a tile of the sea
     static int roadKinds() { return 4; }    // 0->asphalt, 1->bricks, 2->shells, 3->sand
+    // The eras of the park: 0->1957 to 1971, the white bungalows; 1->1971 to 1993, with the chalets;
+    // 2->1993 to 2013, the Comfort bungalows; 3->2013 to today, with the Luxe bungalows
+    static int eraCount() { return 4; }
+    static int today() { return 3; }
 
     // Reads the file; anything wrong with it stops the program
     static WorldData parse(const unsigned char* bytes, size_t size);
