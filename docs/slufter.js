@@ -30,9 +30,26 @@
         error: document.getElementById("error")
     };
     const paceButtons = document.querySelectorAll("#panel button[data-pace]");
-    const weatherSelect = document.getElementById("weather");
-    const eraSelect = document.getElementById("era");
-    const lensSelect = document.getElementById("lens");
+    // A choice of the settings: a row of buttons, the one chosen lit. Returns what sets it and what steps it on
+    function choice(name, chosen) {
+        const buttons = Array.from(document.querySelectorAll('#settings [data-choice="' + name + '"] button'));
+        const values = buttons.map(function (button) { return button.dataset.value; });
+        let current = values[0];
+        function set(value, quiet) {
+            current = String(value);
+            buttons.forEach(function (button) { button.classList.toggle("on", button.dataset.value === current); });
+            if (!quiet) {
+                chosen(current);
+            }
+        }
+        buttons.forEach(function (button) {
+            button.addEventListener("click", function () {
+                set(button.dataset.value);
+                button.blur();      // so that the keys walk again
+            });
+        });
+        return { set: set, next: function () { set(values[(values.indexOf(current) + 1) % values.length]); } };
+    }
     const settings = document.getElementById("settings");
     const settingsButton = document.getElementById("settingsButton");
     const numberInput = document.getElementById("number");
@@ -104,8 +121,7 @@
         } else if (event.code === "KeyF") {
             nextWeather();
         } else if (event.code === "KeyZ") {
-            lensSelect.selectedIndex = (lensSelect.selectedIndex + 1) % lensSelect.options.length;
-            setLens(Number(lensSelect.value));
+            lensChoice.next();
         } else if (/^Digit[1-2]$/.test(event.code)) {
             setPace(Number(event.code.slice(5)));   // 1->slow, 2->fast
         }
@@ -145,59 +161,31 @@
     }
     climbButton(document.getElementById("up"), 1.0, "up");
     climbButton(document.getElementById("down"), -1.0, "down");
-    const treesSelect = document.getElementById("trees");
     let showTrees = true;    // true->the trees are drawn; on at the start, phones draw them smoothly
-    function setTrees(on) {
-        showTrees = on;
-        treesSelect.value = on ? "on" : "off";
-    }
+    const treesChoice = choice("trees", function (value) { showTrees = value === "on"; });
     function toggleTrees() {
-        setTrees(!showTrees);
+        treesChoice.next();
     }
-    setTrees(showTrees);
-    treesSelect.addEventListener("change", function () {
-        setTrees(treesSelect.value === "on");
-        treesSelect.blur();     // so that the arrow keys walk again
-    });
-    const tilesSelect = document.getElementById("tiles");
+    treesChoice.set("on");
     let showTiles = true;    // true->the tiles of the park's grid are drawn on the land
-    function setTiles(on) {
-        showTiles = on;
-        tilesSelect.value = on ? "on" : "off";
-    }
+    const tilesChoice = choice("tiles", function (value) { showTiles = value === "on"; });
     function toggleTiles() {
-        setTiles(!showTiles);
+        tilesChoice.next();
     }
-    setTiles(showTiles);
-    tilesSelect.addEventListener("change", function () {
-        setTiles(tilesSelect.value === "on");
-        tilesSelect.blur();
-    });
+    tilesChoice.set("on");
     let weather = "day";     // a name of WEATHERS, or "day": as the world was built
-    function setWeather(name) {
-        weather = name;
-        weatherSelect.value = name;
-    }
+    const weatherChoice = choice("weather", function (value) { weather = value; });
     function nextWeather() {
-        const names = Array.from(weatherSelect.options).map(function (option) { return option.value; });
-        setWeather(names[(names.indexOf(weather) + 1) % names.length]);
+        weatherChoice.next();
     }
-    setWeather(weather);
-    // Once chosen, the drop-down lets go of the keys, which walk again
-    weatherSelect.addEventListener("change", function () {
-        setWeather(weatherSelect.value);
-        weatherSelect.blur();
-    });
+    weatherChoice.set(weather);
     document.getElementById("land").addEventListener("click", function () { landRequested = true; });
     // The lens: a longer one sees less, larger, as the photographs of the old park do
-    function setLens(degrees) {
-        lens = degrees;
+    const lensChoice = choice("lens", function (value) {
+        lens = Number(value);
         lensChanged = true;
-    }
-    lensSelect.addEventListener("change", function () {
-        setLens(Number(lensSelect.value));
-        lensSelect.blur();
     });
+    lensChoice.set(WIDE_LENS, true);
     // Settings: what is not needed all the time opens and closes under its button
     settingsButton.addEventListener("click", function () {
         settings.hidden = !settings.hidden;
@@ -205,7 +193,7 @@
         settingsButton.setAttribute("aria-expanded", String(!settings.hidden));
     });
 
-    document.querySelectorAll(".pad button").forEach(function (button) {
+    document.querySelectorAll("button[data-key]").forEach(function (button) {
         const name = button.dataset.key;
         const set = function (down) {
             return function (event) {
@@ -425,12 +413,11 @@
         }
         upload();
         // The era: 0->1957 to 1971, 1->1971 to 1993, 2->1993 to 2013, 3->2013 to today
-        eraSelect.value = String(world.slufter_era());
-        eraSelect.addEventListener("change", function () {
-            world.slufter_set_era(Number(eraSelect.value));
+        const eraChoice = choice("era", function (value) {
+            world.slufter_set_era(Number(value));
             upload();
-            eraSelect.blur();   // so that the arrow keys walk again
         });
+        eraChoice.set(world.slufter_era(), true);
         // The day as the world was built: its haze, its horizon, its sky
         const day = { fog: world.slufter_fog_range(),
             horizon: Array.from(new Float32Array(world.memory.buffer, world.slufter_horizon(), 3)),

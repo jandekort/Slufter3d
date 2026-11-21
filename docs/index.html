@@ -30,19 +30,14 @@
     #panel button:first-child, #panel input:first-child { border-radius: 6px 0 0 6px; }
     #panel button + button { border-left: none; }
     #panel button:last-child { border-radius: 0 6px 6px 0; border-left: none; }
-    #panel button.single { border-radius: 6px; border-left: 1px solid rgba(255, 255, 255, 0.7); }
-    /* What is not needed all the time lies under Settings */
+    /* What is not needed all the time lies under Settings: one row of buttons per choice, one of them on */
+    #panel button { white-space: nowrap; }
+    /* Settings stands apart from the tortoise and the hare, a button of its own */
+    #panel #settingsButton { margin-left: 8px; border-radius: 6px; border-left: 1px solid rgba(255, 255, 255, 0.7); }
+    #panel button[data-pace="2"] { border-radius: 0 6px 6px 0; }
+    #panel .choice button { padding: 6px 8px; }
     #settings { display: flex; flex-direction: column; gap: 8px; }
     #settings[hidden] { display: none; }
-    #panel label span { box-sizing: border-box; width: 78px; padding: 6px 10px; background: rgba(20, 40, 60, 0.45);
-                        border: 1px solid rgba(255, 255, 255, 0.7); border-radius: 6px 0 0 6px; }
-    /* The weather: a drop-down at the end of a row of buttons, alike in look */
-    #panel select { font: inherit; color: #ffffff; background: rgba(20, 40, 60, 0.45); outline: none; cursor: pointer;
-                    border: 1px solid rgba(255, 255, 255, 0.7); border-left: none; border-radius: 0 6px 6px 0;
-                    padding: 6px 24px 6px 10px; -webkit-appearance: none; appearance: none;
-                    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0h10L5 6z' fill='white'/%3E%3C/svg%3E");
-                    background-repeat: no-repeat; background-position: right 9px center; }
-    #panel select option { color: #173a5c; background: #ffffff; }
     #panel input { width: 92px; -webkit-user-select: text; user-select: text; -webkit-touch-callout: default; }
     #panel input::placeholder { color: rgba(255, 255, 255, 0.8); }
     .pad { position: absolute; bottom: 5%; display: none; gap: 2vmin; }
@@ -55,9 +50,8 @@
                                /* buttons about 40 px high for a finger; 16 px text keeps iOS from zooming
                                   into the house number field */
                                #panel { font-size: 16px; }
-                               #panel button, #panel input { padding: 10px 14px; }
-                               #panel select { padding: 10px 28px 10px 14px; }
-                               #panel label span { padding: 10px 14px; width: 96px; } }
+                               #panel button, #panel input { padding: 10px 12px; }
+                               #panel .choice button { padding: 10px 7px; font-size: 15px; } }
 </style>
 </head>
 <body>
@@ -67,31 +61,40 @@
 <div id="error" class="hud"></div>
 <div id="panel">
     <div class="row">
-        <button id="up">&#9650; Up</button><button id="down">&#9660; Down</button><button id="land">Land</button>
+        <button data-key="left" title="turn left" aria-label="turn left">&#9664;</button><button data-key="right"
+            title="turn right" aria-label="turn right">&#9654;</button><button data-key="ahead" title="walk on"
+            aria-label="walk on">&#9650;</button><button data-key="back" title="walk back"
+            aria-label="walk back">&#9660;</button><button id="up">Up</button><button id="down">Down</button><button
+            id="land">Land</button>
     </div>
     <div class="row">
-        <button data-pace="1" class="on">Slow</button><button data-pace="2">Fast</button>
-    </div>
-    <div class="row">
-        <button id="settingsButton" class="single" aria-expanded="false" aria-controls="settings">Settings &#9662;</button>
+        <button data-pace="1" class="on" title="slow, 20 km/h" aria-label="slow">&#128034;</button><button data-pace="2"
+            title="fast, 50 km/h" aria-label="fast">&#128007;</button><button id="settingsButton" aria-expanded="false"
+            aria-controls="settings">Settings &#9662;</button>
     </div>
     <div id="settings" hidden>
         <div class="row">
             <input id="number" type="text" inputmode="numeric" placeholder="house no."><button id="go">Go</button>
         </div>
-        <label class="row"><span>Trees</span><select id="trees"><option value="on" selected>On</option><option
-            value="off">Off</option></select></label>
-        <label class="row"><span>Tiles</span><select id="tiles"><option value="on" selected>On</option><option
-            value="off">Off</option></select></label>
-        <label class="row"><span>Weather</span><select id="weather"><option value="day">Day</option><option
-            value="fog">Fog</option><option value="overcast">Overcast</option><option
-            value="bluehour">Evening</option></select></label>
-        <label class="row"><span>Years</span><select id="era"><option value="0">1957&ndash;1971</option><option
-            value="1">1971&ndash;1993</option><option value="2">1993&ndash;2013</option><option value="3"
-            selected>2013&ndash;today</option></select></label>
-        <label class="row"><span>Lens</span><select id="lens"><option value="68" selected>Wide</option><option
-            value="46.4">28 mm</option><option value="37.8">35 mm</option><option value="27">50 mm</option><option
-            value="19.5">70 mm</option><option value="13.7">100 mm</option></select></label>
+        <div class="row choice" data-choice="trees">
+            <button data-value="on">Trees on</button><button data-value="off">Trees off</button>
+        </div>
+        <div class="row choice" data-choice="tiles">
+            <button data-value="on">Tiles on</button><button data-value="off">Tiles off</button>
+        </div>
+        <div class="row choice" data-choice="weather">
+            <button data-value="day">Day</button><button data-value="fog">Fog</button><button
+                data-value="overcast">Overcast</button><button data-value="bluehour">Evening</button>
+        </div>
+        <div class="row choice" data-choice="era">
+            <button data-value="0">1957&ndash;1971</button><button data-value="1">1971&ndash;1993</button><button
+                data-value="2">1993&ndash;2013</button><button data-value="3">2013&ndash;today</button>
+        </div>
+        <div class="row choice" data-choice="lens">
+            <button data-value="68">Wide</button><button data-value="46.4">28 mm</button><button
+                data-value="37.8">35 mm</button><button data-value="27">50 mm</button><button
+                data-value="19.5">70 mm</button><button data-value="13.7">100 mm</button>
+        </div>
     </div>
 </div>
 <div id="help" class="hud">W / S / A / D or arrows: walk, turn &nbsp; Q / E: step sideways &nbsp; drag: look around &nbsp; wheel or Space / C: up, down &nbsp; L: land &nbsp; T / G: trees, tiles on, off &nbsp; Z: lens &nbsp; F: weather &nbsp; 1 / 2: slow, fast &nbsp; R: back to the tower</div>
