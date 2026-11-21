@@ -60,14 +60,15 @@
    "number": 12,
    "name": "Grutto",
    "door_seen": "Yellow",
-   "front_azimuth": 255,
-   "why": "The number 12 is on its door frame in the photograph of the door. 'From Grutto in direction of outlook tower' was taken 12 m from it, by the bearings to the tower and to six buildings, and 'Grutto (yellow)' 13 m from it, on the dune behind it. Its front is seen square on from the field in 'Grutto (right) and Tureluur (middle)', taken looking 68 degrees: it faces about 255, its glazed doors south."
+   "front_azimuth": 270,
+   "why": "Its front door faces west (Jan de Kort, 2026-11-21). The number 12 is on its door frame in the photograph of the door. 'From Grutto in direction of outlook tower' was taken 12 m from it, by the bearings to the tower and to six buildings, and 'Grutto (yellow)' 13 m from it, on the dune behind it. Its front is seen square on from the field in 'Grutto (right) and Tureluur (middle)', taken looking 68 degrees, which gave about 255."
   },
   {
    "number": 14,
    "name": "Tureluur",
    "door_seen": "Green",
-   "why": "Left of Grutto and a quarter further away in 'Grutto (right) and Tureluur (middle)', 2 m from the line of sight; behind Grutto in 'Grutto with Tureluur in the background'. Has a brick chimney."
+   "why": "Its front door faces west-south-west (Jan de Kort, 2026-11-21). Left of Grutto and a quarter further away in 'Grutto (right) and Tureluur (middle)', 2 m from the line of sight; behind Grutto in 'Grutto with Tureluur in the background'. Has a brick chimney. Its front door faces south-west (Jan de Kort, 2026-11-21).",
+   "front_azimuth": 247.5
   },
   {
    "number": 36,
@@ -78,12 +79,29 @@
   {
    "number": 26,
    "door_seen": "Red",
-   "why": "The red door on a mound with steps down to the field in 'Grutto (right) and Tureluur (middle)'."
+   "why": "Its front door faces south (Jan de Kort, 2026-11-21). The red door on a mound with steps down to the field in 'Grutto (right) and Tureluur (middle)'. Its front door faces south-west (Jan de Kort, 2026-11-21). Its front door faces south (Jan de Kort, 2026-11-21).",
+   "front_azimuth": 180
   },
   {
    "number": 28,
    "door_seen": "Red",
-   "why": "The red door on the dune, right of the tower in 'From Grutto in direction of outlook tower'."
+   "why": "Its front door faces south-east (Jan de Kort, 2026-11-21). The red door on the dune, right of the tower in 'From Grutto in direction of outlook tower'. Its front door faces south (Jan de Kort, 2026-11-21). Its front door faces south-east (Jan de Kort, 2026-11-21).",
+   "front_azimuth": 135
+  },
+  {
+   "number": 47,
+   "front_azimuth": 180,
+   "why": "Its front door faces south (Jan de Kort, 2026-11-21). Its front door faces south (Jan de Kort, 2026-11-21). Its front door faces south (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "number": 43,
+   "front_azimuth": 180,
+   "why": "Its front door faces south (Jan de Kort, 2026-11-21). Its front door faces south (Jan de Kort, 2026-11-21). Its front door faces south (Jan de Kort, 2026-11-21)."
+  },
+  {
+   "number": 16,
+   "front_azimuth": 180,
+   "why": "Its front door faces south (Jan de Kort, 2026-11-21)."
   }
  ],
  "types": {

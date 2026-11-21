@@ -28,11 +28,11 @@ Dots of the topographic maps that no bungalow takes: (118883, 575227), (118863, 
 | 9 |  | A6 | Bungalow | Unknown | 118865 | 574754 | map of 1983 | 1 | 39 | 2 |
 | 10 |  | A6 | Bungalow | Unknown | 118865 | 574798 | map of 1983 | 7 | 29 | 6 |
 | 11 |  | A6 | Bungalow | Unknown | 118891 | 574775 | map of 1983 | 4 | 38 | 2 |
-| 12 | Grutto | B4 | Bungalow | 255 | 118886 | 574832 | map of 1983 | 3 | 27 | 4 |
+| 12 | Grutto | B4 | Bungalow | 270 | 118886 | 574832 | map of 1983 | 3 | 27 | 4 |
 | 13 |  | B4 | Bungalow | Unknown | 118914 | 574803 | map of 1983 | 3 | 56 | 1 |
-| 14 | Tureluur | A6 | Bungalow | Unknown | 118897 | 574860 | map of 1983 | 6 | 26 | 1 |
+| 14 | Tureluur | A6 | Bungalow | 247.5 | 118897 | 574860 | map of 1983 | 6 | 26 | 1 |
 | 15 |  | A4 | Bungalow | Unknown | 118923 | 574829 | map of 1983 | 1 | 57 | 2 |
-| 16 |  | A6 | Bungalow | Unknown | 118856 | 574862 | map of 1983 | 0 | 25 | 7 |
+| 16 |  | A6 | Bungalow | 180 | 118856 | 574862 | map of 1983 | 0 | 25 | 7 |
 | 17 |  | A4 | Bungalow | Unknown | 118924 | 574863 | map of 1983 | 2 | 59 | 6 |
 | 18 |  | A4 | Bungalow | Unknown | 118866 | 574895 | map of 1983 | 4 | 22 | 5 |
 | 19 |  | B4 | Bungalow | Unknown | 118916 | 574890 | map of 1983 | 2 | 61 | 4 |
@@ -42,9 +42,9 @@ Dots of the topographic maps that no bungalow takes: (118883, 575227), (118863, 
 | 23 |  | A6 | Bungalow | Unknown | 118897 | 574918 | map of 1983 | 4 | 63 | 6 |
 | 24 |  | A6 | Bungalow | Unknown | 118840 | 574895 | map of 1994 | 11 | 19 | 10 |
 | 25 |  | A6 | Bungalow | Unknown | 118918 | 574947 | map of 1983 | 8 | 66 | 15 |
-| 26 |  | A4 | Bungalow | Unknown | 118823 | 574858 | map of 1983, read by eye | 5 | 23 | 5 |
+| 26 |  | A4 | Bungalow | 180 | 118823 | 574858 | map of 1983, read by eye | 5 | 23 | 5 |
 | 27 |  | A6 | Bungalow | Unknown | 118941 | 574969 | map of 1983 | 5 | 259 | 4 |
-| 28 |  | A4 | Bungalow | Unknown | 118806 | 574871 | map of 1983, read by eye | 2 | 18 | 3 |
+| 28 |  | A4 | Bungalow | 135 | 118806 | 574871 | map of 1983, read by eye | 2 | 18 | 3 |
 | 29 |  | A6 | Bungalow | Unknown | 118967 | 574995 | map of 1983 | 3 | 144 | 5 |
 | 30 |  | A6 | Bungalow | Unknown | 118788 | 574901 | map of 1983 | 3 | 17 | 0 |
 | 31 |  | A6 | Bungalow | Unknown | 118913 | 574990 | map of 1983 | 5 | 142 | 6 |
@@ -59,11 +59,11 @@ Dots of the topographic maps that no bungalow takes: (118883, 575227), (118863, 
 | 40 |  | A6 | Bungalow | Unknown | 118690 | 574837 | map of 1983 | 3 | 10 | 2 |
 | 41 |  | A6 | Bungalow | Unknown | 118795 | 574988 | map of 1983 | 6 | 132 | 3 |
 | 42 |  | A4 | Bungalow | Unknown | 118709 | 574819 | map of 1983 | 4 | 1 | 3 |
-| 43 |  | A4 | Bungalow | Unknown | 118780 | 574949 | map of 1983 | 4 | 136 | 6 |
+| 43 |  | A4 | Bungalow | 180 | 118780 | 574949 | map of 1983 | 4 | 136 | 6 |
 | 44 | Visdiefje | A4 | Bungalow | 186.1 | 118684 | 574806 | map of 1983 | 5 | Visdiefje | 2 |
 | 45 |  | A6 | Bungalow | Unknown | 118761 | 574978 | map of 1983 | 6 | 130 | 10 |
 | 46 |  | A6 | Bungalow | Unknown | 118647 | 574815 | map of 1994 | 3 | 2 | 4 |
-| 47 |  | A6 | Bungalow | Unknown | 118733 | 574954 | map of 1994 | 14 | 127 | 17 |
+| 47 |  | A6 | Bungalow | 180 | 118733 | 574954 | map of 1994 | 14 | 127 | 17 |
 | 48 |  | B4 | Bungalow | Unknown | 118648 | 574854 | map of 1983 | 1 | 7 | 5 |
 | 49 |  | B4 | Bungalow | Unknown | 118637 | 574881 | map of 1983 | 2 | 124 | 5 |
 | 50 |  | A6 | Bungalow | Unknown | 118614 | 574830 | map of 1983 | 6 | 5 | 14 |
