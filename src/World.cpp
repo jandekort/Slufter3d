@@ -229,7 +229,7 @@ bool World::obstacle(double east, double north) const
     {
         return true;
     }
-    return inTower(east, north) || m_reception.contains(east, north, m_wallMargin)
+    return inTower(east, north) || (hasReception() && m_reception.contains(east, north, m_wallMargin))
         || std::any_of(m_houses.begin(), m_houses.end(),
             [&](const House& house)
             {

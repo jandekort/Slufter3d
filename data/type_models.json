@@ -102,6 +102,11 @@
    "size": "model",
    "why": "Old park: 6 persons, type B on the park map, the chalets north-east of the park from 1971: no model yet, drawn as a safari tent for now (Jan de Kort, 2026-11-21)."
   },
+  "Taveerne": {
+   "model": "Taveerne",
+   "size": "model",
+   "why": "Old park: the reception, restaurant and shop of before 1993, where the central building of today stands. Drawn after a postcard and the park map."
+  },
   "Visdiefje": {
    "model": "BungalowRood",
    "size": "model",

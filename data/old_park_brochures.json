@@ -1,5 +1,5 @@
 {
- "note": "The bungalows on the map of the park in raw/park_brochures, read by hand: the number printed beside each symbol, its type by the legend of the map (A4, B4, A6, B6: 4 or 6 persons, type A or B), and the column and row of the symbol in the photograph. tower_px is the lookout tower (U). start: a few bungalows whose position is known from the photographs (data/old_park_photos.json), to start the fit from. Read by tools/make_old_park.py. roads: only what the map draws as a road: the ring road (a thick line) and the gravel roads (two thin lines side by side), each as a line through columns and rows of the photograph; kind Ring, Road, or Path for a short narrow one. A thin single line is the edge of a dune, not a road (Jan de Kort, 2026-11-21). The roads of the caravan and tent fields are left out, and so are the public roads round the park.",
+ "note": "The bungalows on the map of the park in raw/park_brochures, read by hand: the number printed beside each symbol, its type by the legend of the map (A4, B4, A6, B6: 4 or 6 persons, type A or B), and the column and row of the symbol in the photograph. tower_px is the lookout tower (U). start: a few bungalows whose position is known from the photographs (data/old_park_photos.json), to start the fit from. Read by tools/make_old_park.py. roads: only what the map draws as a road: the ring road (a thick line) and the gravel roads (two thin lines side by side), each as a line through columns and rows of the photograph; kind Ring, Road, or Path for a short narrow one. A thin single line is the edge of a dune, not a road (Jan de Kort, 2026-11-21). The roads of the caravan and tent fields are left out, and so are the public roads round the park. others: buildings of the park that are not bungalows, by the ends of their front.",
  "file": "IMG_4902.jpg",
  "tower_px": [486, 1596],
  "start": [
@@ -632,6 +632,17 @@
    "kind": "Path",
    "px": [[945, 1762], [920, 1768], [885, 1780]
    ]
+  }
+ ],
+ "others": [
+  {
+   "name": "Taveerne",
+   "type": "Taveerne",
+   "front_px": [
+    [462, 1850], [500, 1890]
+   ],
+   "depth": 12.0,
+   "why": "The stippled building at 'Taveerne', 'Kantoor' and 'Winkel': reception, restaurant and shop. front_px: the ends of its front, left and right as seen from the midget golf (M), from where the postcard IMG_4893 shows it; depth: of the part under the main roof [m], as the model has it."
   }
  ]
 }

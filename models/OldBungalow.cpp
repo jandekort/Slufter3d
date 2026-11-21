@@ -38,6 +38,7 @@ namespace
     const double obFoundation = 2.5;    // walls reach this far into the dune [m]
     const double obHead = 2.10;         // top of the windows, just under the thatch [m]
     const double obNotch = 0.10;        // a cut in the thatch reaches this far beyond what it clears [m]
+    const double obStepHighest = 0.20;  // a doorstep higher than this over the lowest ground under it lies flat instead [m]
     const double obLeaf = 0.89;         // width of the door leaf [m]
     const double obTile = 0.2652;       // radius of a half-round ridge tile [m]
     const double obTileLength = 0.24;   // of a ridge tile, along the ridge [m]
@@ -174,7 +175,8 @@ namespace
     // The doorstep (DoosA_Tray2_029): four by three red tiles of 0.30 m against the wall, within a row of darker
     // bricks on three sides, the tiles a tenth of the height of the step lower than the bricks. It lies level, just
     // under the threshold or on the highest ground under it, and its sides reach down into the ground, so that it
-    // stands on the dune and does not float over it
+    // stands on the dune and does not float over it. Where the ground falls away so far that the step would stand
+    // high, it lies flat on the ground instead
     void doorstep(PlanBuilder& b, const Wall& wall, double middle)
     {
         const double tile = 0.30;
@@ -201,6 +203,40 @@ namespace
         }
         const double top = std::max(-0.02, high + 0.03);
         const double foot = low - 0.30;
+        const double inner = half - brick;      // the tiles, either way from the middle
+        const double edge = depth - brick;      // and out from the wall
+        if (top - low > obStepHighest)
+        {
+            // The ground falls away too far for a step: the tiles and their bricks lie on it, as a terrace does
+            std::vector<double> as = { middle - half, middle - inner };
+            for (int i = 1; i <= across; ++i)
+            {
+                as.push_back(middle - inner + (double) i * tile);
+            }
+            as.push_back(middle + half);
+            std::vector<double> os = { 0.0 };
+            for (int j = 1; j <= deep; ++j)
+            {
+                os.push_back((double) j * tile);
+            }
+            os.push_back(depth);
+            const auto lie = [&](double a, double o)
+            {
+                const Vec3 p = b.onWall(wall, a, 0.0, o);
+                return Vec3(p.x, groundLevel(b.site(), p) + 0.05, p.z);
+            };
+            for (size_t i = 0; i + 1 < as.size(); ++i)
+            {
+                for (size_t j = 0; j + 1 < os.size(); ++j)
+                {
+                    const bool bricks = i == 0 || i + 2 == as.size() || j + 2 == os.size();
+                    const Color color = bricks ? obStepBrick : obStepTile.scaled((i + j) % 2 == 0 ? 1.0f : 0.95f);
+                    b.mesh().addQuad(lie(as[i], os[j]), lie(as[i + 1], os[j]), lie(as[i + 1], os[j + 1]), lie(as[i], os[j + 1]),
+                        color, up);
+                }
+            }
+            return;
+        }
         const auto at = [&](double a, double o, double y) { return b.onWall(wall, a, y, o); };
         const auto flat = [&](double a0, double a1, double o0, double o1, double y, const Color& color)
         {
@@ -209,8 +245,6 @@ namespace
         // The tiles lie a tenth of the height of the step, above the lowest ground under it, below the bricks
         const double sunk = clamp(0.10 * (top - low), 0.01, 0.04);
         const double tileTop = top - sunk;
-        const double inner = half - brick;      // the tiles, either way from the middle
-        const double edge = depth - brick;      // and out from the wall
         // The beds with their joints: under the tiles, and under the bricks along the edge and down either side
         flat(middle - inner, middle + inner, 0.0, edge, tileTop - 0.004, obStepJoint);
         flat(middle - half, middle + half, edge, depth, top - 0.004, obStepJoint);
@@ -474,7 +508,9 @@ namespace
         const std::vector<Wall> walls = { front, right, back, left };
         for (const Wall& wall : walls)
         {
-            b.panel(wall, 0.0, b.length(wall), -obFoundation, obPlinth, obFoot, 0.0);
+            // Below the floor the wall is white too: on a slope the foot stays a band, not a black block
+            b.panel(wall, 0.0, b.length(wall), -obFoundation, 0.0, obWall, 0.0);
+            b.panel(wall, 0.0, b.length(wall), 0.0, obPlinth, obFoot, 0.0);
             b.wallUpToRoof(wall, obPlinth, thatch.m_under, under, obWall, 0.0);
         }
 

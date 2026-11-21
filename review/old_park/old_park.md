@@ -7,6 +7,7 @@ Made by tools/make_old_park.py from raw/topotijdreis and raw/park_brochures.
 - 1994: 1.920 px/m (225 houses of 1998 fitted, median 3.5 m), grid crossing at (965, 543) px, 134 dots
 - 1965 shifted by (6.1, -2.6) m onto 1983
 - the park map: 77 of its 81 bungalows with a dot of 1983, median 4.0 m from it, at most 12.4 m
+- Taveerne: its front is 28.8 m long on the park map and faces 234 degrees
 - 20 old roads, 3784 m: 70% on a road of today; where a road of today runs over a bungalow the park map decides: east of the chalets, to the south, to 57 and 58, from 30 to 34
 
 

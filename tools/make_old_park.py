@@ -471,6 +471,17 @@ def main():
                          % (entry["number"], entry["door_seen"], b["type"], doors[b["type"]]))
         b["evidence"] = entry["why"]
 
+    others = []
+    for other in brochures["others"]:
+        left, right = fit(other["front_px"])
+        along = (right - left) / np.linalg.norm(right - left)
+        outward = np.array([along[1], -along[0]])       # a quarter turn clockwise of left to right
+        middle = 0.5 * (left + right) - 0.5 * other["depth"] * outward
+        others.append({"name": other["name"], "type": other["type"], "x": round(float(middle[0]), 1), "y": round(float(middle[1]), 1),
+                       "front_azimuth": round(float(np.degrees(np.arctan2(outward[0], outward[1])) % 360.0), 1),
+                       "front_length": round(float(np.linalg.norm(right - left)), 1), "evidence": other["why"]})
+        report.append("%s: its front is %.1f m long on the park map and faces %.0f degrees"
+                      % (other["name"], others[-1]["front_length"], others[-1]["front_azimuth"]))
     todays = todaysRoads()
     roads = oldRoads(brochures["roads"], fit, todays, buildings)
     report.append("%d old roads, %.0f m: %.0f%% on a road of today; where a road of today runs over a bungalow the park map decides: %s"
@@ -485,11 +496,13 @@ def main():
                 "data/type_models.json. kind: Bungalow or Chalet. front_azimuth: the way the front door faces, degrees "
                 "clockwise from north. What is not known is 'Unknown'. source.position: where the position is from; "
                 "park_map_off: how far the park map, fitted, has it from there [m]. today: the "
-                "nearest house of today. roads: the roads of the old park, all unpaved, from the park map: kind Ring, Road or "
+                "nearest house of today. others: buildings that are not bungalows: the middle of the part under the main roof, the "
+                "way the front faces, and the length of the front on the park map. roads: the roads of the old park, all unpaved, from the park map: kind Ring, Road or "
                 "Path, width [m], the line through its middle, on_road_of_today: the part of it that was laid on a road "
                 "of today, over_bungalow: whether a road of today that runs over an old bungalow was left for the park map.",
         "source": "Map of the park's brochure; Topotijdreis, Kadaster: TOP25 of %s" % ", ".join(str(y) for y in sorted(PANELS)),
         "report": report, "notes": notes,
+        "others": others,
         "roads": [{"name": r["name"], "kind": r["kind"], "width": r["width"], "on_road_of_today": r["on_road_of_today"],
                    "over_bungalow": r["over_bungalow"], "line": [[round(float(x), 1), round(float(y), 1)] for x, y in r["line"]]}
                   for r in roads],

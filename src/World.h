@@ -57,6 +57,7 @@ public:
     const std::vector<House>& getHouses() const { return m_houses; }    // those of the era shown
     int getEra() const { return m_era; }
     const Reception& getReception() const { return m_reception; }
+    bool hasReception() const { return m_era >= WorldData::centralBuildingSince(); }  // false->the era of the Taveerne
     const LookoutTower& getTower() const { return m_tower; }
     const House* findHouse(int number) const;                  // nullptr->no such number
     const House* nearestHouse(double east, double north) const;

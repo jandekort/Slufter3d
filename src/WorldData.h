@@ -67,6 +67,7 @@ struct WorldData
 
     static float dry() { return -1.0e9f; }  // value of Level::m_water on a tile without water
     static float sea() { return -2.0e9f; }  // value of Level::m_water on a tile of the sea
+    static int centralBuildingSince() { return 2; }    // the first era with the central building of today
     static int roadKinds() { return 4; }    // 0->asphalt, 1->bricks, 2->shells, 3->sand
     // The eras of the park: 0->1957 to 1971, the white bungalows; 1->1971 to 1993, with the chalets;
     // 2->1993 to 2013, the Comfort bungalows; 3->2013 to today, with the Luxe bungalows

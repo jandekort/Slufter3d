@@ -1,5 +1,5 @@
 {
- "note": "The buildings of the park as it was from 1957 to 1996. Which there were, their number and their type (A4, A6, B4, B6) are those of the park's own map (raw/park_brochures); their positions those of the topographic maps (raw/topotijdreis) where these have them, RD New (EPSG:28992), metres, good to about 5 m. Made by tools/make_old_park.py. The door, and so the model, follows from the type in data/type_models.json. kind: Bungalow or Chalet. front_azimuth: the way the front door faces, degrees clockwise from north. What is not known is 'Unknown'. source.position: where the position is from; park_map_off: how far the park map, fitted, has it from there [m]. today: the nearest house of today. roads: the roads of the old park, all unpaved, from the park map: kind Ring, Road or Path, width [m], the line through its middle, on_road_of_today: the part of it that was laid on a road of today, over_bungalow: whether a road of today that runs over an old bungalow was left for the park map.",
+ "note": "The buildings of the park as it was from 1957 to 1996. Which there were, their number and their type (A4, A6, B4, B6) are those of the park's own map (raw/park_brochures); their positions those of the topographic maps (raw/topotijdreis) where these have them, RD New (EPSG:28992), metres, good to about 5 m. Made by tools/make_old_park.py. The door, and so the model, follows from the type in data/type_models.json. kind: Bungalow or Chalet. front_azimuth: the way the front door faces, degrees clockwise from north. What is not known is 'Unknown'. source.position: where the position is from; park_map_off: how far the park map, fitted, has it from there [m]. today: the nearest house of today. others: buildings that are not bungalows: the middle of the part under the main roof, the way the front faces, and the length of the front on the park map. roads: the roads of the old park, all unpaved, from the park map: kind Ring, Road or Path, width [m], the line through its middle, on_road_of_today: the part of it that was laid on a road of today, over_bungalow: whether a road of today that runs over an old bungalow was left for the park map.",
  "source": "Map of the park's brochure; Topotijdreis, Kadaster: TOP25 of 1965, 1983, 1994",
  "report": [
   "1965: 2.030 px/m (206 houses of 1998 fitted, median 3.5 m), grid crossing at (933, 492) px, 56 dots",
@@ -7,9 +7,21 @@
   "1994: 1.920 px/m (225 houses of 1998 fitted, median 3.5 m), grid crossing at (965, 543) px, 134 dots",
   "1965 shifted by (6.1, -2.6) m onto 1983",
   "the park map: 77 of its 81 bungalows with a dot of 1983, median 4.0 m from it, at most 12.4 m",
+  "Taveerne: its front is 28.8 m long on the park map and faces 234 degrees",
   "20 old roads, 3784 m: 70% on a road of today; where a road of today runs over a bungalow the park map decides: east of the chalets, to the south, to 57 and 58, from 30 to 34"
  ],
  "notes": [],
+ "others": [
+  {
+   "name": "Taveerne",
+   "type": "Taveerne",
+   "x": 118676.9,
+   "y": 574746.2,
+   "front_azimuth": 233.9,
+   "front_length": 28.8,
+   "evidence": "The stippled building at 'Taveerne', 'Kantoor' and 'Winkel': reception, restaurant and shop. front_px: the ends of its front, left and right as seen from the midget golf (M), from where the postcard IMG_4893 shows it; depth: of the part under the main roof [m], as the model has it."
+  }
+ ],
  "roads": [
   {
    "name": "ring road",

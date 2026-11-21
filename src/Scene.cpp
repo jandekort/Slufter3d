@@ -98,7 +98,10 @@ void Scene::build(const World& world)
     m_skyVertexCount = m_mesh.vertexCount();
 
     addGround(terrain);
-    world.getReception().build(m_mesh);
+    if (world.hasReception())
+    {
+        world.getReception().build(m_mesh);
+    }
     world.getTower().build(m_mesh, terrain, data.m_towerEast, data.m_towerNorth);
     for (const House& house : world.getHouses())
     {

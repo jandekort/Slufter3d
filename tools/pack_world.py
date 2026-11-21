@@ -157,7 +157,7 @@ def packHouses(levels):
                        "floor": floors[(h["nr"], h["x"], h["y"])]})
         model = houses[-1]["model"]
         houses[-1]["eras"] = (ALWAYS if h["type"] in ALWAYS_THERE else TODAY if model.startswith(LUXE) else SINCE_1993)
-    return houses + packOldPark(levels, types, houses, Polygon(park["central_building"]["outline"]).buffer(CENTRAL_MARGIN))
+    return houses + packOldPark(levels, types, houses)
 
 
 # The eras of the park, as bits: 1->1957 to 1971, 2->1971 to 1993, 4->1993 to 2013, 8->2013 to today
@@ -169,20 +169,21 @@ STANDING = ("Visdiefje",)               # the type of the bungalows of the old p
 ALWAYS_THERE = ("Visdiefje", "Krimweg73")   # types of houses that stood before 1993 and still stand
 FALLBACK_FRONT = 270.0     # a front that is not known: the terrace, right of the front door, then faces south
 SAME_BUILDING = 8.0        # an old building this near a house that still stands is that house [m]
-CENTRAL_MARGIN = 4.0       # an old building within this of the central building of today is not drawn [m]
+OTHER_FOOT = 8.0           # and this far round the middle of the Taveerne [m]
+OLD_DOOR = (-1.2, 3.1)     # where the front door of an old bungalow is: right of its middle, before it [m]
+OLD_DUG = 0.6              # an old bungalow lies at most this deep in the higher ground round it [m]
 OLD_FOOT = 3.0             # the ground is taken this far round the middle of an old building [m]
 FLOOR_PERCENTILE = 75.0    # of that ground: on the high side of the plot, as tools/make_terrain.py has it
 FLOOR_LIFT = 0.15          # and the floor this far above it [m]
 
 
-def packOldPark(levels, types, houses, central):
+def packOldPark(levels, types, houses):
     """The buildings of the park of 1957 to 1996 (data/old_park.json), on the ground of today"""
     standing = [h for h in houses if h["type"] in STANDING]
     old = []
-    for b in json.load(open(os.path.join(ROOT, "data", "old_park.json")))["buildings"]:
+    park = json.load(open(os.path.join(ROOT, "data", "old_park.json")))
+    for b in park["buildings"]:
         east, north = b["x"] - ORIGIN[0], b["y"] - ORIGIN[1]
-        if central.contains(Point(b["x"], b["y"])):
-            continue        # the central building of today, drawn in every era, stands there
         name = "" if b["name"] == "Unknown" else b["name"]
         still = [h for h in standing if math.hypot(h["east"] - east, h["north"] - north) < SAME_BUILDING]
         if still:
@@ -194,11 +195,27 @@ def packOldPark(levels, types, houses, central):
         front = b["front_azimuth"] if b["front_azimuth"] != "Unknown" else FALLBACK_FRONT
         steps = np.linspace(-OLD_FOOT, OLD_FOOT, 5)
         ee, nn = np.meshgrid(east + steps, north + steps)
-        floor = float(np.percentile(heightOn(levels[0], ee, nn), FLOOR_PERCENTILE)) + FLOOR_LIFT
+        high = float(np.percentile(heightOn(levels[0], ee, nn), FLOOR_PERCENTILE))
+        # The floor lies a step above the ground at the front door, so that the doorstep is low; the dune may
+        # stand against the other walls, but no higher than OLD_DUG
+        f, a = math.radians(front), math.radians(front - 90.0)
+        doorEast = east + OLD_DOOR[0] * math.sin(a) + OLD_DOOR[1] * math.sin(f)
+        doorNorth = north + OLD_DOOR[0] * math.cos(a) + OLD_DOOR[1] * math.cos(f)
+        atDoor = float(heightOn(levels[0], np.array([doorEast]), np.array([doorNorth]))[0])
+        floor = max(atDoor + FLOOR_LIFT, high - OLD_DUG)
         old.append({"nr": b["number"], "type": b["type"], "name": name,
                     "model": types[b["type"]]["model"], "semi": False, "semi_with": 0, "pitch": False, "outline": False,
                     "east": east, "north": north, "length": 0.0, "width": 0.0, "axis": (front - 90.0) % 360.0,
                     "front": front, "floor": floor, "eras": OLD_WITH_CHALETS if chalet else OLD | OLD_WITH_CHALETS})
+    for b in park["others"]:
+        east, north = b["x"] - ORIGIN[0], b["y"] - ORIGIN[1]
+        steps = np.linspace(-OTHER_FOOT, OTHER_FOOT, 9)
+        ee, nn = np.meshgrid(east + steps, north + steps)
+        floor = float(np.percentile(heightOn(levels[0], ee, nn), FLOOR_PERCENTILE)) + FLOOR_LIFT
+        old.append({"nr": 0, "type": b["type"], "name": b["name"], "model": types[b["type"]]["model"], "semi": False,
+                    "semi_with": 0, "pitch": False, "outline": False, "east": east, "north": north, "length": 0.0,
+                    "width": 0.0, "axis": (b["front_azimuth"] - 90.0) % 360.0, "front": b["front_azimuth"], "floor": floor,
+                    "eras": OLD | OLD_WITH_CHALETS})
     return old
 
 

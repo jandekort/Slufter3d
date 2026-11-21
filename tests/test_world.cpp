@@ -217,8 +217,8 @@ int main(int argc, char** argv)
             };
             check(eras.getEra() == WorldData::today() && eras.getHouses().size() == 394, "the world starts today, with 394 houses and pitches");
             eras.setEra(0);
-            check(count("Bungalow") == 50 && count("Comfort") == 0 && count("Luxe") == 0 && count("SafariTent") == 0,
-                "1957 to 1971: the 50 white bungalows, no chalets, none of today's bungalows: " + std::to_string(count("Bungalow")));
+            check(count("Bungalow") == 51 && count("Comfort") == 0 && count("Luxe") == 0 && count("SafariTent") == 0,
+                "1957 to 1971: the 51 white bungalows, no chalets, none of today's bungalows: " + std::to_string(count("Bungalow")));
             check(std::any_of(eras.getHouses().begin(), eras.getHouses().end(), [](const House& h)
                 {
                     return h.m_name == "Grutto" && std::string(h.m_model->name()) == "BungalowGeel";
@@ -229,13 +229,15 @@ int main(int argc, char** argv)
             check(eras.findHouse(44) != nullptr && std::string(eras.findHouse(44)->m_model->name()) == "BungalowRood"
                 && eras.findHouse(44)->m_type == "A4", "number 44, which still stands, is found by its old number and type");
             check(eras.findHouse(502) != nullptr, "Krimweg 73 stood there already");
+            check(count("Taveerne") == 1 && !eras.hasReception(), "the Taveerne stands where the central building will come");
             eras.setEra(1);
-            check(count("Bungalow") == 50 && count("SafariTent") == 30, "1971 to 1993: with the 30 chalets, drawn as safari tents: "
+            check(count("Bungalow") == 51 && count("SafariTent") == 30, "1971 to 1993: with the 30 chalets, drawn as safari tents: "
                 + std::to_string(count("SafariTent")));
             eras.setEra(2);
             check(count("Comfort") > 200 && count("Luxe") == 0 && count("Notched") == 0 && count("Bungalow") == 2,
                 "1993 to 2013: the Comfort bungalows without the Luxe ones; of the old ones the two that still stand");
             eras.setEra(7);
+            check(count("Taveerne") == 0 && eras.hasReception(), "from 1993 the central building, and no Taveerne");
             check(eras.getEra() == 2, "an era that does not exist is ignored");
             eras.setEra(WorldData::today());
             check(eras.getHouses().size() == 394 && count("Luxe") > 40, "today: 394 again, with the Luxe bungalows");
