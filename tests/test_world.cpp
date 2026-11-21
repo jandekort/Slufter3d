@@ -217,7 +217,7 @@ int main(int argc, char** argv)
             };
             check(eras.getEra() == WorldData::today() && eras.getHouses().size() == 394, "the world starts today, with 394 houses and pitches");
             eras.setEra(0);
-            check(count("Bungalow") == 51 && count("Comfort") == 0 && count("Luxe") == 0 && count("SafariTent") == 0,
+            check(count("Bungalow") == 51 && count("Comfort") == 0 && count("Luxe") == 0 && count("Chalet") == 0 && count("SafariTent") == 0,
                 "1957 to 1971: the 51 white bungalows, no chalets, none of today's bungalows: " + std::to_string(count("Bungalow")));
             check(std::any_of(eras.getHouses().begin(), eras.getHouses().end(), [](const House& h)
                 {
@@ -231,8 +231,8 @@ int main(int argc, char** argv)
             check(eras.findHouse(502) != nullptr, "Krimweg 73 stood there already");
             check(count("Taveerne") == 1 && !eras.hasReception(), "the Taveerne stands where the central building will come");
             eras.setEra(1);
-            check(count("Bungalow") == 51 && count("SafariTent") == 30, "1971 to 1993: with the 30 chalets, drawn as safari tents: "
-                + std::to_string(count("SafariTent")));
+            check(count("Bungalow") == 51 && count("Chalet") == 30 && count("SafariTent") == 0, "1971 to 1993: with the 30 chalets: "
+                + std::to_string(count("Chalet")));
             eras.setEra(2);
             check(count("Comfort") > 200 && count("Luxe") == 0 && count("Notched") == 0 && count("Bungalow") == 2,
                 "1993 to 2013: the Comfort bungalows without the Luxe ones; of the old ones the two that still stand");
@@ -242,7 +242,7 @@ int main(int argc, char** argv)
             eras.setEra(WorldData::today());
             check(eras.getHouses().size() == 394 && count("Luxe") > 40, "today: 394 again, with the Luxe bungalows");
             check(eras.findHouse(12) != nullptr && eras.findHouse(12)->m_name.empty() && eras.findHouse(81) != nullptr
-                && std::string(eras.findHouse(81)->m_model->name()) != "SafariTent", "today the numbers are those of today's houses");
+                && std::string(eras.findHouse(81)->m_model->name()) != "Chalet", "today the numbers are those of today's houses");
         }
         // The front of a house is free of its own walls
         const House* h17 = world.findHouse(17);

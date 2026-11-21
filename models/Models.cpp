@@ -20,6 +20,7 @@ const std::vector<const Model*>& Models::all()
         &bungalowGeel(),
         &krimweg73(),
         &taveerne(),
+        &chalet(),
         &tent(),
         &safariTent(),
         &receptionWing() };

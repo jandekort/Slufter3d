@@ -98,9 +98,9 @@
    "why": "Old park: 4 persons, type B on the park map; the yellow door, the largest. Photographed."
   },
   "B6": {
-   "model": "SafariTent",
+   "model": "Chalet",
    "size": "model",
-   "why": "Old park: 6 persons, type B on the park map, the chalets north-east of the park from 1971: no model yet, drawn as a safari tent for now (Jan de Kort, 2026-11-21)."
+   "why": "Old park: 6 persons, type B on the park map, the chalets north-east of the park from 1971. Drawn after one small photograph (Jan de Kort, 2026-11-21)."
   },
   "Taveerne": {
    "model": "Taveerne",

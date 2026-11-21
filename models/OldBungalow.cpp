@@ -38,6 +38,7 @@ namespace
     const double obFoundation = 2.5;    // walls reach this far into the dune [m]
     const double obHead = 2.10;         // top of the windows, just under the thatch [m]
     const double obNotch = 0.10;        // a cut in the thatch reaches this far beyond what it clears [m]
+    const double obFootHighest = 0.60;  // a black foot that would show higher than this at its lowest corner is left out [m]
     const double obStepHighest = 0.20;  // a doorstep higher than this over the lowest ground under it lies flat instead [m]
     const double obLeaf = 0.89;         // width of the door leaf [m]
     const double obTile = 0.2652;       // radius of a half-round ridge tile [m]
@@ -506,11 +507,21 @@ namespace
         const Wall back{ UV{ hu, -hv }, UV{ -hu, -hv } };
         const Wall left{ UV{ -hu, -hv }, UV{ -hu, hv } };
         const std::vector<Wall> walls = { front, right, back, left };
+        // The black foot belongs at the ground. Where the ground falls so far below it that it would stand as a
+        // black block, on a dune the bungalow was not built for, it is left out: the wall is white all the way down
+        double lowestGround = 0.0;
         for (const Wall& wall : walls)
         {
-            // Below the floor the wall is white too: on a slope the foot stays a band, not a black block
-            b.panel(wall, 0.0, b.length(wall), -obFoundation, 0.0, obWall, 0.0);
-            b.panel(wall, 0.0, b.length(wall), 0.0, obPlinth, obFoot, 0.0);
+            for (const double t : { 0.0, 0.5 })
+            {
+                const Vec3 p = b.onWall(wall, t * b.length(wall), 0.0, 0.05);
+                lowestGround = std::min(lowestGround, groundLevel(site, p) - site.m_floor.y);
+            }
+        }
+        const bool blackFoot = obPlinth - lowestGround <= obFootHighest;
+        for (const Wall& wall : walls)
+        {
+            b.panel(wall, 0.0, b.length(wall), -obFoundation, obPlinth, blackFoot ? obFoot : obWall, 0.0);
             b.wallUpToRoof(wall, obPlinth, thatch.m_under, under, obWall, 0.0);
         }
 
