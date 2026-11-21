@@ -94,5 +94,6 @@ struct WorldData
     double m_lighthouseHeight = 0.0;    // foot to top [m]
     std::vector<float> m_roadCorners;   // six per triangle: east, north of its three corners
     std::vector<unsigned char> m_roadKinds; // one per triangle, below roadKinds()
+    std::vector<unsigned char> m_roadEras;  // one per triangle: bit k set->it lies there in era k
     std::vector<TreeRecord> m_trees;
 };

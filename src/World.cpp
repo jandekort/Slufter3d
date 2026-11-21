@@ -270,7 +270,7 @@ World::Surface World::surfaceAt(double east, double north) const
         for (size_t at = m_roadStart[tile]; at < m_roadStart[tile + 1]; ++at)
         {
             const size_t k = m_roadOrder[at];
-            if (inTriangle(east, north, m_data.m_roadCorners.data() + 6*k))
+            if ((m_data.m_roadEras[k] & (1u << m_era)) != 0 && inTriangle(east, north, m_data.m_roadCorners.data() + 6*k))
             {
                 switch (m_data.m_roadKinds[k])
                 {

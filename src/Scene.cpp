@@ -419,8 +419,13 @@ void Scene::addRoads(const World& world)
     const WorldData& data = world.getData();
     const Terrain& terrain = world.getTerrain();
     const Color colours[] = { m_asphalt, m_bricks, m_shell, m_track };
+    const unsigned int era = 1u << world.getEra();
     for (size_t k = 0; k < data.m_roadKinds.size(); ++k)
     {
+        if ((data.m_roadEras[k] & era) == 0)
+        {
+            continue;       // this road was not there, or is there no more
+        }
         const float* t = data.m_roadCorners.data() + 6*k;
         const Color& color = colours[data.m_roadKinds[k]];
         const auto place = [&](double east, double north)

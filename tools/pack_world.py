@@ -24,7 +24,7 @@ import numpy as np
 import rasterio
 import shapely
 from scipy import ndimage
-from shapely.geometry import Point, Polygon, box, shape
+from shapely.geometry import LineString, MultiPoint, Point, Polygon, box, shape
 from shapely.prepared import prep
 
 ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
@@ -32,7 +32,7 @@ TERRAIN = os.path.join(ROOT, "build", "terrain")
 OUT = os.path.join(ROOT, "docs", "data", "world.bin")
 PREVIEW = os.path.join(ROOT, "build", "preview", "world")
 
-VERSION = 4              # 4: every house has the eras it stands in; 3: the water of a tile may be SEA_MARK
+VERSION = 5              # 5: every road triangle has its eras; 4: every house has the eras it stands in; 3: the water of a tile may be SEA_MARK
 TREES = os.path.join(ROOT, "data", "trees.json")   # made by tools/make_trees.py; without it: no trees
 ORIGIN = (118700.0, 574700.0)   # RD New of the origin of the application's coordinates: east and north in metres
 
@@ -53,6 +53,9 @@ WATER, SEA = 2, 3        # classes of tools/make_terrain.py
 # Paving of a BGT road part (fysiek_voorkomen) -> kind in the file
 PAVING = {"gesloten verharding": 0, "open verharding": 1, "half verhard": 2, "onverhard": 3}
 PAVING_NAMES = ["asphalt", "bricks", "shells", "sand"]
+OLD_ROAD = 3             # every road of the old park was unpaved (Jan de Kort, 2026-11-21)
+PARK_HULL = 0.2          # how closely the grounds of the park follow their outermost houses (shapely.concave_hull)
+PARK_MARGIN = 12.0       # and how far they reach beyond them [m]
 
 # The central building is covered with rectangular wings, each under its own roof
 WING_CELL = 0.5          # raster used to find the wings [m]
@@ -153,7 +156,7 @@ def packHouses(levels):
                        "axis": h["axis_azimuth"], "front": h["front_azimuth"],
                        "floor": floors[(h["nr"], h["x"], h["y"])]})
         model = houses[-1]["model"]
-        houses[-1]["eras"] = (ALWAYS if h["type"] in STANDING else TODAY if model.startswith(LUXE) else SINCE_1993)
+        houses[-1]["eras"] = (ALWAYS if h["type"] in ALWAYS_THERE else TODAY if model.startswith(LUXE) else SINCE_1993)
     return houses + packOldPark(levels, types, houses, Polygon(park["central_building"]["outline"]).buffer(CENTRAL_MARGIN))
 
 
@@ -162,7 +165,8 @@ OLD, OLD_WITH_CHALETS, COMFORT, TODAY = 1, 2, 4, 8
 SINCE_1993 = COMFORT | TODAY
 ALWAYS = OLD | OLD_WITH_CHALETS | COMFORT | TODAY
 LUXE = ("Luxe", "Notched")              # the models of the Luxe bungalows start so: they came in 2013
-STANDING = ("Visdiefje", "Krimweg73")   # types of houses that stood in the old park and still stand
+STANDING = ("Visdiefje",)               # the type of the bungalows of the old park that still stand
+ALWAYS_THERE = ("Visdiefje", "Krimweg73")   # types of houses that stood before 1993 and still stand
 FALLBACK_FRONT = 270.0     # a front that is not known: the terrace, right of the front door, then faces south
 SAME_BUILDING = 8.0        # an old building this near a house that still stands is that house [m]
 CENTRAL_MARGIN = 4.0       # an old building within this of the central building of today is not drawn [m]
@@ -179,14 +183,19 @@ def packOldPark(levels, types, houses, central):
         east, north = b["x"] - ORIGIN[0], b["y"] - ORIGIN[1]
         if central.contains(Point(b["x"], b["y"])):
             continue        # the central building of today, drawn in every era, stands there
-        if any(math.hypot(h["east"] - east, h["north"] - north) < SAME_BUILDING for h in standing):
-            continue        # it still stands: the house of today is drawn in every era
+        name = "" if b["name"] == "Unknown" else b["name"]
+        still = [h for h in standing if math.hypot(h["east"] - east, h["north"] - north) < SAME_BUILDING]
+        if still:
+            # It still stands: the house of today, where it stands today, under its old number and type
+            old.append(dict(still[0], nr=b["number"], type=b["type"], name=name, eras=OLD | OLD_WITH_CHALETS))
+            still[0]["eras"] = SINCE_1993
+            continue
         chalet = b["kind"] == "Chalet"
         front = b["front_azimuth"] if b["front_azimuth"] != "Unknown" else FALLBACK_FRONT
         steps = np.linspace(-OLD_FOOT, OLD_FOOT, 5)
         ee, nn = np.meshgrid(east + steps, north + steps)
         floor = float(np.percentile(heightOn(levels[0], ee, nn), FLOOR_PERCENTILE)) + FLOOR_LIFT
-        old.append({"nr": 0, "type": b["type"], "name": "" if b["name"] == "Unknown" else b["name"],
+        old.append({"nr": b["number"], "type": b["type"], "name": name,
                     "model": types[b["type"]]["model"], "semi": False, "semi_with": 0, "pitch": False, "outline": False,
                     "east": east, "north": north, "length": 0.0, "width": 0.0, "axis": (front - 90.0) % 360.0,
                     "front": front, "floor": floor, "eras": OLD_WITH_CHALETS if chalet else OLD | OLD_WITH_CHALETS})
@@ -301,22 +310,46 @@ def currentFeatures(collection):
                 yield feature
 
 
-def makeRoads(level):
+def parkOf(houses, old):
+    """The grounds of the park, roughly: round the houses of today and the buildings and roads of the old park"""
+    points = [(h["east"], h["north"]) for h in houses if h["nr"] or h["pitch"]]
+    points += [(b["x"] - ORIGIN[0], b["y"] - ORIGIN[1]) for b in old["buildings"]]
+    points += [(x - ORIGIN[0], y - ORIGIN[1]) for road in old["roads"] for x, y in road["line"]]
+    return shapely.concave_hull(MultiPoint(points), ratio=PARK_HULL).buffer(PARK_MARGIN)
+
+
+def makeRoads(level, houses):
     """The road parts within the finest grid, cut along its triangles: every piece lies flat on the ground.
-    Returns triangles (n, 6) as east, north of three corners, and their kinds (n)"""
+    The roads of today (BGT) within the park came with the Comfort bungalows; before 1993 the park had its own,
+    unpaved (data/old_park.json). Roads outside the park are taken to have been there all along.
+    Returns triangles (n, 6) as east, north of three corners, their kinds (n) and their eras (n)"""
     cell, west, south = level["cell"], level["west"], level["south"]
     east, north = west + (level["nx"] - 1) * cell, south + (level["nz"] - 1) * cell
     frame = box(west, south, east, north)
-    triangles, kinds, counts = [], [], {}
+    old = json.load(open(os.path.join(ROOT, "data", "old_park.json")))
+    park = parkOf(houses, old)
+    parts = []      # shape, kind, eras, name to count it under
     for feature in currentFeatures("wegdeel"):
         kind = PAVING.get((feature["properties"].get("fysiek_voorkomen") or "").lower())
         if kind is None:
             continue
-        ring = shape(feature["geometry"])
-        road = shapely.transform(ring, lambda p: p - np.array(ORIGIN)).buffer(0).intersection(frame)
+        road = shapely.transform(shape(feature["geometry"]), lambda p: p - np.array(ORIGIN)).buffer(0).intersection(frame)
         if road.is_empty or road.area < 0.01:
             continue
-        counts[PAVING_NAMES[kind]] = counts.get(PAVING_NAMES[kind], 0.0) + road.area
+        inPark = road.intersection(park).area > 0.5 * road.area
+        parts.append((road, kind, SINCE_1993 if inPark else ALWAYS, PAVING_NAMES[kind]))
+    laid = [road for road, kind, when, name in parts if when == ALWAYS]     # an old road ends where a public one lies
+    for road in sorted(old["roads"], key=lambda r: -r["width"]):
+        line = LineString([(x - ORIGIN[0], y - ORIGIN[1]) for x, y in road["line"]])
+        strip = line.buffer(0.5 * road["width"], cap_style="round", join_style="round").intersection(frame)
+        for other in laid:
+            strip = strip.difference(other)        # no two roads on one spot
+        if not strip.is_empty and strip.area > 0.01:
+            laid.append(strip)
+            parts.append((strip, OLD_ROAD, OLD | OLD_WITH_CHALETS, "sand of the old park"))
+    triangles, kinds, eras, counts = [], [], [], {}
+    for road, kind, when, name in parts:
+        counts[name] = counts.get(name, 0.0) + road.area
         ready = prep(road)
         w, s, e, n = road.bounds
         for j in range(max(int((s - south) / cell), 0), min(int((n - south) / cell) + 1, level["nz"] - 1)):
@@ -329,8 +362,8 @@ def makeRoads(level):
                         pieces = [tile]
                     elif ready.intersects(tile):
                         cut = road.intersection(tile)
-                        parts = [g for g in getattr(cut, "geoms", [cut]) if g.geom_type == "Polygon" and g.area > 1e-4]
-                        pieces = [t for part in parts for t in shapely.constrained_delaunay_triangles(part).geoms
+                        polygons = [g for g in getattr(cut, "geoms", [cut]) if g.geom_type == "Polygon" and g.area > 1e-4]
+                        pieces = [t for part in polygons for t in shapely.constrained_delaunay_triangles(part).geoms
                                   if t.area > 1e-5]
                     else:
                         continue
@@ -338,10 +371,11 @@ def makeRoads(level):
                         c = list(piece.exterior.coords)[:3]
                         triangles.append([c[0][0], c[0][1], c[1][0], c[1][1], c[2][0], c[2][1]])
                         kinds.append(kind)
-    return np.array(triangles, np.float32).reshape(-1, 6), np.array(kinds, np.uint8), counts
+                        eras.append(when)
+    return np.array(triangles, np.float32).reshape(-1, 6), np.array(kinds, np.uint8), np.array(eras, np.uint8), counts
 
 
-def previewRoads(level, triangles, kinds, houses):
+def previewRoads(level, triangles, kinds, houses, name="roads.png", title="Roads of the BGT on the ground of the park."):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
@@ -354,12 +388,12 @@ def previewRoads(level, triangles, kinds, houses):
     axis.add_collection(PolyCollection(triangles.reshape(-1, 3, 2), facecolors=colours[kinds], edgecolors="none"))
     for h in houses:
         axis.text(h["east"], h["north"], str(h["nr"]) if h["nr"] else "", fontsize=3, ha="center", va="center", color="white")
-    axis.set_title("Roads of the BGT on the ground of the park. Grey asphalt, brown bricks, pale shells, sand. "
+    axis.set_title(title + " Grey asphalt, brown bricks, pale shells, sand. "
                    "Source: BGT, Kadaster (CC BY 4.0)", fontsize=9)
     axis.set_xlabel("east of the origin [m]")
     axis.set_ylabel("north of the origin [m]")
     os.makedirs(PREVIEW, exist_ok=True)
-    out = os.path.join(PREVIEW, "roads.png")
+    out = os.path.join(PREVIEW, name)
     figure.savefig(out, bbox_inches="tight")
     plt.close(figure)
     return out
@@ -386,7 +420,7 @@ def main():
         return rd[0] - ORIGIN[0], rd[1] - ORIGIN[1]
 
     entrance = entranceOnWall(wings, *local(marks["reception_entrance"]["rd"]))
-    triangles, kinds, areas = makeRoads(levels[0])
+    triangles, kinds, roadEras, areas = makeRoads(levels[0], houses)
 
     out = bytearray()
     out += struct.pack("<4sI", b"SLF3", VERSION)
@@ -411,6 +445,7 @@ def main():
     out += struct.pack("<I", len(kinds))
     out += triangles.astype("<f4").tobytes()
     out += kinds.tobytes()
+    out += roadEras.tobytes()
     trees = json.load(open(TREES))["trees"] if os.path.exists(TREES) else []
     out += struct.pack("<I", len(trees))
     for tree in trees:
@@ -429,7 +464,11 @@ def main():
           % (len(houses), sum(h["pitch"] for h in houses), len(wings), 100.0 * covered))
     print("roads    %d triangles: %s" % (len(kinds), ", ".join("%s %.0f m2" % item for item in sorted(areas.items()))))
     print("wrote    %s, %.1f MB" % (OUT, len(out) / 1e6))
-    print("preview  %s" % previewRoads(levels[0], triangles, kinds, houses))
+    now = (roadEras & TODAY) != 0
+    print("preview  %s" % previewRoads(levels[0], triangles[now], kinds[now], [h for h in houses if h["eras"] & TODAY]))
+    then = (roadEras & OLD_WITH_CHALETS) != 0
+    print("preview  %s" % previewRoads(levels[0], triangles[then], kinds[then], [h for h in houses if h["eras"] & OLD_WITH_CHALETS],
+                                       "roads_1971_1993.png", "The roads of 1971 to 1993: those of the old park, and of today outside it."))
 
 
 if __name__ == "__main__":

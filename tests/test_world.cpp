@@ -223,7 +223,12 @@ int main(int argc, char** argv)
                 {
                     return h.m_name == "Grutto" && std::string(h.m_model->name()) == "BungalowGeel";
                 }), "Grutto is there, yellow");
-            check(eras.findHouse(17) == nullptr, "house 17 is not there yet");
+            check(eras.findHouse(449) == nullptr, "house 449 is not there yet");
+            check(eras.findHouse(12) != nullptr && eras.findHouse(12)->m_name == "Grutto" && eras.findHouse(12)->m_type == "B4",
+                "number 12 is Grutto, of type B4");
+            check(eras.findHouse(44) != nullptr && std::string(eras.findHouse(44)->m_model->name()) == "BungalowRood"
+                && eras.findHouse(44)->m_type == "A4", "number 44, which still stands, is found by its old number and type");
+            check(eras.findHouse(502) != nullptr, "Krimweg 73 stood there already");
             eras.setEra(1);
             check(count("Bungalow") == 50 && count("SafariTent") == 30, "1971 to 1993: with the 30 chalets, drawn as safari tents: "
                 + std::to_string(count("SafariTent")));
@@ -234,6 +239,8 @@ int main(int argc, char** argv)
             check(eras.getEra() == 2, "an era that does not exist is ignored");
             eras.setEra(WorldData::today());
             check(eras.getHouses().size() == 394 && count("Luxe") > 40, "today: 394 again, with the Luxe bungalows");
+            check(eras.findHouse(12) != nullptr && eras.findHouse(12)->m_name.empty() && eras.findHouse(81) != nullptr
+                && std::string(eras.findHouse(81)->m_model->name()) != "SafariTent", "today the numbers are those of today's houses");
         }
         // The front of a house is free of its own walls
         const House* h17 = world.findHouse(17);
@@ -248,6 +255,10 @@ int main(int argc, char** argv)
         bool right = true;
         for (size_t k = 0; k < data.m_roadKinds.size(); k += 97)
         {
+            if ((data.m_roadEras[k] & (1u << WorldData::today())) == 0)
+            {
+                continue;       // a road of the old park
+            }
             const float* t = data.m_roadCorners.data() + 6*k;
             const World::Surface surface = world.surfaceAt((t[0] + t[2] + t[4]) / 3.0, (t[1] + t[3] + t[5]) / 3.0);
             const World::Surface expected[] = { World::Surface::Asphalt, World::Surface::Bricks, World::Surface::Shells,
@@ -257,6 +268,46 @@ int main(int argc, char** argv)
         }
         check(right, "the surface underfoot is that of the road triangle there");
         check(found[0] && found[1] && found[2] && found[3], "asphalt, bricks, shells and sand all occur");
+        { // The roads of the old park: unpaved, and only there before 1993
+            World then(data);
+            const unsigned int old = 1u << 0;
+            const unsigned int now = 1u << WorldData::today();
+            size_t oldRoads = 0;
+            bool sand = true;
+            bool gone = true;
+            bool both = true;
+            for (size_t k = 0; k < data.m_roadKinds.size(); ++k)
+            {
+                const unsigned int eras = data.m_roadEras[k];
+                both = both && ((eras & old) != 0) == ((eras & (1u << 1)) != 0);
+                if ((eras & old) != 0 && (eras & now) == 0)
+                {
+                    ++oldRoads;
+                    sand = sand && data.m_roadKinds[k] == 3;
+                }
+            }
+            check(oldRoads > 5000, "roads of the old park: " + std::to_string(oldRoads) + " triangles");
+            check(sand, "every road of the old park is unpaved");
+            check(both, "1957 to 1971 and 1971 to 1993 have the same roads");
+            then.setEra(0);
+            for (size_t k = 0; k < data.m_roadKinds.size(); k += 53)
+            {
+                const float* t = data.m_roadCorners.data() + 6*k;
+                const World::Surface surface = then.surfaceAt((t[0] + t[2] + t[4]) / 3.0, (t[1] + t[3] + t[5]) / 3.0);
+                if ((data.m_roadEras[k] & old) == 0)
+                {
+                    // A road of today in the park: before 1993 there is dune there, or an old road, never paving
+                    gone = gone && (surface == World::Surface::Dunes || surface == World::Surface::Sand
+                        || surface == World::Surface::Water);
+                }
+                else if (data.m_roadKinds[k] == 3 && (data.m_roadEras[k] & now) == 0)
+                {
+                    sand = sand && (surface == World::Surface::Sand || surface == World::Surface::Water);
+                }
+            }
+            check(sand, "before 1993 the old roads are underfoot, as sand");
+            check(gone, "before 1993 the paving of today's park roads is not there");
+        }
         // The pond in the middle of the park, RD 118927, 575100
         const double pondEast = 118927.0 - data.m_originEast;
         const double pondNorth = 575100.0 - data.m_originNorth;

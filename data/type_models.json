@@ -83,29 +83,29 @@
    "model": "BungalowRood",
    "size": "model",
    "door": "Red",
-   "why": "Old park, 1957 to 1996: 4 persons, type A on the park maps; the red door, the smallest. Photographed."
+   "why": "Old park, 1957 to 1996: 4 persons, type A on the park map; the red door, the smallest. Photographed."
   },
   "A6": {
    "model": "BungalowGroen",
    "size": "model",
    "door": "Green",
-   "why": "Old park: 6 persons, type A on the park maps; the green door. Photographed."
+   "why": "Old park: 6 persons, type A on the park map; the green door. Photographed."
   },
   "B4": {
    "model": "BungalowGeel",
    "size": "model",
    "door": "Yellow",
-   "why": "Old park: 4 persons, type B on the park maps; the yellow door, the largest. Photographed."
+   "why": "Old park: 4 persons, type B on the park map; the yellow door, the largest. Photographed."
   },
   "B6": {
    "model": "SafariTent",
    "size": "model",
-   "why": "Old park: 6 persons, type B on the park maps, the chalets north-east of the park from 1971: no model yet, drawn as a safari tent for now (Jan de Kort, 2026-11-21)."
+   "why": "Old park: 6 persons, type B on the park map, the chalets north-east of the park from 1971: no model yet, drawn as a safari tent for now (Jan de Kort, 2026-11-21)."
   },
   "Visdiefje": {
    "model": "BungalowRood",
    "size": "model",
-   "why": "The two bungalows of the old park that still stand, numbers 44 (the Visdiefje) and 5 on the old park maps, both of type A4: drawn as the red bungalow in every era."
+   "why": "The two bungalows of the old park that still stand, numbers 44 (the Visdiefje) and 5 on the old park map, both of type A4: drawn as the red bungalow in every era."
   },
   "C2": {
    "model": "Tent",

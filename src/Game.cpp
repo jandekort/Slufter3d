@@ -112,7 +112,12 @@ std::string Game::hudString() const
     std::string label = "0";
     if (house != nullptr)
     {
-        label = (house->m_number == 0 && !house->m_name.empty()) ? house->m_name : std::to_string(house->m_number);
+        // A house with a number and a name shows both: "12 Grutto"
+        label = house->m_number == 0 ? house->m_name : std::to_string(house->m_number);
+        if (house->m_number != 0 && !house->m_name.empty())
+        {
+            label += " " + house->m_name;
+        }
     }
     char text[256];
     std::snprintf(text, sizeof(text), "%.0f|%.0f|%s|%s|%s|%.0f|%.0f|%.1f|%.0f|%s|%.0f",

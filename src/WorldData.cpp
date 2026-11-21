@@ -11,7 +11,7 @@
 namespace
 {
     const std::uint32_t magic = 0x33464c53;     // "SLF3"
-    const std::uint32_t version = 4;
+    const std::uint32_t version = 5;
     const std::int16_t noWater = -32768;
     const std::int16_t seaMark = -32767;        // in place of a water level: the tile is sea
     const double centimetre = 0.01;
@@ -157,6 +157,11 @@ WorldData WorldData::parse(const unsigned char* bytes, size_t size)
             const unsigned char kind = in.take<std::uint8_t>();
             require(kind < roadKinds(), "World file: kind of road");
             data.m_roadKinds.push_back(kind);
+        }
+        data.m_roadEras.reserve(count);
+        for (size_t k = 0; k < count; ++k)
+        {
+            data.m_roadEras.push_back(in.take<std::uint8_t>());
         }
     }
     { // Trees
