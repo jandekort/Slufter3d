@@ -181,13 +181,15 @@ Fly: mouse wheel or `Space`/`C` to rise or descend; `L` to land. `1`/`2` switch 
 20 km/h; Fast, 50 km/h). The visit starts on the lookout tower, just above its railings, looking east, and `R`
 returns there. Both land you there, as *Land* does: you stay on the tower until you walk off it, and then come
 down beside it. Landing over the tower ends there too, and lower than its railings the tower stops you like a
-wall. The panel is two rows: arrows to turn and walk, with *Up*, *Down* and *Land* (a tap on *Up* or *Down*
-is one step and holding it keeps climbing or descending; *Land* comes down to the ground); and under them a
-tortoise and a hare for slow and fast, with *Settings*. Under *Settings* every choice is a row of buttons, the one
-chosen lit: a number box and *Go* jump to a given house; trees on or off (`T`); tiles on or off (`G`); the weather
-(*Day*, *Fog*, *Overcast*, *Evening*; `F` steps through it); the years of the park; and the lens (`Z` steps
-through it): *Wide* is the view the visit starts with, 68 degrees from top to bottom, and 28 to 100 mm are what
-such a lens on 35 mm film sees, to stand where an old photograph was taken and see what it shows. On a
+wall. The panel is two rows. The first: *Up*, *Down* and *Land* (a tap on *Up* or *Down* is one step and
+holding it keeps climbing or descending; *Land* comes down to the ground), and a tortoise and a hare for slow
+and fast; the visit starts fast. The second: *Before 1993* and *Today*, which show the park of 1971 to 1993 or
+that of today; a number box and *Go*, which jump to a house of the years shown; and a gear that opens the
+settings: *Trees* (`T`) and *Tiles* (`G`), each lit while shown; the weather (*Day*, *Fog*, *Overcast*,
+*Evening*; `F` steps through it); and the lens (`Z` steps through it): *Wide* is the view the visit starts with,
+68 degrees from top to bottom, and 28 to 100 mm are what such a lens on 35 mm film sees, to stand where an old
+photograph was taken and see what it shows. The eras 1957 to 1971 and 1993 to 2013 are still in the world file
+(`slufter_set_era`), without a button. On a
 phone, round buttons walk and turn, and nothing on the page can be selected
 but the house number, so that every press reaches its button.
 

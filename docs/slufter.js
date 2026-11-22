@@ -32,7 +32,7 @@
     const paceButtons = document.querySelectorAll("#panel button[data-pace]");
     // A choice of the settings: a row of buttons, the one chosen lit. Returns what sets it and what steps it on
     function choice(name, chosen) {
-        const buttons = Array.from(document.querySelectorAll('#settings [data-choice="' + name + '"] button'));
+        const buttons = Array.from(document.querySelectorAll('#panel [data-choice="' + name + '"] button'));
         const values = buttons.map(function (button) { return button.dataset.value; });
         let current = values[0];
         function set(value, quiet) {
@@ -71,7 +71,7 @@
     };
     let resetRequested = false;
     let gotoRequested = 0;
-    let pace = 1;            // 1->slow (20 km/h), 2->fast (50 km/h)
+    let pace = 2;            // 1->slow (20 km/h), 2->fast (50 km/h)
     let paceChanged = true;
     let lookTurn = 0.0;
     let lookLift = 0.0;
@@ -161,18 +161,29 @@
     }
     climbButton(document.getElementById("up"), 1.0, "up");
     climbButton(document.getElementById("down"), -1.0, "down");
+    // Trees and tiles: a button each, lit while they are shown
+    const treesButton = document.getElementById("trees");
     let showTrees = true;    // true->the trees are drawn; on at the start, phones draw them smoothly
-    const treesChoice = choice("trees", function (value) { showTrees = value === "on"; });
     function toggleTrees() {
-        treesChoice.next();
+        showTrees = !showTrees;
+        treesButton.classList.toggle("on", showTrees);
+        treesButton.setAttribute("aria-pressed", String(showTrees));
     }
-    treesChoice.set("on");
+    const tilesButton = document.getElementById("tiles");
     let showTiles = true;    // true->the tiles of the park's grid are drawn on the land
-    const tilesChoice = choice("tiles", function (value) { showTiles = value === "on"; });
     function toggleTiles() {
-        tilesChoice.next();
+        showTiles = !showTiles;
+        tilesButton.classList.toggle("on", showTiles);
+        tilesButton.setAttribute("aria-pressed", String(showTiles));
     }
-    tilesChoice.set("on");
+    [[treesButton, toggleTrees, showTrees], [tilesButton, toggleTiles, showTiles]].forEach(function (entry) {
+        entry[0].classList.toggle("on", entry[2]);
+        entry[0].setAttribute("aria-pressed", String(entry[2]));
+        entry[0].addEventListener("click", function () {
+            entry[1]();
+            entry[0].blur();    // so that the keys walk again
+        });
+    });
     let weather = "day";     // a name of WEATHERS, or "day": as the world was built
     const weatherChoice = choice("weather", function (value) { weather = value; });
     function nextWeather() {

@@ -32,9 +32,12 @@
     #panel button:last-child { border-radius: 0 6px 6px 0; border-left: none; }
     /* What is not needed all the time lies under Settings: one row of buttons per choice, one of them on */
     #panel button { white-space: nowrap; }
-    /* Settings stands apart from the tortoise and the hare, a button of its own */
-    #panel #settingsButton { margin-left: 8px; border-radius: 6px; border-left: 1px solid rgba(255, 255, 255, 0.7); }
-    #panel button[data-pace="2"] { border-radius: 0 6px 6px 0; }
+    /* A row holds groups of buttons that belong together, a little apart; a button alone is round all round */
+    #panel .row { gap: 8px; }
+    #panel .row.choice { gap: 0; }
+    #panel .group { display: flex; }
+    #panel button:only-child { border-radius: 6px; border-left: 1px solid rgba(255, 255, 255, 0.7); }
+    /* What is not needed all the time lies under Settings: one row of buttons per choice, one of them on */
     #panel .choice button { padding: 6px 8px; }
     #settings { display: flex; flex-direction: column; gap: 8px; }
     #settings[hidden] { display: none; }
@@ -61,34 +64,28 @@
 <div id="error" class="hud"></div>
 <div id="panel">
     <div class="row">
-        <button data-key="left" title="turn left" aria-label="turn left">&#9664;</button><button data-key="right"
-            title="turn right" aria-label="turn right">&#9654;</button><button data-key="ahead" title="walk on"
-            aria-label="walk on">&#9650;</button><button data-key="back" title="walk back"
-            aria-label="walk back">&#9660;</button><button id="up">Up</button><button id="down">Down</button><button
-            id="land">Land</button>
+        <span class="group"><button id="up" title="climb (Space)">&#9650; Up</button><button id="down"
+            title="descend (C)">&#9660; Down</button><button id="land" title="back to the ground (L)">Land</button></span>
+        <span class="group"><button data-pace="1" title="Slow, 20 km/h (1)" aria-label="slow">&#128034;</button><button
+            data-pace="2" class="on" title="Fast, 50 km/h (2)" aria-label="fast">&#128007;</button></span>
     </div>
     <div class="row">
-        <button data-pace="1" class="on" title="slow, 20 km/h" aria-label="slow">&#128034;</button><button data-pace="2"
-            title="fast, 50 km/h" aria-label="fast">&#128007;</button><button id="settingsButton" aria-expanded="false"
-            aria-controls="settings">Settings &#9662;</button>
+        <span class="group choice" data-choice="era"><button data-value="1"
+            title="the park as it was from 1971 to 1993">Before 1993</button><button data-value="3"
+            title="the park as it is today">Today</button></span>
+        <span class="group"><input id="number" type="text" inputmode="numeric" placeholder="house no."
+            title="a house number of the years shown"><button id="go">Go</button></span>
+        <span class="group"><button id="settingsButton" title="Settings" aria-label="Settings" aria-expanded="false"
+            aria-controls="settings">&#9881;</button></span>
     </div>
     <div id="settings" hidden>
         <div class="row">
-            <input id="number" type="text" inputmode="numeric" placeholder="house no."><button id="go">Go</button>
-        </div>
-        <div class="row choice" data-choice="trees">
-            <button data-value="on">Trees on</button><button data-value="off">Trees off</button>
-        </div>
-        <div class="row choice" data-choice="tiles">
-            <button data-value="on">Tiles on</button><button data-value="off">Tiles off</button>
+            <span class="group"><button id="trees" title="show the trees (T)">Trees</button></span>
+            <span class="group"><button id="tiles" title="show the tiles on the ground (G)">Tiles</button></span>
         </div>
         <div class="row choice" data-choice="weather">
             <button data-value="day">Day</button><button data-value="fog">Fog</button><button
                 data-value="overcast">Overcast</button><button data-value="bluehour">Evening</button>
-        </div>
-        <div class="row choice" data-choice="era">
-            <button data-value="0">1957&ndash;1971</button><button data-value="1">1971&ndash;1993</button><button
-                data-value="2">1993&ndash;2013</button><button data-value="3">2013&ndash;today</button>
         </div>
         <div class="row choice" data-choice="lens">
             <button data-value="68">Wide</button><button data-value="46.4">28 mm</button><button
